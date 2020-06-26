@@ -90,6 +90,22 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  created () {
+    console.log('this:', this)
+    this.$axios.get(
+      '/user.status',
+      {
+        params: {
+          handle: 'bakpark',
+          count: 10
+        }
+      }
+    ).then((response) => {
+      console.log(response)
+    }).catch((err) => {
+      console.error(err)
+    })
   }
 }
 </script>

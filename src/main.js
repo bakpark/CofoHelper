@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from './axios'
 import api from './api'
+import store from './store'
 
 Vue.config.productionTip = false
 api.init(axios)
@@ -15,6 +16,7 @@ new Vue({
   router,
   axios,
   api,
+  store,
   components: { App },
   template: '<App/>'
 })

@@ -92,19 +92,28 @@ export default {
     }
   },
   created () {
-    console.log('this:', this)
+    // wrapping
+    this.$api.user.status('bakpark', 1, 10).then((response) => {
+      console.log('wrapping api call')
+      console.log(response)
+    }).catch((err) => {
+      console.error(err)
+    })
+    // same way by axios
     this.$axios.get(
       '/user.status',
       {
         params: {
           handle: 'bakpark',
+          from: 1,
           count: 10
         }
       }
     ).then((response) => {
-      console.log(response)
+      console.log('just call by axios')
+      console.log(response.data.result)
     }).catch((err) => {
-      console.error(err)
+      console.log(err)
     })
   }
 }

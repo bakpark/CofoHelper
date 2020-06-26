@@ -4,14 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from './axios'
+import api from './api'
 
 Vue.config.productionTip = false
+api.init(axios)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   axios,
+  api,
   components: { App },
   template: '<App/>'
 })

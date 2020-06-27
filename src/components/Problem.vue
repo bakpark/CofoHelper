@@ -8,7 +8,7 @@
 /*****************************************************************
  ************************** import *******************************
  *****************************************************************/
-// import Table from '@/components/testTable.vue'
+import util from '@/components/util.js'
 export default {
   name: 'Problem',
   components: {
@@ -16,8 +16,7 @@ export default {
   props: {},
   data () {
     return {
-      problemHtml: '',
-      configScriptEl: {}
+      problemHtml: ''
     }
   },
   /*****************************************************************
@@ -27,26 +26,15 @@ export default {
   },
   watch: {
     problemHtml () {
-      this.$nextTick().then(() => {
-        this.reRender()
-      })
+      util.reRender()
     }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
   *****************************************************************/
   created () {
-    console.log('================= problem created')
-    let vm = this
-    let htmlRef = 'static/html/' + this.$route.params.id + '.html'
-    console.log(htmlRef)
-    fetch(htmlRef).then((prms) => {
-      return prms.text()
-    }).then((response) => {
-      vm.problemHtml = response
-    }).catch((err) => {
-      console.log('read html Fail', err)
-    })
+    let htmlRef = 'static/html/problems/' + this.$route.params.id + '.html'
+    this.readProblemHtml(htmlRef)
   },
   mounted () {
   },
@@ -58,12 +46,8 @@ export default {
    ********************** User-Defined Methods *********************
    *****************************************************************/
   methods: {
-    reRender () {
-      console.log(window.MathJax)
-      if (window.MathJax) {
-        console.log('rendering mathjax')
-        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub], () => console.log('done'))
-      }
+    async readProblemHtml (ref) {
+      this.problemHtml = await util.readStaticFile(ref)
     }
   }
 }

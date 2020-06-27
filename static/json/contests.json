@@ -1,0 +1,22 @@
+{
+  "1369": {
+    "kind": "division 2",
+    "indexs": ["A","B","C","D","E","F"]
+  },
+  "1353": {
+    "kind": "division 3",
+    "indexs": ["A","B","C","D","E","F"]
+  },
+  "1367": {
+    "kind": "division 2",
+    "indexs": ["A","B","C","D","E"]
+  },
+  "1366": {
+    "kind": "division 3",
+    "indexs": ["A","B","C","D","E","F","G"]
+  },
+  "1360": {
+    "kind": "division 3",
+    "indexs": ["A","B","C","D","E","F"]
+  }
+}

@@ -1,6 +1,8 @@
 <template>
   <div class="Main">
     <div class="header">COFO HELPER</div>
+    <router-link to="/problem/1353-A">go 1353-A</router-link>
+    <router-link to="/problem/1353-B">go 1353-B</router-link>
     <div class="body-wrapper">
       <div class="table-wrapper">
         <Table :tableKey="resultTableKey"></Table>

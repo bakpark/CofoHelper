@@ -1,5 +1,5 @@
 <template>
-  <div class="Main">
+  <div class="Test">
     <div class="header">COFO HELPER</div>
     <div class="body-wrapper">
       <div class="table-wrapper">
@@ -18,7 +18,7 @@
  *****************************************************************/
 import Table from '@/components/testTable.vue'
 export default {
-  name: 'Main',
+  name: 'Test',
   components: {
     Table: Table
   },
@@ -86,7 +86,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.Main{
+.Test{
   display: flex;
   width: 100%;
   height: 100%;

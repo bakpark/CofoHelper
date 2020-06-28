@@ -13,8 +13,6 @@ export default new Vuex.Store({
   mutations: {
     CHANGE_TABLE_DATA (state, [tableKey, data]) {
       state[tableKey] = data
-      console.log(state)
-      console.log('CHANGE_TABLE_DATA of key:', tableKey)
     }
   },
   actions: {},

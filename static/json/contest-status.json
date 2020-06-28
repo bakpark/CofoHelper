@@ -1,0 +1,246 @@
+{
+  "status": "OK",
+  "result": [
+    {
+      "id": 84862002,
+      "contestId": 1353,
+      "creationTimeSeconds": 1592982048,
+      "relativeTimeSeconds": 2147483647,
+      "problem": {
+        "contestId": 1353,
+        "index": "F",
+        "name": "Decreasing Heights",
+        "type": "PROGRAMMING",
+        "rating": 2200,
+        "tags": [
+          "brute force",
+          "dp"
+        ]
+      },
+      "author": {
+        "contestId": 1353,
+        "members": [
+          {
+            "handle": "bakpark"
+          }
+        ],
+        "participantType": "PRACTICE",
+        "ghost": false,
+        "startTimeSeconds": 1589466900
+      },
+      "programmingLanguage": "GNU C++11",
+      "verdict": "OK",
+      "testset": "TESTS",
+      "passedTestCount": 49,
+      "timeConsumedMillis": 701,
+      "memoryConsumedBytes": 4300800
+    },
+    {
+      "id": 84853244,
+      "contestId": 1353,
+      "creationTimeSeconds": 1592974516,
+      "relativeTimeSeconds": 2147483647,
+      "problem": {
+        "contestId": 1353,
+        "index": "E",
+        "name": "K-periodic Garland",
+        "type": "PROGRAMMING",
+        "rating": 1900,
+        "tags": [
+          "brute force",
+          "dp",
+          "greedy"
+        ]
+      },
+      "author": {
+        "contestId": 1353,
+        "members": [
+          {
+            "handle": "bakpark"
+          }
+        ],
+        "participantType": "PRACTICE",
+        "ghost": false,
+        "startTimeSeconds": 1589466900
+      },
+      "programmingLanguage": "GNU C++11",
+      "verdict": "OK",
+      "testset": "TESTS",
+      "passedTestCount": 43,
+      "timeConsumedMillis": 46,
+      "memoryConsumedBytes": 26214400
+    },
+    {
+      "id": 84847777,
+      "contestId": 1353,
+      "creationTimeSeconds": 1592966884,
+      "relativeTimeSeconds": 2147483647,
+      "problem": {
+        "contestId": 1353,
+        "index": "E",
+        "name": "K-periodic Garland",
+        "type": "PROGRAMMING",
+        "rating": 1900,
+        "tags": [
+          "brute force",
+          "dp",
+          "greedy"
+        ]
+      },
+      "author": {
+        "contestId": 1353,
+        "members": [
+          {
+            "handle": "bakpark"
+          }
+        ],
+        "participantType": "PRACTICE",
+        "ghost": false,
+        "startTimeSeconds": 1589466900
+      },
+      "programmingLanguage": "GNU C++11",
+      "verdict": "WRONG_ANSWER",
+      "testset": "TESTS",
+      "passedTestCount": 1,
+      "timeConsumedMillis": 15,
+      "memoryConsumedBytes": 5120000
+    },
+    {
+      "id": 84846415,
+      "contestId": 1353,
+      "creationTimeSeconds": 1592964657,
+      "relativeTimeSeconds": 2147483647,
+      "problem": {
+        "contestId": 1353,
+        "index": "D",
+        "name": "Constructing the Array",
+        "type": "PROGRAMMING",
+        "rating": 1600,
+        "tags": [
+          "constructive algorithms",
+          "data structures",
+          "sortings"
+        ]
+      },
+      "author": {
+        "contestId": 1353,
+        "members": [
+          {
+            "handle": "bakpark"
+          }
+        ],
+        "participantType": "PRACTICE",
+        "ghost": false,
+        "startTimeSeconds": 1589466900
+      },
+      "programmingLanguage": "GNU C++11",
+      "verdict": "OK",
+      "testset": "TESTS",
+      "passedTestCount": 21,
+      "timeConsumedMillis": 93,
+      "memoryConsumedBytes": 6553600
+    },
+    {
+      "id": 84845874,
+      "contestId": 1353,
+      "creationTimeSeconds": 1592963649,
+      "relativeTimeSeconds": 2147483647,
+      "problem": {
+        "contestId": 1353,
+        "index": "B",
+        "name": "Two Arrays And Swaps",
+        "type": "PROGRAMMING",
+        "rating": 800,
+        "tags": [
+          "greedy",
+          "sortings"
+        ]
+      },
+      "author": {
+        "contestId": 1353,
+        "members": [
+          {
+            "handle": "bakpark"
+          }
+        ],
+        "participantType": "PRACTICE",
+        "ghost": false,
+        "startTimeSeconds": 1589466900
+      },
+      "programmingLanguage": "GNU C++11",
+      "verdict": "OK",
+      "testset": "TESTS",
+      "passedTestCount": 4,
+      "timeConsumedMillis": 15,
+      "memoryConsumedBytes": 3891200
+    },
+    {
+      "id": 84845271,
+      "contestId": 1353,
+      "creationTimeSeconds": 1592962285,
+      "relativeTimeSeconds": 2147483647,
+      "problem": {
+        "contestId": 1353,
+        "index": "A",
+        "name": "Most Unstable Array",
+        "type": "PROGRAMMING",
+        "rating": 800,
+        "tags": [
+          "constructive algorithms",
+          "greedy",
+          "math"
+        ]
+      },
+      "author": {
+        "contestId": 1353,
+        "members": [
+          {
+            "handle": "bakpark"
+          }
+        ],
+        "participantType": "PRACTICE",
+        "ghost": false,
+        "startTimeSeconds": 1589466900
+      },
+      "programmingLanguage": "GNU C++11",
+      "verdict": "OK",
+      "testset": "TESTS",
+      "passedTestCount": 28,
+      "timeConsumedMillis": 31,
+      "memoryConsumedBytes": 3993600
+    },
+    {
+      "id": 84845027,
+      "contestId": 1353,
+      "creationTimeSeconds": 1592961668,
+      "relativeTimeSeconds": 2147483647,
+      "problem": {
+        "contestId": 1353,
+        "index": "C",
+        "name": "Board Moves",
+        "type": "PROGRAMMING",
+        "rating": 1000,
+        "tags": [
+          "math"
+        ]
+      },
+      "author": {
+        "contestId": 1353,
+        "members": [
+          {
+            "handle": "bakpark"
+          }
+        ],
+        "participantType": "PRACTICE",
+        "ghost": false,
+        "startTimeSeconds": 1589466900
+      },
+      "programmingLanguage": "GNU C++11",
+      "verdict": "OK",
+      "testset": "TESTS",
+      "passedTestCount": 7,
+      "timeConsumedMillis": 30,
+      "memoryConsumedBytes": 5939200
+    }
+  ]
+}

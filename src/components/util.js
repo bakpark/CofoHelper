@@ -12,11 +12,16 @@ export default {
       })
     })
   },
-  reRender () {
+  reRenderMathJax () {
     if (window.MathJax) {
-      window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub], () => console.log('done'))
+      window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub], () => console.log('reRender done'))
     } else {
       console.error(new Error('window MathJax is empty'))
     }
+  },
+  wait (ms) {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, ms)
+    })
   }
 }

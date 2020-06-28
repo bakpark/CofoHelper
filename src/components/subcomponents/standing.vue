@@ -20,7 +20,7 @@
  *****************************************************************/
 import Table from '@/components/testTable.vue'
 export default {
-  name: 'Test',
+  name: 'Main',
   components: {
     Table: Table
   },
@@ -55,12 +55,14 @@ export default {
         }
       }
     ).then((response) => {
+      // vm.result = response.data.result
       vm.$store.commit('CHANGE_TABLE_DATA', [vm.resultTableKey, response.data.result])
     }).catch((err) => {
       console.log(err)
     })
     // same way by wrapping
     this.$api.user.status('bakpark', 1, 25).then((result) => {
+      // vm.wResult = result
       vm.$store.commit('CHANGE_TABLE_DATA', [vm.wResultTableKey, result])
     }).catch((err) => {
       console.error(err)
@@ -82,7 +84,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.Test{
+.Main{
   display: flex;
   width: 100%;
   height: 100%;

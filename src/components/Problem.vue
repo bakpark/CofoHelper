@@ -6,7 +6,6 @@
     <div class="side-view">
       <div class="standings"></div>
     </div>
-    
   </div>
 </template>
 

@@ -1,21 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '@/components/Main'
+import Test from '@/components/Test'
 import Problem from '@/components/Problem'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Main',
-      component: Main
-    },
-    {
-      path: '/problem/:id',
-      name: 'Problem',
-      component: Problem
-    }
-  ]
+  routes: [{
+    path: '/',
+    name: 'Test',
+    component: Test
+  },
+  {
+    path: '/problem/:id',
+    name: 'Problem',
+    component: Problem
+  }]
 })

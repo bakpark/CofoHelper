@@ -1,6 +1,12 @@
 <template>
   <div class="Problem">
-    <div v-html="problemHtml"></div>
+    <div class="main-view">
+      <div v-html="problemHtml"></div>
+    </div>
+    <div class="side-view">
+      <div class="standings"></div>
+    </div>
+    
   </div>
 </template>
 

@@ -61,16 +61,6 @@ export default {
     problemHtml () {
       util.reRenderMathJax()
     }
-    // displayResults (changed) {
-    //   console.log(changed)
-    //   this.$forceUpdate()
-    // }
-    // displayResults: {
-    //   handler: function (changed) {
-    //     console.log('========displayResult Changed', changed)
-    //   },
-    //   deep: true
-    // }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
@@ -99,7 +89,7 @@ export default {
       let waitMilliSeconds = 350
       let time = 0
       this.$store.state.members.forEach(handle => {
-        util.wait(time).then(() => {
+        util.wait((Math.floor(time / 1000) * 1000)).then(() => {
           vm.getResult(handle)
         })
         time += waitMilliSeconds

@@ -78,8 +78,6 @@ export default {
   created () {
     let htmlRef = 'static/html/problems/' + this.$route.params.id + '.html'
     this.readProblemHtml(htmlRef)
-    // this.members = this.$store.state.members
-    // const contests = this.$store.state.contests
     this.prbmIdSplit = this.$route.params.id.split('-')
     this.getResults()
   },
@@ -98,7 +96,7 @@ export default {
     },
     getResults () {
       let vm = this
-      let waitMilliSeconds = 300
+      let waitMilliSeconds = 350
       let time = 0
       this.$store.state.members.forEach(handle => {
         util.wait(time).then(() => {
@@ -121,8 +119,8 @@ export default {
             vm.results[handle] = []
           }
           vm.results[handle].push(vm.extractInfo(result))
+          vm.$forceUpdate()
         })
-        console.log('done! handle:', handle)
       })
     },
     extractInfo (item) {

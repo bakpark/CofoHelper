@@ -7,12 +7,18 @@ export default new Vuex.Store({
   state: {
     members: ['MochaLatte', 'bakpark', 'johny1', 'bonoky', 'sw1124.han', 'psykibaek'],
     contests: [1353, 1369],
-    'resultTable': [],
-    'wResultTable': []
+    submits: {
+      'MochaLatte': [],
+      'bakpark': [],
+      'johny1': [],
+      'bonoky': [],
+      'sw1124.han': [],
+      'psykibaek': []
+    }
   },
   mutations: {
     CHANGE_TABLE_DATA (state, [tableKey, data]) {
-      state[tableKey] = data
+      state.submits[tableKey] = data
     }
   },
   actions: {},

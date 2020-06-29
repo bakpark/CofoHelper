@@ -5,8 +5,8 @@ export class TimingQueue {
     this._sz = maxSize
     this._k = cntPerSec
     this._i = 0
-    this._sec = 1100
-    this._interval = 100
+    this._sec = 1300
+    this._interval = 150
   }
   getDelay () {
     const curMilliSec = util.getCurMilliSeconds()
@@ -16,6 +16,8 @@ export class TimingQueue {
 
     this._arr[this._i] = willTime
     this._i = (this._i + 1) % this._sz
+    // for delay test
+    console.log('========delay:', willTime - curMilliSec)
     return willTime - curMilliSec
   }
 }

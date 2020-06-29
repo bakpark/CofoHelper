@@ -1,14 +1,11 @@
 <template>
   <div class="Main">
     <div class="header">COFO HELPER</div>
-    <router-link to="/problem/1353-A">go 1353-A</router-link>
-    <router-link to="/problem/1353-B">go 1353-B</router-link>
+    <router-link to="/contest/1353/A">go 1353-A</router-link>
+    <router-link to="/contest/1353/B">go 1353-B</router-link>
     <div class="body-wrapper">
       <div class="table-wrapper">
-        <Table :tableKey="resultTableKey"></Table>
-      </div>
-      <div class="table-wrapper">
-        <Table :tableKey="wResultTableKey"></table>
+        <Table v-for="handle in $store.state.members" :key="handle" :tableKey="handle"></Table>
       </div>
     </div>
   </div>
@@ -28,8 +25,6 @@ export default {
   },
   data () {
     return {
-      resultTableKey: String('resultTable'),
-      wResultTableKey: String('wResultTable')
     }
   },
   /*****************************************************************
@@ -44,26 +39,10 @@ export default {
   *****************************************************************/
   created () {
     let vm = this
-    // by axios
-    this.$axios.get(
-      '/user.status',
-      {
-        params: {
-          handle: 'bakpark',
-          from: 1,
-          count: 25
-        }
-      }
-    ).then((response) => {
-      vm.$store.commit('CHANGE_TABLE_DATA', [vm.resultTableKey, response.data.result])
-    }).catch((err) => {
-      console.error(err)
-    })
-    // same way by wrapping
-    this.$api.user.status('bakpark', 1, 25).then((result) => {
-      vm.$store.commit('CHANGE_TABLE_DATA', [vm.wResultTableKey, result])
-    }).catch((err) => {
-      console.error(err)
+    this.$store.state.members.forEach((handle) => {
+      vm.$api.user.status(handle, 1, 25).then((result) => {
+        vm.$store.commit('CHANGE_TABLE_DATA', [handle, result])
+      })
     })
   },
   mounted () {
@@ -97,14 +76,14 @@ export default {
 }
 .body-wrapper{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   margin-top: 10%;
 }
 .table-wrapper{
-  width: 50%;
+  width: 90%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
 }
 </style>

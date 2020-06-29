@@ -14,6 +14,8 @@ let instance = {
       let delay = queue.getDelay()
       util.wait(delay).then(() => {
         axios.get(...params).then((response) => {
+          // for delay test
+          console.log('======== axios get response time:', new Date().getTime() % 10000)
           resolve(response)
         }).catch((err) => {
           reject(err)

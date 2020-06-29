@@ -88,18 +88,6 @@ export default {
   ********************** computed, watch ***********************
   *****************************************************************/
   computed: {
-  //   finalResults () {
-  //     let sortable = []
-  //     for (let key in this.displayResults) {
-  //       sortable.push(this.displayResults[key])
-  //     }
-  //     sortable.sort(function (a, b) {
-  //       if (!a.submission) return 1
-  //       else if (!b.submission) return -1
-  //       else return Number(a.submission) - Number(b.submission)
-  //     })
-  //     return sortable
-  //   }
   },
   watch: {
     contestId (changed) {
@@ -216,8 +204,8 @@ export default {
   flex-direction: row;
 }
 .left-view{
-  width: 10%;
-  margin-left: 5%;
+  width: 15%;
+  margin-left: 3%;
   margin-top: 10em;
 }
 .center-view{

@@ -16,7 +16,6 @@ export class TimingQueue {
 
     this._arr[this._i] = willTime
     this._i = (this._i + 1) % this._sz
-    console.log('cur : ', curMilliSec, 'ahedOneTime :', aheadOneTime, 'aheadKTime :', aheadKTime, 'delay:', willTime - curMilliSec)
     return willTime - curMilliSec
   }
 }

@@ -57,7 +57,7 @@ export default {
     ).then((response) => {
       vm.$store.commit('CHANGE_TABLE_DATA', [vm.resultTableKey, response.data.result])
     }).catch((err) => {
-      console.log(err)
+      console.error(err)
     })
     // same way by wrapping
     this.$api.user.status('bakpark', 1, 25).then((result) => {

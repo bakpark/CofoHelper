@@ -34,5 +34,24 @@ export default {
   },
   getCurMilliSeconds () {
     return new Date().getTime()
+  },
+  getTimeString (milliSeconds) {
+    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    let d = new Date(milliSeconds)
+    var hr = d.getHours()
+    var min = d.getMinutes()
+    if (min < 10) {
+      min = '0' + min
+    }
+    if (hr < 10) {
+      hr = '0' + hr
+    }
+    var date = d.getDate()
+    var month = months[d.getMonth()]
+    var year = d.getFullYear()
+    return month + '/' + date + '/' + year + '\n' + hr + ':' + min
+  },
+  getVerdictStyle (verdict) {
+    return !verdict ? '' : verdict === 'OK' ? 'verdict-accepted' : 'verdict-failed'
   }
 }

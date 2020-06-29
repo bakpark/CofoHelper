@@ -18,20 +18,38 @@
           <div class="top-links"></div>
         </div>
         <table class="rtable smaller">
-          <tbody>
+          <tbody v-if="doneCnt < 6">
             <tr>
               <th>Handle</th>
               <th>Submission</th>
+              <th>Time</th>
               <th>Language</th>
               <th>Verdict</th>
             </tr>
-            <!-- <tr v-for="result in displayResults" :key="result.handle"> -->
+            <tr v-for="result in displayResults" :key="result.handle">
+              <td>{{ result.handle }}</td>
+              <td v-if="!result.submission"> empty </td>
+              <td v-else><a link :href="result.submissionLink">#{{ result.submission }}</a></td>
+              <td>{{ result.time }}</td>
+              <td>{{ result.language }}</td>
+              <td :class = "getVerdictStyle(result.verdict)">{{ result.verdict }}</td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <th>Handle</th>
+              <th>Submission</th>
+              <th>Time</th>
+              <th>Language</th>
+              <th>Verdict</th>
+            </tr>
             <tr v-for="result in finalResults" :key="result.handle">
               <td>{{ result.handle }}</td>
               <td v-if="!result.submission"> empty </td>
               <td v-else><a link :href="result.submissionLink">#{{ result.submission }}</a></td>
+              <td>{{ result.time }}</td>
               <td>{{ result.language }}</td>
-              <td>{{ result.verdict }}</td>
+              <td :class = "getVerdictStyle(result.verdict)">{{ result.verdict }}</td>
             </tr>
           </tbody>
         </table>
@@ -57,17 +75,53 @@ export default {
     return {
       contestId: '',
       problemIndex: '',
-      results: {},
+      contestInfos: [],
       doneCnt: 0,
+      completeGetResults: false,
+      results: {},
       displayResults: {},
-      contestInfos: []
+      finalResults: [],
+      callHandle: ''
     }
   },
   /*****************************************************************
   ********************** computed, watch ***********************
   *****************************************************************/
   computed: {
-    finalResults () {
+  //   finalResults () {
+  //     let sortable = []
+  //     for (let key in this.displayResults) {
+  //       sortable.push(this.displayResults[key])
+  //     }
+  //     sortable.sort(function (a, b) {
+  //       if (!a.submission) return 1
+  //       else if (!b.submission) return -1
+  //       else return Number(a.submission) - Number(b.submission)
+  //     })
+  //     return sortable
+  //   }
+  },
+  watch: {
+    contestId (changed) {
+      this.getResults(changed)
+    },
+    callHandle (changed) {
+      if (this.displayResults[changed]) return
+      let handleObj = {
+        handle: changed
+      }
+      let vm = this
+      vm.results[changed] && vm.results[changed].forEach((result) => {
+        if (result.problemIndex !== vm.problemIndex) return
+        if (handleObj.verdict && handleObj.verdict === 'OK') return
+        if (result.verdict === 'OK' || !handleObj.submission) {
+          handleObj = result
+        }
+      })
+      vm.displayResults = { ...vm.displayResults }
+      vm.displayResults[changed] = handleObj
+    },
+    completeGetResults () {
       let sortable = []
       for (let key in this.displayResults) {
         sortable.push(this.displayResults[key])
@@ -77,42 +131,13 @@ export default {
         else if (!b.submission) return -1
         else return Number(a.submission) - Number(b.submission)
       })
-      if (this.doneCnt === 6) {
-        console.log(this.results)
-      }
-      return sortable
-    }
-  },
-  watch: {
-    contestId (changed) {
-      this.getResults(changed)
-    },
-    doneCnt () {
-      let vm = this
-      this.$store.state.members.forEach((handle) => {
-        if (vm.displayResults[handle] && vm.displayResults[handle].submission) return false
-        let handleObj = {
-          handle: handle
-        }
-        if (vm.results[handle]) {
-          vm.results[handle].forEach((result) => {
-            if (result.problemIndex !== vm.problemIndex) return false
-            if (handleObj.verdict && handle.verdict === 'OK') return false
-            if (result.verdict === 'OK' || !handleObj.submission) {
-              handleObj = result
-            }
-          })
-        }
-        vm.displayResults = { ...vm.displayResults }
-        vm.displayResults[handle] = handleObj
-      })
+      this.finalResults = sortable
     }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
   *****************************************************************/
   created () {
-    console.log('============== contest create')
     this.contestId = this.$route.params.contestId
     this.problemIndex = this.$route.params.index || 'A'
     this.readContestInfoJson()
@@ -128,9 +153,9 @@ export default {
    *****************************************************************/
   methods: {
     initApiResults () {
-      this.doneCnt = 0
       this.displayResults = {}
       this.results = {}
+      this.completeGetResults = false
     },
     getResults (contestId) {
       this.initApiResults()
@@ -148,7 +173,11 @@ export default {
           }
           vm.results[handle].push(vm.extractInfo(result))
         })
+        vm.callHandle = handle
         vm.doneCnt++
+        if (vm.doneCnt === 6) {
+          vm.completeGetResults = true
+        }
       })
     },
     extractInfo (item) {
@@ -159,6 +188,7 @@ export default {
       ret.language = item.programmingLanguage
       ret.verdict = item.verdict
       ret.submissionLink = this.getSubmissionLink(item)
+      ret.time = util.getTimeString(item.creationTimeSeconds * 1000)
       return ret
     },
     async readContestInfoJson () {
@@ -173,7 +203,8 @@ export default {
     },
     getSubmissionLink (obj) {
       return 'http://codeforces.com/contest/' + obj.problem.contestId + '/submission/' + obj.id
-    }
+    },
+    getVerdictStyle: util.getVerdictStyle
   }
 }
 </script>
@@ -185,19 +216,19 @@ export default {
   flex-direction: row;
 }
 .left-view{
-  width: 20%;
+  width: 10%;
   margin-left: 5%;
   margin-top: 10em;
 }
 .center-view{
   margin-left: 5%;
   margin-right: 5%;
-  width: 40%;
+  width: 50%;
   margin-top: 3em;
 }
 .right-view{
-  width: 20%;
-  margin-right: 5%;
+  width: 23%;
+  margin-right: 3%;
   margin-top: 10em;
 }
 </style>

@@ -23,5 +23,16 @@ export default {
     return new Promise((resolve, reject) => {
       setTimeout(resolve, ms)
     })
+  },
+  getAheadIndex (idx, aheadCnt, maxSize) {
+    let ahead = idx + maxSize - aheadCnt
+    return ahead >= maxSize ? ahead - maxSize : ahead
+  },
+  getBehindIndex (idx, behindCnt, maxSize) {
+    let behind = idx + behindCnt
+    return behind >= maxSize ? behind - maxSize : behind
+  },
+  getCurMilliSeconds () {
+    return new Date().getTime()
   }
 }

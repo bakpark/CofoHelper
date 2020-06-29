@@ -19,7 +19,6 @@
  ************************** import *******************************
  *****************************************************************/
 import Table from '@/components/testTable.vue'
-import util from '@/common/util.js'
 export default {
   name: 'Test',
   components: {

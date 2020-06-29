@@ -14,12 +14,10 @@ export default {
   components: {
   },
   props: {
-    contestId: String,
-    problemIndex: String
+    problemId: String
   },
   data () {
     return {
-      problemId: '',
       problemHtml: ''
     }
   },
@@ -29,14 +27,15 @@ export default {
   computed: {
   },
   watch: {
+    problemId (changed) {
+      this.readProblemHtml(changed)
+    }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
   *****************************************************************/
   created () {
-    this.problemId = this.contestId + '-' + this.problemIndex
-    let htmlRef = 'static/html/problems/' + this.problemId + '.html'
-    this.readProblemHtml(htmlRef)
+    this.readProblemHtml(this.problemId)
   },
   mounted () {
   },
@@ -51,8 +50,9 @@ export default {
    ********************** User-Defined Methods *********************
    *****************************************************************/
   methods: {
-    async readProblemHtml (ref) {
-      this.problemHtml = await util.readStaticFile(ref)
+    async readProblemHtml (problemId) {
+      let htmlRef = 'static/html/problems/' + problemId + '.html'
+      this.problemHtml = await util.readStaticFile(htmlRef)
     }
   }
 }

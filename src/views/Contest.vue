@@ -7,7 +7,8 @@
       </div>
     </div>
     <div class="center-view">
-      <Problem :contestId="contestId" :problemIndex="problemIndex"></Problem>
+      <!-- <Problem :contestId="contestId" :problemIndex="problemIndex"></Problem> -->
+      <Problem :problemId="contestId+'-'+problemIndex"></Problem>
     </div>
     <div class="right-view">
       <div class="roundbox">
@@ -18,7 +19,7 @@
           <div class="top-links"></div>
         </div>
         <table class="rtable smaller">
-          <tbody v-if="doneCnt < 6">
+          <tbody v-if="!allResultsAvailable">
             <tr>
               <th>Handle</th>
               <th>Submission</th>
@@ -34,6 +35,7 @@
               <td>{{ result.language }}</td>
               <td :class = "getVerdictStyle(result.verdict)">{{ result.verdict }}</td>
             </tr>
+            <tr><span>call is running... </span><button @click="resolution">refresh</button></tr>
           </tbody>
           <tbody v-else>
             <tr>
@@ -77,50 +79,69 @@ export default {
       problemIndex: '',
       contestInfos: [],
       doneCnt: 0,
-      completeGetResults: false,
+      allResultsAvailable: false,
       results: {},
       displayResults: {},
-      finalResults: [],
       callHandle: ''
+      // finalResults: [],
     }
   },
   /*****************************************************************
   ********************** computed, watch ***********************
   *****************************************************************/
   computed: {
+    finalResults () {
+      console.log('=========computed allResultsAvailable,')
+      if (this.allResultsAvailable) {
+        let sortable = []
+        for (let key in this.displayResults) {
+          sortable.push(this.displayResults[key])
+        }
+        sortable.sort(function (a, b) {
+          if (!a.submission) return 1
+          else if (!b.submission) return -1
+          else return Number(a.submission) - Number(b.submission)
+        })
+        return sortable
+      }
+      return []
+    }
   },
   watch: {
+    $route (to, from) {
+      if (from.params.contestId !== to.params.contestId) {
+        console.log('contestId is different!')
+        this.problemIndex = to.params.index
+        this.contestId = to.params.contestId
+        return
+      }
+      if (from.params.index !== to.params.index) {
+        console.log('index is different!')
+        this.problemIndex = to.params.index
+        this.renewDisplayResults()
+      }
+    },
     contestId (changed) {
+      this.initAll()
       this.getResults(changed)
     },
     callHandle (changed) {
-      if (this.displayResults[changed]) return
-      let handleObj = {
-        handle: changed
-      }
-      let vm = this
-      vm.results[changed] && vm.results[changed].forEach((result) => {
-        if (result.problemIndex !== vm.problemIndex) return
-        if (handleObj.verdict && handleObj.verdict === 'OK') return
-        if (result.verdict === 'OK' || !handleObj.submission) {
-          handleObj = result
-        }
-      })
-      vm.displayResults = { ...vm.displayResults }
-      vm.displayResults[changed] = handleObj
-    },
-    completeGetResults () {
-      let sortable = []
-      for (let key in this.displayResults) {
-        sortable.push(this.displayResults[key])
-      }
-      sortable.sort(function (a, b) {
-        if (!a.submission) return 1
-        else if (!b.submission) return -1
-        else return Number(a.submission) - Number(b.submission)
-      })
-      this.finalResults = sortable
+      this.bindDiplayResult(changed)
     }
+    // ,
+    // allResultsAvailable (changed) {
+    //   console.log('=========watch allResultsAvailable,', changed)
+    //   let sortable = []
+    //   for (let key in this.displayResults) {
+    //     sortable.push(this.displayResults[key])
+    //   }
+    //   sortable.sort(function (a, b) {
+    //     if (!a.submission) return 1
+    //     else if (!b.submission) return -1
+    //     else return Number(a.submission) - Number(b.submission)
+    //   })
+    //   this.finalResults = sortable
+    // }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
@@ -140,13 +161,17 @@ export default {
    ********************** User-Defined Methods *********************
    *****************************************************************/
   methods: {
-    initApiResults () {
+    initDisplay () {
       this.displayResults = {}
+      this.allResultsAvailable = false
+      this.doneCnt = 0
+      this.finalResults = []
+    },
+    initAll () {
       this.results = {}
-      this.completeGetResults = false
+      this.initDisplay()
     },
     getResults (contestId) {
-      this.initApiResults()
       let vm = this
       this.$store.state.members.forEach(handle => {
         vm.getResult(handle, contestId)
@@ -162,10 +187,6 @@ export default {
           vm.results[handle].push(vm.extractInfo(result))
         })
         vm.callHandle = handle
-        vm.doneCnt++
-        if (vm.doneCnt === 6) {
-          vm.completeGetResults = true
-        }
       })
     },
     extractInfo (item) {
@@ -186,13 +207,59 @@ export default {
       this.contestInfos = await jsonObj.info
     },
     buttonClick (contestId, problemIndex) {
+      if (this.contestId === contestId && this.problemIndex === problemIndex) return
       this.$router.push('/contest/' + contestId + '/' + problemIndex)
-      this.$router.go('/contest/' + contestId + '/' + problemIndex)
     },
     getSubmissionLink (obj) {
       return 'http://codeforces.com/contest/' + obj.problem.contestId + '/submission/' + obj.id
     },
-    getVerdictStyle: util.getVerdictStyle
+    getVerdictStyle: util.getVerdictStyle,
+    getDisplayResult (handle) {
+      let handleObj = {
+        handle: handle
+      }
+      let vm = this
+      vm.results[handle] && vm.results[handle].forEach((result) => {
+        if (result.problemIndex !== vm.problemIndex) return
+        if (handleObj.verdict && handleObj.verdict === 'OK') return
+        if (result.verdict === 'OK' || !handleObj.submission) {
+          handleObj = result
+        }
+      })
+      return handleObj
+    },
+    bindDiplayResult (handle) {
+      let vm = this
+      let handleObj = this.getDisplayResult(handle)
+      this.displayResults = { ...vm.displayResults }
+      this.displayResults[handle] = handleObj
+      vm.doneCnt++
+      console.log('vm.allResultsAvailable', vm.allResultsAvailable)
+      if (vm.doneCnt === 6) {
+        vm.allResultsAvailable = true
+        console.log('vm.allResultsAvailable', vm.allResultsAvailable)
+      }
+      console.log('bindDisplayResult handle:', handle, ' doneCnt:', this.doneCnt)
+    },
+    renewDisplayResults () {
+      console.log('========renew display results!')
+      let vm = this
+      this.initDisplay()
+      this.$store.state.members.forEach((handle) => {
+        vm.bindDiplayResult(handle)
+      })
+    },
+    resolution () {
+      let completeList = []
+      for (let handle in this.displayResults) {
+        completeList.push(handle)
+      }
+      let incompleList = this.$store.state.members.filter(handle => {
+        if (completeList.includes(handle)) return false
+        else return true
+      })
+      incompleList.forEach((handle) => this.getResult(handle, this.contestId))
+    }
   }
 }
 </script>

@@ -12,6 +12,7 @@ let instance = {
   get: function (...params) {
     return new Promise((resolve, reject) => {
       let delay = queue.getDelay()
+      console.log(delay)
       util.wait(delay).then(() => {
         axios.get(...params).then((response) => {
           resolve(response)

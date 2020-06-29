@@ -34,7 +34,6 @@ export default {
   ************************** Life-Cycle ***************************
   *****************************************************************/
   created () {
-    console.log('============== problem create')
     this.problemId = this.contestId + '-' + this.problemIndex
     let htmlRef = 'static/html/problems/' + this.problemId + '.html'
     this.readProblemHtml(htmlRef)

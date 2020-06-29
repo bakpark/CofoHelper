@@ -47,7 +47,6 @@ export default {
   watch: {
     rawList () {
       let vm = this
-      console.log(vm.rawList)
       let retList = []
       vm.rawList.forEach(obj => {
         let tmp = {

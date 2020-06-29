@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Test from '@/components/Test'
-import Problem from '@/views/Problem'
+import Contest from '@/views/Contest'
 import Home from '@/views/Home'
 
 Vue.use(Router)
@@ -13,9 +13,9 @@ export default new Router({
     component: Test
   },
   {
-    path: '/problem/:id',
-    name: 'Problem',
-    component: Problem
+    path: '/contest/:id',
+    name: 'Contest',
+    component: Contest
   }, {
     path: '/home',
     name: 'Home',

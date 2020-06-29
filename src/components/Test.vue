@@ -19,7 +19,7 @@
  ************************** import *******************************
  *****************************************************************/
 import Table from '@/components/testTable.vue'
-import util from '@/components/util.js'
+import util from '@/common/util.js'
 export default {
   name: 'Test',
   components: {
@@ -44,11 +44,6 @@ export default {
   ************************** Life-Cycle ***************************
   *****************************************************************/
   created () {
-    let time = 0
-    for (let i = 0; i < 10; i++) {
-      util.wait(i * time).then(console.log('hi', new Date().getMilliseconds()))
-    }
-
     let vm = this
     // by axios
     this.$axios.get(

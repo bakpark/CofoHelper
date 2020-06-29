@@ -25,9 +25,11 @@
               <th>Language</th>
               <th>Verdict</th>
             </tr>
-            <tr v-for="result in displayResults" :key="result.handle">
+            <!-- <tr v-for="result in displayResults" :key="result.handle"> -->
+            <tr v-for="result in finalResults" :key="result.handle">
               <td>{{ result.handle }}</td>
-              <td>#{{ result.submission }}</td>
+              <td v-if="!result.submission"> empty </td>
+              <td v-else><a link :href="result.submissionLink">#{{ result.submission }}</a></td>
               <td>{{ result.language }}</td>
               <td>{{ result.verdict }}</td>
             </tr>
@@ -49,14 +51,15 @@ export default {
   components: {
     Problem: Problem
   },
-  props: {},
+  props: {
+  },
   data () {
     return {
       contestId: '',
+      problemIndex: '',
       results: {},
       doneCnt: 0,
       displayResults: {},
-      problemIndex: 'A',
       contestInfos: []
     }
   },
@@ -64,6 +67,21 @@ export default {
   ********************** computed, watch ***********************
   *****************************************************************/
   computed: {
+    finalResults () {
+      let sortable = []
+      for (let key in this.displayResults) {
+        sortable.push(this.displayResults[key])
+      }
+      sortable.sort(function (a, b) {
+        if (!a.submission) return 1
+        else if (!b.submission) return -1
+        else return Number(a.submission) - Number(b.submission)
+      })
+      if (this.doneCnt === 6) {
+        console.log(this.results)
+      }
+      return sortable
+    }
   },
   watch: {
     contestId (changed) {
@@ -72,18 +90,19 @@ export default {
     doneCnt () {
       let vm = this
       this.$store.state.members.forEach((handle) => {
-        if (vm.displayResults[handle] || !vm.results[handle]) return false
+        if (vm.displayResults[handle] && vm.displayResults[handle].submission) return false
         let handleObj = {
-          handle: handle,
-          submission: 'empty'
+          handle: handle
         }
-        vm.results[handle].forEach((result) => {
-          if (result.problemIndex !== vm.problemIndex) return false
-          if (handleObj.verdict && handle.verdict === 'OK') return false
-          if (result.verdict === 'OK' || handleObj.submission === 'empty') {
-            handleObj = result
-          }
-        })
+        if (vm.results[handle]) {
+          vm.results[handle].forEach((result) => {
+            if (result.problemIndex !== vm.problemIndex) return false
+            if (handleObj.verdict && handle.verdict === 'OK') return false
+            if (result.verdict === 'OK' || !handleObj.submission) {
+              handleObj = result
+            }
+          })
+        }
         vm.displayResults = { ...vm.displayResults }
         vm.displayResults[handle] = handleObj
       })
@@ -94,7 +113,8 @@ export default {
   *****************************************************************/
   created () {
     console.log('============== contest create')
-    this.contestId = this.$route.params.id
+    this.contestId = this.$route.params.contestId
+    this.problemIndex = this.$route.params.index || 'A'
     this.readContestInfoJson()
   },
   mounted () {
@@ -107,18 +127,16 @@ export default {
    ********************** User-Defined Methods *********************
    *****************************************************************/
   methods: {
-    getResults (contestId) {
+    initApiResults () {
       this.doneCnt = 0
       this.displayResults = {}
       this.results = {}
+    },
+    getResults (contestId) {
+      this.initApiResults()
       let vm = this
-      let waitMilliSeconds = 350
-      let time = 0
       this.$store.state.members.forEach(handle => {
-        util.wait((Math.floor(time / 1000) * 1000)).then(() => {
-          vm.getResult(handle, contestId)
-        })
-        time += waitMilliSeconds
+        vm.getResult(handle, contestId)
       })
     },
     getResult (handle, contestId) {
@@ -140,6 +158,7 @@ export default {
       ret.submission = item.id
       ret.language = item.programmingLanguage
       ret.verdict = item.verdict
+      ret.submissionLink = this.getSubmissionLink(item)
       return ret
     },
     async readContestInfoJson () {
@@ -148,8 +167,12 @@ export default {
       let jsonObj = await JSON.parse(jsonString)
       this.contestInfos = await jsonObj.info
     },
-    buttonClick (...params) {
-      console.log(params)
+    buttonClick (contestId, problemIndex) {
+      this.$router.push('/contest/' + contestId + '/' + problemIndex)
+      this.$router.go('/contest/' + contestId + '/' + problemIndex)
+    },
+    getSubmissionLink (obj) {
+      return 'http://codeforces.com/contest/' + obj.problem.contestId + '/submission/' + obj.id
     }
   }
 }

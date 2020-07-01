@@ -35,7 +35,7 @@
               <td>{{ result.language }}</td>
               <td :class = "getVerdictStyle(result.verdict)">{{ result.verdict }}</td>
             </tr>
-            <tr><span>call is running... </span><button @click="resolution">refresh</button></tr>
+            <tr><span>running... </span></tr>
           </tbody>
           <tbody v-else>
             <tr>
@@ -110,13 +110,11 @@ export default {
   watch: {
     $route (to, from) {
       if (from.params.contestId !== to.params.contestId) {
-        console.log('contestId is different!')
         this.problemIndex = to.params.index
         this.contestId = to.params.contestId
         return
       }
       if (from.params.index !== to.params.index) {
-        console.log('index is different!')
         this.problemIndex = to.params.index
         this.renewDisplayResults()
       }
@@ -234,31 +232,16 @@ export default {
       this.displayResults = { ...vm.displayResults }
       this.displayResults[handle] = handleObj
       vm.doneCnt++
-      console.log('vm.allResultsAvailable', vm.allResultsAvailable)
       if (vm.doneCnt === 6) {
         vm.allResultsAvailable = true
-        console.log('vm.allResultsAvailable', vm.allResultsAvailable)
       }
-      console.log('bindDisplayResult handle:', handle, ' doneCnt:', this.doneCnt)
     },
     renewDisplayResults () {
-      console.log('========renew display results!')
       let vm = this
       this.initDisplay()
       this.$store.state.members.forEach((handle) => {
         vm.bindDiplayResult(handle)
       })
-    },
-    resolution () {
-      let completeList = []
-      for (let handle in this.displayResults) {
-        completeList.push(handle)
-      }
-      let incompleList = this.$store.state.members.filter(handle => {
-        if (completeList.includes(handle)) return false
-        else return true
-      })
-      incompleList.forEach((handle) => this.getResult(handle, this.contestId))
     }
   }
 }

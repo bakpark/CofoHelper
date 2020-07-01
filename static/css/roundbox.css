@@ -52,7 +52,7 @@
   border-top: none;
   padding: 4px;
   text-align: center;
-  font-size: 0.9em;
+  font-size: auto;
 }
 
 .roundbox .rtable th {

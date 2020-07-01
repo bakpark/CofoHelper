@@ -2,13 +2,12 @@ import { Task } from './Task'
 import util from '../common/util'
 
 export class TaskQueue {
-  constructor (sz, callPerSec, milliSec) {
+  constructor (sz, callPerSec) {
     this._arr = []
     this._callPerSec = callPerSec
     this._mod = sz
     this._head = 0
     this._tail = 0
-    this._milliSec = milliSec
     this.isRunning = false
   }
   httpRequest (url, params) {

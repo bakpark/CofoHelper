@@ -15,27 +15,29 @@ export class Task {
     })
   }
   pending (queue) {
-    console.log('====== pending Task handle:', this.params.params.handle)
     if (this.aheadTask && !this.aheadTask.endTime) {
       util.wait(100).then(() => this.pending(queue))
       return
     }
+    this.next(queue)
     let curTime = new Date().getTime()
-    let willTime = !this.aheadTask ? 0 : (this.aheadTask.endTime + queue._milliSec)
+    let willTime = !this.aheadTask ? 0 : (this.aheadTask.endTime + 1000)
     console.log('willTime:', willTime % 100000, ' curTime:', curTime % 100000)
-    util.wait(willTime - curTime).then(() => this.excute(queue))
+    util.wait(willTime - curTime).then(() => this.excute())
   }
-  excute (queue) {
-    console.log('====== excute Task handle', this.params.params.handle)
+  excute () {
     let t = this
     axios.get(t.url, t.params).then((response) => {
       t.endTime = new Date().getTime()
-      let next = queue._dequeue()
-      next && next.pending(queue)
       t.resolve(response)
     }).catch((err) => {
       t.endTime = new Date().getTime()
       t.reject(err)
     })
+  }
+  next (queue) {
+    let next = queue._dequeue()
+    if (next) next.pending(queue)
+    else queue._stop()
   }
 }

@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     members: ['MochaLatte', 'bakpark', 'johny1', 'bonoky', 'sw1124.han', 'psykibaek'],
-    contests: [1353, 1369],
+    contests: [1343],
+    beforeContests: [1367, 1366, 1353, 1369],
     submits: {
       'MochaLatte': [],
       'bakpark': [],

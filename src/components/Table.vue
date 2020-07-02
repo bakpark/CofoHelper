@@ -1,8 +1,12 @@
 /* eslint-disable vue/no-parsing-error */
 <template>
-  <div>
-    <h1>{{contestId}}</h1>
-    <table>
+  <div class="problem_table" style="z-index:90; display:flex; flex-direction:column; align-items:center;">
+    <h1 style="margin:auto;">
+      {{contestId}}
+      <i class="fas fa-caret-up" v-show="showRealTime" v-on:click="toggleShowRealTime()"></i>
+      <i class="fas fa-caret-down" v-show="!showRealTime" v-on:click="toggleShowRealTime()"></i>
+    </h1>
+    <table v-if="showRealTime">
       <tr>
         <th v-for="(column, index) in columns" :key="index">{{ column }}</th>
       </tr>
@@ -29,7 +33,13 @@
 <script>
 /* eslint-disable */
 export default {
+  data() {
+    return {
+      showRealTime: this.defaultShow
+    }
+  },
   props: {
+    defaultShow: Boolean,
     contestId: Number,
     columns: Array, // ['name', 'A', 'B', ,,, 'F']
     rows: Array // [{name: 'bakpark', A: Accepted, ...}, {...}, {...}]
@@ -43,41 +53,47 @@ export default {
       else if (row[column].result == '') return "empty";
       else if (column == "name") return "user-name";
       else return "not-correct";
+    },
+    toggleShowRealTime(){
+      console.log("clicked");
+      this.showRealTime = !this.showRealTime;
     }
   }
 };
 </script>
 <style>
-table {
+h1 i{
+  cursor: pointer;
+}
+.problem_table table {
   border-collapse: collapse;
   text-align: left;
-  line-height: 1.5;
-  margin: 20px 15px;
+  margin: 3px 5px;
 }
-table th {
+.problem_table table th {
   padding: 10px;
   font-weight: bold;
   border: 1px solid #ccc;
 }
-table td {
+.problem_table table td {
   position: relative;
   border: 1px solid #ccc;
   text-align: center;
   padding: 10px;
 }
-table td.correct {
+.problem_table table td.correct {
   background-color: rgb(157, 201, 157);
 }
-table td.not-correct {
+.problem_table table td.not-correct {
   background-color: rgb(228, 110, 110);
 }
-table td.user-name {
+.problem_table table td.user-name {
   background-color: rgb(153, 140, 140);
 }
-table td.empty {
+.problem_table table td.empty {
   background-color: rgb(255, 255, 255);
 }
-.arrow_box {
+.problem_table .arrow_box {
   display: none;
   position: absolute;
   padding: 8px;
@@ -89,7 +105,7 @@ table td.empty {
   color: #fff;
   font-size: 14px;
 }
-.arrow_box:after {
+.problem_table .arrow_box:after {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -103,19 +119,19 @@ table td.empty {
   pointer-events: none;
   content: " ";
 }
-td span {
+.problem_table td span {
   cursor: pointer;
   display: block;
 }
-td div{
+.problem_table td div{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.arrow_box div{
+.problem_table .arrow_box div{
     white-space:nowrap; 
 }
-span:hover + div.arrow_box {
+.problem_table span:hover + div.arrow_box {
   display: block;
   z-index: 40;
 }

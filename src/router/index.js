@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Test from '@/components/Test'
 import Contest from '@/views/Contest'
 import Home from '@/views/Home'
+import RealTimeSolve from '@/views/RealTimeSolve.vue'
 // import Problem from '@/components/Problem'
 
 Vue.use(Router)
@@ -10,6 +11,14 @@ Vue.use(Router)
 export default new Router({
   routes: [{
     path: '/',
+    name: 'Home',
+    component: Home
+  }, {
+    path: '/realtime',
+    name: 'RealTimeSolve',
+    component: RealTimeSolve
+  }, {
+    path: '/test',
     name: 'Test',
     component: Test
   },
@@ -17,10 +26,6 @@ export default new Router({
     path: '/contest/:contestId/:index',
     name: 'Contest',
     component: Contest
-  },
-  {
-    path: '/home',
-    name: 'Home',
-    component: Home
-  }]
+  }
+  ]
 })

@@ -6,6 +6,7 @@
       :columns="contestInfo.columns"
       :rows="contestInfo.rows"
       :contestId="contestInfo.contestId"
+      :defaultShow="true"
     ></Table>
   </div>
 </template>
@@ -25,7 +26,7 @@ export default {
   computed: {
     contestsInfo() {
       const members = this.$store.state.members;
-      const ourContestIds = this.$store.state.contests;
+      const ourContestIds = [ ...this.$store.state.contests, ...this.$store.state.beforeContests];
       const problemIndexes = ["A", "B", "C", "D", "E", "F"];
 
       // submissionDic[1369]['A']['bakpark'] = [제출기록1, 제출기록2, ....];
@@ -58,7 +59,6 @@ export default {
           submissionDic[contestId][prIndex][member].push(submission);
         });
 
-      
       let contestsInfo = [];
       ourContestIds.forEach(contest => {
         let tempRows = {};
@@ -68,35 +68,42 @@ export default {
           };
         });
 
-        members.forEach(member=>{
-            problemIndexes.forEach(problemIndex => {
-                tempRows[member][problemIndex] = {
-                    result: 'Empty',
-                    notes: '',
-                    submission_url: '',
-                };
+        members.forEach(member => {
+          problemIndexes.forEach(problemIndex => {
+            tempRows[member][problemIndex] = {
+              result: "Empty",
+              notes: "",
+              submission_url: ""
+            };
 
-                let tmpSubmissions = submissionDic[contest][problemIndex][member];
-                // result
-                if(tmpSubmissions.some(subm => subm.verdict == 'OK')){
-                    tempRows[member][problemIndex].result = 'OK';
-                } else if(tmpSubmissions.length == 0){
-                    tempRows[member][problemIndex].result = '';
-                } else{
-                    tempRows[member][problemIndex].result = tmpSubmissions.length-1;
-                }
+            let tmpSubmissions = submissionDic[contest][problemIndex][member];
+            // result
+            if (tmpSubmissions.some(subm => subm.verdict == "OK")) {
+              tempRows[member][problemIndex].result = "OK";
+            } else if (tmpSubmissions.length == 0) {
+              tempRows[member][problemIndex].result = "";
+            } else {
+              tempRows[member][problemIndex].result = tmpSubmissions.length - 1;
+            }
 
-                // notes
-                let notes = tmpSubmissions.map(subm => ({result: subm.verdict, time: util.transformUnixTime(subm.creationTimeSeconds*1)}));
-                tempRows[member][problemIndex].notes = notes;
+            // notes
+            let notes = tmpSubmissions.map(subm => ({
+              result: subm.verdict,
+              time: util.transformUnixTime(subm.creationTimeSeconds * 1)
+            }));
+            tempRows[member][problemIndex].notes = notes;
 
-                //submission_url
-                // 마지막 서브미션의 url을 보여줘야 함.
-                if(tmpSubmissions.length != 0){
-                    let submission_url = 'http://codeforces.com/contest/' + tmpSubmissions[0].problem.contestId + '/submission/' + tmpSubmissions[0].id;
-                    tempRows[member][problemIndex].submission_url = submission_url;
-                }
-            });
+            //submission_url
+            // 마지막 서브미션의 url을 보여줘야 함.
+            if (tmpSubmissions.length != 0) {
+              let submission_url =
+                "http://codeforces.com/contest/" +
+                tmpSubmissions[0].problem.contestId +
+                "/submission/" +
+                tmpSubmissions[0].id;
+              tempRows[member][problemIndex].submission_url = submission_url;
+            }
+          });
         });
 
         let contestInfo = {
@@ -114,8 +121,7 @@ export default {
   },
   created() {
     const members = this.$store.state.members;
-    const contests = this.$store.state.contests;
-    console.log(members);
+    const contests = this.$store.state.beforeContests;
     // contests => contest 하나당 테이블 하나 생성
     members.forEach(member => {
       this.$axios

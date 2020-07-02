@@ -12,3 +12,37 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+*.jar
+# BACK END
+HELP.md
+.gradle
+backend/build/
+!backend/gradle/wrapper/gradle-wrapper.jar
+!**backend/src/main/**
+!**backend/src/test/**
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+backend/out/
+
+### NetBeans ###
+backend/nbproject/private/
+backend/nbbuild/
+backend/dist/
+backend/nbdist/
+backend/.nb-gradle/
+
+### VS Code ###
+.vscode/
+backend/gradle/wrapper/gradle-wrapper.jar

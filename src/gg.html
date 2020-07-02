@@ -1,19 +1,46 @@
-
-
-
-<style>
-.nav_container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.nav_container .logo {
-    font-size: 5em;
-    color: rgb(177, 61, 41);
-}
-.nav_container .logo button{
-    border: none;
-    background-color: blueviolet;
-    color: red;
-}
-</style>
+<html>
+  <head>
+    <style>
+        .total{
+            display: flex;
+            
+        }
+        .left_view{
+            width: 6vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 40vh;
+            background-color: gray;
+        }
+        .left_view .practices_header{
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        .left_view .practices{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="total">
+      <div class="left_view">
+        <div class="practices_header">연습이름</div>
+        <div class="practices">
+            <div v-for="(contest, index) in $store.state.beforeContests" :key="index">{{contest}}</div>
+        </div>
+      </div>
+      <div class="main_view">
+        <table
+          :key="index"
+          :columns="contestInfo.columns"
+          :rows="contestInfo.rows"
+          :contestId="contestInfo.contestId"
+          :defaultShow="true"
+        ></table>
+      </div>
+    </div>
+  </body>
+</html>

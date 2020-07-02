@@ -1,13 +1,24 @@
 <template>
-  <div>
-    <Table
-      v-for="(contestInfo, index) in contestsInfo"
-      :key="index"
-      :columns="contestInfo.columns"
-      :rows="contestInfo.rows"
-      :contestId="contestInfo.contestId"
-      :defaultShow="true"
-    ></Table>
+  <div class="total">
+    <div class="left_view">
+      <div class="practices_header">연습이름</div>
+      <div class="practices">
+        <div
+          v-for="(contest, index) in $store.state.beforeContests"
+          :key="index"
+        >
+          {{ contest }}
+        </div>
+      </div>
+    </div>
+    <div class="main_view">
+      <Table
+        :columns="contestInfo.columns"
+        :rows="contestInfo.rows"
+        :contestId="contestInfo.contestId"
+        :defaultShow="true"
+      ></Table>
+    </div>
   </div>
 </template>
 <script>
@@ -26,7 +37,10 @@ export default {
   computed: {
     contestsInfo() {
       const members = this.$store.state.members;
-      const ourContestIds = [ ...this.$store.state.contests, ...this.$store.state.beforeContests];
+      const ourContestIds = [
+        ...this.$store.state.contests,
+        ...this.$store.state.beforeContests
+      ];
       const problemIndexes = ["A", "B", "C", "D", "E", "F"];
 
       // submissionDic[1369]['A']['bakpark'] = [제출기록1, 제출기록2, ....];
@@ -134,10 +148,30 @@ export default {
         })
         .then(res => {
           this.submissions = this.submissions.concat(res.data.result);
-          console.log(this.submissions);
         });
     });
   }
 };
 </script>
-<style></style>
+<style>
+.total {
+  display: flex;
+}
+.left_view {
+  width: 6vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 40vh;
+  background-color: gray;
+}
+.left_view .practices_header {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+.left_view .practices {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

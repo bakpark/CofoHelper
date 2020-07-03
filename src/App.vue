@@ -1,8 +1,21 @@
 <template>
   <div id="app">
-    <div class="nav_container" v-if="$store.state.isLoggedIn&&$store.state.startLoadComplete">
+    <div
+      class="nav_container"
+      v-if="$store.state.isLoggedIn && $store.state.startLoadComplete"
+    >
       <div class="logo_container">
-        <div class="logo" v-on:click="()=>{$router.push({path:'/'})}">COFO HELPER</div> <p>🍺🍺</p>
+        <div
+          class="logo"
+          v-on:click="
+            () => {
+              $router.push({ path: '/' });
+            }
+          "
+        >
+          COFO HELPER
+        </div>
+        <p>🍺🍺</p>
       </div>
       <div class="menus">
         <button v-on:click="() => $router.push({ path: '/contest/1369/B' })">
@@ -15,24 +28,44 @@
         <button v-on:click="() => $router.push('/realtime')">
           실시간제출현황⏳
         </button>
+        <span style="margin-left:10vw;">{{$store.state.handle}}님 안녕하세요!</span>
       </div>
       <br />
       <br />
     </div>
-    <router-view/>
-    <div class="assignment_window" v-if="$store.state.isLoggedIn&&$store.state.startLoadComplete">
-      <div>
-        <span>이번주 과제</span>
-        <Table
-          v-for="(contestInfo, index) in contestsInfo"
-          :key="index"
-          :columns="contestInfo.columns"
-          :rows="contestInfo.rows"
-          :contestId="contestInfo.contestId"
-        ></Table>
+    <div class="main_view">
+      <router-view />
+      <div
+        class="assignment_window"
+        v-if="
+          $store.state.isLoggedIn &&
+            $store.state.startLoadComplete &&
+            $store.state.rightRealOpen
+        "
+      >
+        <div>
+          <span>이번주 과제</span>
+          <Table
+            v-for="(contestInfo, index) in contestsInfo"
+            :key="index"
+            :columns="contestInfo.columns"
+            :rows="contestInfo.rows"
+            :contestId="contestInfo.contestId"
+          ></Table>
+        </div>
       </div>
+      <div
+        class="right_real_toggle"
+        v-on:click="
+          () => {
+            $store.commit('TOGGLE_RIGHT_REAL');
+          }
+        "
+      >
+        열/닫기
+      </div>
+      <div></div>
     </div>
-    <div></div>
   </div>
 </template>
 <script>
@@ -178,11 +211,15 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.assignment_window {
+.main_view{
+  display:flex;
+}
+.right_real_toggle {
   position: fixed;
-  right: 5vw;
-  top: 5vh;
-
+  top: 2vh;
+  right: 3vw;
+}
+.assignment_window {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -228,7 +265,7 @@ export default {
   background-color: rgb(199, 223, 253);
   color: rgb(43, 59, 151);
 }
-.nav_container .menus button:hover{
+.nav_container .menus button:hover {
   opacity: 0.7;
   outline: none;
 }

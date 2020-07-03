@@ -15,12 +15,16 @@ public class DefaultRunScript {
 	UserService userService;
 	
 	@EventListener(ContextRefreshedEvent.class)
-	public void setAdminUser() {
+	public void setDefaultUsers() {
+		userService.register(new UserRegisterRequestDto("admin", "admin"));
 		userService.register(new UserRegisterRequestDto("MochaLatte", "1"));
 		userService.register(new UserRegisterRequestDto("bakpark", "1"));
 		userService.register(new UserRegisterRequestDto("johny1", "1"));
 		userService.register(new UserRegisterRequestDto("bonoky", "1"));
 		userService.register(new UserRegisterRequestDto("sw1124.han", "1"));
 		userService.register(new UserRegisterRequestDto("psykibaek", "1"));
+		
+		
+		
 	}
 }

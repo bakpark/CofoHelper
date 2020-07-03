@@ -24,13 +24,11 @@ public class UserController {
   UserService userService;
   @Autowired
   JwtService jwtService;
-
   @PostMapping(value = "/users")
   public ResponseEntity<UserRegisterResponseDto> register(@RequestBody UserRegisterRequestDto request){
 	  User user = userService.register(request);
 	  UserRegisterResponseDto responseDto =
-			  new UserRegisterResponseDto(user.getId(),user.getHandle());
-
+			  new UserRegisterResponseDto(user.getUserId(),user.getHandle());
 	  return new ResponseEntity<UserRegisterResponseDto>(responseDto, HttpStatus.OK);
   }
 
@@ -39,7 +37,7 @@ public class UserController {
 		  @RequestBody UserLoginRequestDto request, HttpServletResponse response){
 	  User user = userService.login(request);
 	  UserLoginResponseDto responseDto =
-			  new UserLoginResponseDto(user.getId(), user.getHandle());
+			  new UserLoginResponseDto(user.getUserId(), user.getHandle());
 	  response.setHeader(Constants.AUTHORIZATION, jwtService.create(user.getHandle()));
 	  return new ResponseEntity<UserLoginResponseDto>(responseDto, HttpStatus.OK);
   }

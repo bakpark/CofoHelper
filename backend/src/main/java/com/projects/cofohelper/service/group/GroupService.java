@@ -32,11 +32,13 @@ public class GroupService {
 		}
 		User maker = userRepo.getOne(request.getMakerId());
 		Group group = new Group(request.groupName);
+		group = groupRepo.save(group);
 		PartyInfo conn = PartyInfo.builder()
 							.group(group)
 							.user(maker)
 							.build();
-		partyInfoRepo.save(conn);
+		conn = partyInfoRepo.save(conn);
+		maker.addPartyInfo(conn);
 		group.addPartyInfo(conn);
 		return responseDto;
 	}

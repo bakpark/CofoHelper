@@ -36,13 +36,14 @@ public class Group {
 	
 	public String groupName;
 	
-	public Group(String name) {
-		groupName = name;
-	}
 	@JsonBackReference
 	@OneToMany(mappedBy = "group")
 	@Builder.Default
 	public List<PartyInfo> parties = new ArrayList<PartyInfo>();
+	public Group(String name) {
+		groupName = name;
+		parties = new ArrayList<PartyInfo>();
+	}
 	
 
 	public void addPartyInfo(PartyInfo info) {

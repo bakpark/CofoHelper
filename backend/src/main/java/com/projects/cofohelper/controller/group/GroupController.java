@@ -1,5 +1,6 @@
 package com.projects.cofohelper.controller.group;
 
+import com.projects.cofohelper.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import com.projects.cofohelper.dto.response.GroupRegisterResponseDto;
 import com.projects.cofohelper.service.group.GroupService;
 import com.projects.cofohelper.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class GroupController {
 
@@ -19,10 +22,11 @@ public class GroupController {
 	GroupService groupService;
 	@Autowired
 	UserService userService;
-	
+
 	@PostMapping(value = "/groups")
-	ResponseEntity<GroupRegisterResponseDto> register(@RequestBody GroupRegisterRequestDto request){
-		return new ResponseEntity<GroupRegisterResponseDto>(groupService.register(request), HttpStatus.OK);
+	ResponseEntity<GroupRegisterResponseDto> register(@RequestBody GroupRegisterRequestDto requestDto, HttpServletRequest request){
+	  String handle = (String)request.getAttribute(Constants.USER_HANDLE);
+		return new ResponseEntity<GroupRegisterResponseDto>(groupService.register(requestDto, handle), HttpStatus.OK);
 	}
-	
+
 }

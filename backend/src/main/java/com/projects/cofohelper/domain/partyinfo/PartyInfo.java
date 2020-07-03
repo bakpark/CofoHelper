@@ -22,20 +22,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class PartyInfo {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	Long partyInfoId;
-	
+
 	@JsonManagedReference
 	@ManyToOne(targetEntity = User.class)
 	private User user;
-	
+
 	@JsonManagedReference
 	@ManyToOne(targetEntity = Group.class)
 	private Group group;
-	
-	
-	
 }

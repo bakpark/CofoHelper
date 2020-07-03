@@ -44,7 +44,7 @@ public class UserController {
 
   @PostMapping(value = "/users/user_info")
   public ResponseEntity<ResponseDataDto>login(HttpServletRequest request, HttpServletResponse response){
-    String handle = (String)request.getAttribute(Constants.USER_ID);
+    String handle = (String)request.getAttribute(Constants.USER_HANDLE);
     return ResponseEntity.ok(new ResponseDataDto(HttpStatus.OK.value(), handle));
   }
 }

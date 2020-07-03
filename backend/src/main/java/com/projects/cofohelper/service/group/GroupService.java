@@ -15,22 +15,23 @@ import com.projects.cofohelper.exception.UserException;
 
 @Service
 public class GroupService {
-	
+
 	@Autowired
 	UserRepository userRepo;
 	@Autowired
 	GroupRepository groupRepo;
 	@Autowired
 	PartyInfoRepository partyInfoRepo;
-	
-	public GroupRegisterResponseDto register(GroupRegisterRequestDto request) {
+
+	public GroupRegisterResponseDto register(GroupRegisterRequestDto request, String makerHandle) {
 		GroupRegisterResponseDto responseDto = new GroupRegisterResponseDto();
 		for(String handle : request.users) {
 			User user = userRepo.findByHandle(handle);
 			if(user == null) throw new UserException("handle not found :" + handle);
+			// 요부분은 아직 invitation구현중이라 안한건가
 			else responseDto.insertUser(user);
 		}
-		User maker = userRepo.getOne(request.getMakerId());
+		User maker = userRepo.findByHandle(makerHandle);
 		Group group = new Group(request.groupName);
 		group = groupRepo.save(group);
 		PartyInfo conn = PartyInfo.builder()
@@ -42,6 +43,6 @@ public class GroupService {
 		group.addPartyInfo(conn);
 		return responseDto;
 	}
-	
-	
+
+
 }

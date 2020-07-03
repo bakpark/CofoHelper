@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class GroupRegisterRequestDto {
 	public String groupName;
-	public Long makerId;
 	public ArrayList<String> users;
 }

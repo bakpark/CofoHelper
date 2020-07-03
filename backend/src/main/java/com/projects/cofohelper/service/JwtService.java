@@ -37,15 +37,15 @@ public class JwtService {
       return false;
     }
   }
-  public Integer getUserId(String token){
+  public String getHandle(String token){
     try{
-      Integer userId = (Integer)Jwts.parserBuilder()
+      String handle = (String)Jwts.parserBuilder()
         .setSigningKey(key)
         .build()
         .parseClaimsJws(token)
         .getBody()
         .get(Constants.USER_ID);
-      return userId;
+      return handle;
     } catch(Exception e){
       return null;
     }

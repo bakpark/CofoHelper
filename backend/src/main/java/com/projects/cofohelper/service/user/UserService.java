@@ -17,12 +17,12 @@ public class UserService {
   UserRepository userRepository;
   private PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-  public Long join(User user){
-    User checkUser = userRepository.findByHandle(user.getHandle());
-    if(checkUser != null){
-      throw new RuntimeException("유저 네임이 존재합니다");
+  public String getHandle(Long userId){
+    User user = userRepository.findById(userId).get();
+    if(user == null){
+      throw new UserException("아이디를 찾을 수 없습니다");
     }
-    return userRepository.save(user).getId();
+    return user.getHandle();
   }
 
   public User register(UserRegisterRequestDto request) {
@@ -36,7 +36,7 @@ public class UserService {
 			  .build();
 	  return userRepository.save(user);
   }
-  
+
   public User login(UserLoginRequestDto request) {
 	  User user = userRepository.findByHandle(request.getHandle());
 	  if(user == null) {
@@ -50,7 +50,7 @@ public class UserService {
 		  return user;
 	  }
   }
-  
+
 
   private boolean isExistHandle(String handle) {
 	  return userRepository.findByHandle(handle) != null;

@@ -31,7 +31,8 @@ import util from "@/components/util.js";
 export default {
   data() {
     return {
-      submissions: []
+      submissions: [],
+      selectedContest
     };
   },
   computed: {

@@ -16,5 +16,8 @@ new Vue({
   api,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  beforeCreate () {
+    store.dispatch('GET_USER_INFO')
+  }
 })

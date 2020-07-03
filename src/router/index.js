@@ -27,6 +27,11 @@ const preventLoggedIn = (to, from, next) => {
 }
 export default new Router({
   routes: [{
+    path: '/contest/:contestId/:index',
+    name: 'Contest',
+    component: Contest,
+    beforeEnter: preventNotLoggedIn
+  }, {
     path: '/',
     name: 'Home',
     component: Home,
@@ -35,12 +40,6 @@ export default new Router({
     path: '/realtime',
     name: 'RealTimeSolve',
     component: RealTimeSolve,
-    beforeEnter: preventNotLoggedIn
-  },
-  {
-    path: '/contest/:contestId/:index',
-    name: 'Contest',
-    component: Contest,
     beforeEnter: preventNotLoggedIn
   },
   {

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <div class="nav_container" v-if="$store.state.isLoggedIn">
+    <div class="nav_container" v-if="$store.state.isLoggedIn&&$store.state.startLoadComplete">
       <div class="logo_container">
-        <div class="logo">COFO HELPER</div> <p>🍺🍺</p>
+        <div class="logo" v-on:click="()=>{$router.push({path:'/'})}">COFO HELPER</div> <p>🍺🍺</p>
       </div>
       <div class="menus">
         <button v-on:click="() => $router.push({ path: '/contest/1369/B' })">
@@ -19,8 +19,8 @@
       <br />
       <br />
     </div>
-    <router-view />
-    <div class="assignment_window" v-if="$store.state.isLoggedIn">
+    <router-view/>
+    <div class="assignment_window" v-if="$store.state.isLoggedIn&&$store.state.startLoadComplete">
       <div>
         <span>이번주 과제</span>
         <Table
@@ -199,13 +199,14 @@ export default {
 .logo_container {
   display: flex;
   align-items: center;
-  height: 100%;
+  cursor: pointer;
 }
 .nav_container .logo_container .logo {
   margin-left: 5vw;
   font-size: 3em;
   font-weight: 800;
   color: rgb(166, 187, 255);
+  height: 100%;
 }
 .nav_container p {
   font-size: 3em;

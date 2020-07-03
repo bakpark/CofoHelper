@@ -20,7 +20,8 @@ export default new Vuex.Store({
     },
     readyToShow: '',
     isLoggedIn: false,
-    handle: ''
+    handle: '',
+    startLoadComplete: false
   },
   mutations: {
     CHANGE_TABLE_DATA (state, [tableKey, data]) {
@@ -33,9 +34,11 @@ export default new Vuex.Store({
     LOGIN_SUCCESS (state, { handle }) {
       state.isLoggedIn = true
       state.handle = handle
+      state.startLoadComplete = true
     },
     LOGIN_FAIL (state) {
       state.isLoggedIn = false
+      state.startLoadComplete = true
     }
   },
   actions: {
@@ -58,7 +61,7 @@ export default new Vuex.Store({
           }
         })
     },
-    GET_USER_INFO (context) {
+    GET_USER_INFO (context, {toUrl}) {
       if (localStorage.getItem('authorization') == null) {
         return null
       }
@@ -71,11 +74,12 @@ export default new Vuex.Store({
       })
         .then(res => {
           if (res.status != 200) {
+            context.commit('LOGIN_FAIL')
             return null
           }
           const { handle } = res.data.data
           context.commit('LOGIN_SUCCESS', { handle })
-          router.push({path: '/'})
+          router.push({path: toUrl == undefined ? '/' : toUrl})
         })
     }
   },

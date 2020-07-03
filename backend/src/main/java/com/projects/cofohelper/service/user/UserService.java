@@ -22,14 +22,12 @@ public class UserService {
     if(checkUser != null){
       throw new RuntimeException("유저 네임이 존재합니다");
     }
-    return userRepository.save(user).getId();
+    return userRepository.save(user).getUserId();
   }
 
   public User register(UserRegisterRequestDto request) {
 	  if(isExistHandle(request.getHandle()))
 		  throw new UserException("Already Exist");
-	  System.out.println("prePassword input:" + request.getPassword());
-	  System.out.println("prePassword Bcrypt:" + encoder.encode(request.getPassword()));
 	  User user = User.builder()
 			  .handle(request.getHandle())
 			  .password(encoder.encode(request.getPassword()))
@@ -42,9 +40,6 @@ public class UserService {
 	  if(user == null) {
 		  throw new UserException("Wrong Handle");
 	  } else if(!encoder.matches(request.getPassword(), user.getPassword())) {
-		  System.out.println("right handle:"+user.getHandle());
-		  System.out.println("left:"+ request.getPassword()+ " right:"+ user.getPassword());
-		  System.out.println("left:"+ encoder.encode(request.getPassword()) + " right:"+ user.getPassword());
 		  throw new UserException("Wrong Password");
 	  } else {
 		  return user;

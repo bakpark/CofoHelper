@@ -1,11 +1,17 @@
 package com.projects.cofohelper.domain.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.projects.cofohelper.domain.partyinfo.PartyInfo;
 import com.projects.cofohelper.dto.UserDto;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +34,15 @@ public class User {
 
   public String handle;
   public String password;
+  
+  @JsonBackReference
+  @OneToMany(mappedBy = "user")
+  @Builder.Default
+  private List<PartyInfo> parties = new ArrayList<PartyInfo>();
+  
+  public void addPartyInfo(PartyInfo info) {
+	  parties.add(info);
+  }
   
   public UserDto toDto() {
 	  return UserDto.builder()

@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class GroupRegisterRequestDto {
 	public String groupName;
+	public Long makerId;
 	public ArrayList<String> users;
 }

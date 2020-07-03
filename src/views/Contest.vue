@@ -15,11 +15,11 @@
         <div class="roundbox-lt">&nbsp;</div>
         <div class="roundbox-rt">&nbsp;</div>
         <div class="caption titled">
-          -> Standings {{ contestId }} - {{ problemIndex }}
+          -> Submits {{ contestId }} - {{ problemIndex }}
           <div class="top-links"></div>
         </div>
         <table class="rtable smaller">
-          <tbody v-if="!allResultsAvailable">
+          <tbody>
             <tr>
               <th>Handle</th>
               <th>Submission</th>
@@ -28,24 +28,6 @@
               <th>Verdict</th>
             </tr>
             <tr v-for="result in displayResults" :key="result.handle">
-              <td>{{ result.handle }}</td>
-              <td v-if="!result.submission"> empty </td>
-              <td v-else><a link :href="result.submissionLink">#{{ result.submission }}</a></td>
-              <td>{{ result.time }}</td>
-              <td>{{ result.language }}</td>
-              <td :class = "getVerdictStyle(result.verdict)">{{ result.verdict }}</td>
-            </tr>
-            <tr><span>running... </span></tr>
-          </tbody>
-          <tbody v-else>
-            <tr>
-              <th>Handle</th>
-              <th>Submission</th>
-              <th>Time</th>
-              <th>Language</th>
-              <th>Verdict</th>
-            </tr>
-            <tr v-for="result in finalResults" :key="result.handle">
               <td>{{ result.handle }}</td>
               <td v-if="!result.submission"> empty </td>
               <td v-else><a link :href="result.submissionLink">#{{ result.submission }}</a></td>
@@ -78,34 +60,15 @@ export default {
       contestId: '',
       problemIndex: '',
       contestInfos: [],
-      doneCnt: 0,
-      allResultsAvailable: false,
       results: {},
       displayResults: {},
       callHandle: ''
-      // finalResults: [],
     }
   },
   /*****************************************************************
   ********************** computed, watch ***********************
   *****************************************************************/
   computed: {
-    finalResults () {
-      console.log('=========computed allResultsAvailable,')
-      if (this.allResultsAvailable) {
-        let sortable = []
-        for (let key in this.displayResults) {
-          sortable.push(this.displayResults[key])
-        }
-        sortable.sort(function (a, b) {
-          if (!a.submission) return 1
-          else if (!b.submission) return -1
-          else return Number(a.submission) - Number(b.submission)
-        })
-        return sortable
-      }
-      return []
-    }
   },
   watch: {
     $route (to, from) {
@@ -126,20 +89,6 @@ export default {
     callHandle (changed) {
       this.bindDiplayResult(changed)
     }
-    // ,
-    // allResultsAvailable (changed) {
-    //   console.log('=========watch allResultsAvailable,', changed)
-    //   let sortable = []
-    //   for (let key in this.displayResults) {
-    //     sortable.push(this.displayResults[key])
-    //   }
-    //   sortable.sort(function (a, b) {
-    //     if (!a.submission) return 1
-    //     else if (!b.submission) return -1
-    //     else return Number(a.submission) - Number(b.submission)
-    //   })
-    //   this.finalResults = sortable
-    // }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
@@ -161,9 +110,6 @@ export default {
   methods: {
     initDisplay () {
       this.displayResults = {}
-      this.allResultsAvailable = false
-      this.doneCnt = 0
-      this.finalResults = []
     },
     initAll () {
       this.results = {}
@@ -231,10 +177,6 @@ export default {
       let handleObj = this.getDisplayResult(handle)
       this.displayResults = { ...vm.displayResults }
       this.displayResults[handle] = handleObj
-      vm.doneCnt++
-      if (vm.doneCnt === 6) {
-        vm.allResultsAvailable = true
-      }
     },
     renewDisplayResults () {
       let vm = this

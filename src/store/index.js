@@ -15,11 +15,16 @@ export default new Vuex.Store({
       'bonoky': [],
       'sw1124.han': [],
       'psykibaek': []
-    }
+    },
+    readyToShow: ''
   },
   mutations: {
     CHANGE_TABLE_DATA (state, [tableKey, data]) {
       state.submits[tableKey] = data
+    },
+    CHANGE_READY_STATUS (state, payload) {
+      state.readyToShow = payload.status
+      console.log('readyToShow:', state.readyToShow)
     }
   },
   actions: {},

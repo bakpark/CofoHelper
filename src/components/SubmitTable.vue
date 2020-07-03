@@ -1,16 +1,16 @@
 <template>
-  <div class="Table">
+  <div class="SubmitTable">
     <table>
       <tbody>
-        <tr><th colspan="4" style="text-align: center;border: black solid 2px;font-weight: 700;">{{ tableKey }}</th></tr>
+        <tr><th class="table-header" colspan="4">{{ tableKey }}</th></tr>
         <tr>
-          <th>Handle</th>
+          <!-- <th>Handle</th> -->
           <th>Problem</th>
           <th>SubmitId</th>
           <th>Verdict</th>
         </tr>
         <tr v-for="(item, idx) in dataList" :key="idx">
-          <td>{{ item.handle }}</td>
+          <!-- <td>{{ item.handle }}</td> -->
           <td><router-link :to="getProblemLink(item.problem)">{{ item.problem }}</router-link></td>
           <td><a link :href="item.submissionLink">#{{ item.id }}</a></td>
           <td :class="item.verdict">{{ item.verdict }}</td>
@@ -25,7 +25,7 @@
  ************************** import *******************************
  *****************************************************************/
 export default {
-  name: 'Table',
+  name: 'SubmitTable',
   components: {
   },
   props: {
@@ -33,33 +33,29 @@ export default {
   },
   data () {
     return {
-      dataList: []
     }
   },
   /*****************************************************************
    ********************** computed, watch ***********************
    *****************************************************************/
   computed: {
-    rawList () {
-      return this.$store.state.submits[this.tableKey]
-    }
-  },
-  watch: {
-    rawList () {
+    dataList () {
       let vm = this
       let retList = []
-      vm.rawList.forEach(obj => {
-        let tmp = {
+      this.$store.state.submits[this.tableKey].forEach(obj => {
+        let item = {
           'handle': vm.getHandle(obj),
           'id': vm.getSubmissionId(obj),
           'problem': vm.getProblem(obj),
           'verdict': vm.getVerdict(obj),
           'submissionLink': vm.getSubmissionLink(obj)
         }
-        retList.push(tmp)
+        retList.push(item)
       })
-      vm.dataList = retList
+      return retList
     }
+  },
+  watch: {
   },
   /*****************************************************************
    ************************** Life-Cycle ***************************
@@ -101,13 +97,24 @@ export default {
 </script>
 
 <style scoped>
+.SubmitTable{
+  /* border: black solid 2px; */
+  width: 15vw;
+  padding: 0.5vw;
+}
+table .table-header{
+  text-align: center;
+  border-bottom: black solid 2px;
+  font-weight: 700;
+  font-size: 1em;
+}
 table{
-  border: black solid 2px;
-  width: 30%;
-  margin: 3%;
+  width: 100%;
+  height: 100%;
+  margin-right: 1em;
 }
 th{
-  font-size: 4px;
+  font-size: 0.5em;
   text-align: center;
   border-bottom: black solid 1px;
 }

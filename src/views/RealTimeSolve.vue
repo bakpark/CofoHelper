@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import Table from '@/components/testTable.vue'
+import Table from '@/components/SubmitTable.vue'
 export default {
   name: 'Test',
   components: {

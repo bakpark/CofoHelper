@@ -16,13 +16,12 @@ export class Task {
   }
   pending (queue) {
     if (this.aheadTask && !this.aheadTask.endTime) {
-      util.wait(100).then(() => this.pending(queue))
+      this.aheadTask.promise.then(() => this.pending(queue))
       return
     }
     this.next(queue)
     let curTime = new Date().getTime()
     let willTime = !this.aheadTask ? 0 : (this.aheadTask.endTime + 1000)
-    console.log('willTime:', willTime % 100000, ' curTime:', curTime % 100000)
     util.wait(willTime - curTime).then(() => this.excute())
   }
   excute () {

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Test from '@/components/Test'
 import Contest from '@/views/Contest'
 import Home from '@/views/Home'
 import RealTimeSolve from '@/views/RealTimeSolve.vue'
@@ -17,10 +16,6 @@ export default new Router({
     path: '/realtime',
     name: 'RealTimeSolve',
     component: RealTimeSolve
-  }, {
-    path: '/test',
-    name: 'Test',
-    component: Test
   },
   {
     path: '/contest/:contestId/:index',

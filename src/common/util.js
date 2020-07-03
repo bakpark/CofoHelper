@@ -21,7 +21,6 @@ export default {
   },
   wait (ms) {
     return new Promise((resolve, reject) => {
-      console.log('========= in wait go setTimeout delay:', ms, 'now:', new Date().getTime() % 100000)
       if (ms <= 0) resolve()
       setTimeout(resolve, ms)
     })

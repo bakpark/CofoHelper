@@ -1,4 +1,4 @@
-package com.projects.cofohelper.Dto.Response;
+package com.projects.cofohelper.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

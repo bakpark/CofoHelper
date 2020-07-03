@@ -1,4 +1,4 @@
-package com.projects.cofohelper.Dto.Request;
+package com.projects.cofohelper.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

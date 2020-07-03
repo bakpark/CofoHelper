@@ -5,10 +5,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.projects.cofohelper.Dto.Request.UserLoginRequestDto;
-import com.projects.cofohelper.Dto.Request.UserRegisterRequestDto;
 import com.projects.cofohelper.domain.user.User;
 import com.projects.cofohelper.domain.user.UserRepository;
+import com.projects.cofohelper.dto.request.UserLoginRequestDto;
+import com.projects.cofohelper.dto.request.UserRegisterRequestDto;
 import com.projects.cofohelper.exception.UserException;
 
 @Service
@@ -25,13 +25,11 @@ public class UserService {
     return userRepository.save(user).getId();
   }
 
-  public boolean isExistHandle(String handle) {
-	  return userRepository.findByHandle(handle) != null;
-  }
   public User register(UserRegisterRequestDto request) {
 	  if(isExistHandle(request.getHandle()))
 		  throw new UserException("Already Exist");
 	  System.out.println("prePassword input:" + request.getPassword());
+	  System.out.println("prePassword Bcrypt:" + encoder.encode(request.getPassword()));
 	  User user = User.builder()
 			  .handle(request.getHandle())
 			  .password(encoder.encode(request.getPassword()))
@@ -43,12 +41,18 @@ public class UserService {
 	  User user = userRepository.findByHandle(request.getHandle());
 	  if(user == null) {
 		  throw new UserException("Wrong Handle");
-	  } else if(encoder.matches(request.getPassword(), user.getPassword())) {
+	  } else if(!encoder.matches(request.getPassword(), user.getPassword())) {
+		  System.out.println("right handle:"+user.getHandle());
 		  System.out.println("left:"+ request.getPassword()+ " right:"+ user.getPassword());
 		  System.out.println("left:"+ encoder.encode(request.getPassword()) + " right:"+ user.getPassword());
 		  throw new UserException("Wrong Password");
 	  } else {
 		  return user;
 	  }
+  }
+  
+
+  private boolean isExistHandle(String handle) {
+	  return userRepository.findByHandle(handle) != null;
   }
 }

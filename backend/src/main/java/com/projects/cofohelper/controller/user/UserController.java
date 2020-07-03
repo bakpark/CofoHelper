@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projects.cofohelper.Dto.Request.UserLoginRequestDto;
-import com.projects.cofohelper.Dto.Request.UserRegisterRequestDto;
-import com.projects.cofohelper.Dto.Response.UserLoginResponseDto;
-import com.projects.cofohelper.Dto.Response.UserRegisterResponseDto;
 import com.projects.cofohelper.common.Constants;
 import com.projects.cofohelper.domain.user.User;
+import com.projects.cofohelper.dto.request.UserLoginRequestDto;
+import com.projects.cofohelper.dto.request.UserRegisterRequestDto;
+import com.projects.cofohelper.dto.response.UserLoginResponseDto;
+import com.projects.cofohelper.dto.response.UserRegisterResponseDto;
 import com.projects.cofohelper.service.JwtService;
 import com.projects.cofohelper.service.user.UserService;
 
@@ -28,12 +28,12 @@ public class UserController {
   @Autowired
   JwtService jwtService;
 
-  @RequestMapping(value = "/users", method = RequestMethod.POST)
-  public String join(@RequestBody User user){
-    return userService.join(user) + "";
-  }
+//  @RequestMapping(value = "/users", method = RequestMethod.POST)
+//  public String join(@RequestBody User user){
+//    return userService.join(user) + "";
+//  }
   
-  @PostMapping(value = "/register")
+  @PostMapping(value = "/users")
   public ResponseEntity<UserRegisterResponseDto> register(@RequestBody UserRegisterRequestDto request){
 	  User user = userService.register(request);
 	  UserRegisterResponseDto responseDto =

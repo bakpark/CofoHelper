@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="nav_container">
+    <div class="nav_container" v-if="$store.state.isLoggedIn">
       <div class="logo_container">
         <div class="logo">COFO HELPER</div> <p>🍺🍺</p>
       </div>
@@ -16,11 +16,11 @@
           실시간제출현황⏳
         </button>
       </div>
+      <br />
+      <br />
     </div>
-    <br />
-    <br />
     <router-view />
-    <div class="assignment_window">
+    <div class="assignment_window" v-if="$store.state.isLoggedIn">
       <div>
         <span>이번주 과제</span>
         <Table

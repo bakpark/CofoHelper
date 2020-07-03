@@ -6,7 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.projects.cofohelper.domain.group.Group;
+import com.projects.cofohelper.domain.user.User;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,18 +20,19 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Invitation {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long invitationId;
 	
-	@ManyToOne()
-	Long groupId;
+	@ManyToOne(targetEntity = Group.class)
+	Group group;
 	
-	@ManyToOne()
-	Long inviterId;
+	@ManyToOne(targetEntity = User.class)
+	User inviter;
 	
-	@ManyToOne()
-	Long invitedId;
+	@ManyToOne(targetEntity = User.class)
+	User invited;
 }

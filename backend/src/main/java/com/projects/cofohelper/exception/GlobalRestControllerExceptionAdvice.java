@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.projects.cofohelper.dto.response.ResponseDataDto;
+import com.projects.cofohelper.exception.alreadyexist.AlreadyExistException;
+import com.projects.cofohelper.exception.notfound.NotFoundException;
 
 @RestControllerAdvice
 public class GlobalRestControllerExceptionAdvice {

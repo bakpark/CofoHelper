@@ -16,8 +16,8 @@ import com.projects.cofohelper.domain.user.User;
 import com.projects.cofohelper.domain.user.UserRepository;
 import com.projects.cofohelper.dto.request.UserLoginRequestDto;
 import com.projects.cofohelper.dto.request.UserRegisterRequestDto;
-import com.projects.cofohelper.exception.HandleAlreadyExistException;
-import com.projects.cofohelper.exception.HandleNotFoundException;
+import com.projects.cofohelper.exception.alreadyexist.HandleAlreadyExistException;
+import com.projects.cofohelper.exception.notfound.HandleNotFoundException;
 
 @Service
 public class UserService {

@@ -13,9 +13,9 @@ import com.projects.cofohelper.domain.partyinfo.PartyInfoRepository;
 import com.projects.cofohelper.domain.user.User;
 import com.projects.cofohelper.domain.user.UserRepository;
 import com.projects.cofohelper.dto.request.GroupRegisterRequestDto;
-import com.projects.cofohelper.exception.GroupAlreadyExistException;
-import com.projects.cofohelper.exception.GroupNotFoundException;
 import com.projects.cofohelper.exception.UnAuthorizedException;
+import com.projects.cofohelper.exception.alreadyexist.GroupAlreadyExistException;
+import com.projects.cofohelper.exception.notfound.GroupNotFoundException;
 
 @Service
 public class GroupService {

@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.projects.cofohelper.domain.contest.Contest;
 import com.projects.cofohelper.domain.invitation.Invitation;
 import com.projects.cofohelper.domain.partyinfo.PartyInfo;
 
@@ -48,6 +49,9 @@ public class Group {
 	@OneToMany(mappedBy = "group")
 	private List<Invitation> invitations;
 	
+	@JsonBackReference
+	@OneToMany(mappedBy = "group")
+	private List<Contest> contests;
 
 	public void addPartyInfo(PartyInfo info) {
 		if(parties == null)

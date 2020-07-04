@@ -15,10 +15,10 @@ import com.projects.cofohelper.domain.user.User;
 import com.projects.cofohelper.domain.user.UserRepository;
 import com.projects.cofohelper.dto.request.InvitationAcceptDto;
 import com.projects.cofohelper.dto.request.InvitationRegisterDto;
-import com.projects.cofohelper.exception.HandleNotFoundException;
 import com.projects.cofohelper.exception.InvalidParameterException;
-import com.projects.cofohelper.exception.InvitationAlreadyExistException;
 import com.projects.cofohelper.exception.UnAuthorizedException;
+import com.projects.cofohelper.exception.alreadyexist.InvitationAlreadyExistException;
+import com.projects.cofohelper.exception.notfound.HandleNotFoundException;
 
 @Service
 public class InvitationService {

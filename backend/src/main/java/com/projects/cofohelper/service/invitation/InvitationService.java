@@ -21,16 +21,20 @@ public class InvitationService {
 	@Autowired
 	InvitationRepository invitationRepo;
 	
-//	public InvitationRegisterDto register(InvitationRegisterDto request) {
-//		User inviter = userRepo.getOne(request.getInviterId());
-//		User invited = userRepo.getOne(request.getInviterId());
-//		Group group = groupRepo.getOne(request.getGroupId());
-//		
-//		Invitation invitation = Invitation.builder()
-//									.inviter(inviter)
-//									.invited(invited)
-//									.group(group)
-//									.build();
-//		
-//	}
+	public Invitation register(InvitationRegisterDto request) {
+		User inviter = userRepo.getOne(request.getInviterId());
+		User invited = userRepo.getOne(request.getInviterId());
+		Group group = groupRepo.getOne(request.getGroupId());
+		
+		Invitation invitation = Invitation.builder()
+									.inviter(inviter)
+									.invited(invited)
+									.group(group)
+									.build();
+		invitationRepo.save(invitation);
+		invited.addInvitation(invitation);
+		group.addInvitation(invitation);
+		
+		return invitation;
+	}
 }

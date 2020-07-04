@@ -24,7 +24,6 @@ public class JwtInterceptor implements HandlerInterceptor {
     // token이 null이 아니고, token이 valid하다면 return true
     String token = request.getHeader(Constants.AUTHORIZATION);
     if(token != null && jwtService.valid(token)){
-    	System.out.println();
       request.setAttribute(Constants.USER_HANDLE, jwtService.getHandle(token));
       return true;
     }else{

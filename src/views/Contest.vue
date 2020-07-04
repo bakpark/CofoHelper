@@ -33,7 +33,7 @@
               <td v-else><a link :href="result.submissionLink">#{{ result.submission }}</a></td>
               <td>{{ result.time }}</td>
               <td>{{ result.language }}</td>
-              <td :class = "getVerdictStyle(result.verdict)">{{ result.verdict }}</td>
+              <td :class="getVerdictStyle(result.verdict)">{{ result.verdict }}</td>
             </tr>
           </tbody>
         </table>

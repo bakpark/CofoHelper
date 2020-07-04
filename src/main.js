@@ -8,6 +8,7 @@ import api from './api'
 import store from './store'
 
 Vue.config.productionTip = false
+const toUrl = window.location.href.split(window.location.host + '/#')[1]
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -18,6 +19,6 @@ new Vue({
   components: { App },
   template: '<App/>',
   beforeCreate () {
-    store.dispatch('GET_USER_INFO')
+    store.dispatch('GET_USER_INFO', {toUrl})
   }
 })

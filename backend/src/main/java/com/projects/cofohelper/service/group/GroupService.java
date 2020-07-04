@@ -23,12 +23,6 @@ public class GroupService {
 	PartyInfoRepository partyInfoRepo;
 
 	public Group register(GroupRegisterRequestDto request, String makerHandle) {
-//		GroupRegisterResponseDto responseDto = new GroupRegisterResponseDto();
-//		for(String handle : request.users) {
-//			User user = userRepo.findByHandle(handle);
-//			if(user == null) throw new UserException("handle not found :" + handle);
-//			else responseDto.insertUser(user);
-//		}
 		if(groupRepo.findByGroupName(request.getGroupName()) != null) throw new GroupException("Already exist group name:"+request.groupName);
 		User maker = userRepo.findByHandle(makerHandle);
 		Group group = new Group(request.groupName);

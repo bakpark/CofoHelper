@@ -12,7 +12,17 @@ public class WebConfig implements WebMvcConfigurer {
   @Autowired
   private JwtInterceptor jwtInterceptor;
 
-  public static final String[] includePaths = {"/users/user_info", "/api/**", "/groups", "/invitations"};
+  public static final String[] includePaths = 
+	  {
+			  "/users/user_info", 
+			  "/user/invitations",
+			  "/user/groups",
+			  "/api/**", 
+			  "/groups", 
+			  "/invitations",
+			  "/invitation/accept"
+	  };
+  
   public static final String[] excludePaths = {"/users/login", "/users"};
 
   @Override

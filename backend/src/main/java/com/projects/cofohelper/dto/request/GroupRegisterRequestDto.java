@@ -13,5 +13,4 @@ import lombok.Setter;
 @Setter
 public class GroupRegisterRequestDto {
 	public String groupName;
-	public ArrayList<String> users;
 }

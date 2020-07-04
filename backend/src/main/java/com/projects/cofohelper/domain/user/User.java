@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projects.cofohelper.domain.invitation.Invitation;
 import com.projects.cofohelper.domain.partyinfo.PartyInfo;
 import com.projects.cofohelper.dto.UserDto;
 
@@ -33,6 +35,8 @@ public class User {
   public Long userId;
 
   public String handle;
+  
+  @JsonIgnore
   public String password;
   
   @JsonBackReference
@@ -40,8 +44,16 @@ public class User {
   @Builder.Default
   private List<PartyInfo> parties = new ArrayList<PartyInfo>();
   
+  @JsonBackReference
+  @OneToMany(mappedBy = "invited")
+  @Builder.Default
+  private List<Invitation> invitations = new ArrayList<Invitation>();
+  
   public void addPartyInfo(PartyInfo info) {
 	  parties.add(info);
+  }
+  public void addInvitation(Invitation invitation) {
+	  invitations.add(invitation);
   }
   
   public UserDto toDto() {
@@ -49,5 +61,9 @@ public class User {
 			  .userId(userId)
 			  .handle(handle)
 			  .build();
+  }
+  
+  public String toString() {
+	  return "userId:"+userId+"handle"+handle;
   }
 }

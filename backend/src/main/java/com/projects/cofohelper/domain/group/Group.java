@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.projects.cofohelper.domain.invitation.Invitation;
 import com.projects.cofohelper.domain.partyinfo.PartyInfo;
 
 import lombok.AllArgsConstructor;
@@ -36,18 +37,27 @@ public class Group {
 	
 	public String groupName;
 	
-	@JsonBackReference
-	@OneToMany(mappedBy = "group")
-	@Builder.Default
-	public List<PartyInfo> parties = new ArrayList<PartyInfo>();
 	public Group(String name) {
 		groupName = name;
 		parties = new ArrayList<PartyInfo>();
 	}
+	@JsonBackReference
+	@OneToMany(mappedBy = "group")
+	@Builder.Default
+	public List<PartyInfo> parties = new ArrayList<PartyInfo>();
+	
+	@JsonBackReference
+	@OneToMany(mappedBy = "group")
+	@Builder.Default
+	public List<Invitation> invitations = new ArrayList<Invitation>();
 	
 
 	public void addPartyInfo(PartyInfo info) {
 		parties.add(info);
+	}
+	
+	public void addInvitation(Invitation invitation) {
+		invitations.add(invitation);
 	}
 	
 }

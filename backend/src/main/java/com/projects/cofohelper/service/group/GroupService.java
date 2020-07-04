@@ -10,8 +10,7 @@ import com.projects.cofohelper.domain.partyinfo.PartyInfoRepository;
 import com.projects.cofohelper.domain.user.User;
 import com.projects.cofohelper.domain.user.UserRepository;
 import com.projects.cofohelper.dto.request.GroupRegisterRequestDto;
-import com.projects.cofohelper.dto.response.GroupRegisterResponseDto;
-import com.projects.cofohelper.exception.UserException;
+import com.projects.cofohelper.exception.GroupException;
 
 @Service
 public class GroupService {
@@ -23,14 +22,8 @@ public class GroupService {
 	@Autowired
 	PartyInfoRepository partyInfoRepo;
 
-	public GroupRegisterResponseDto register(GroupRegisterRequestDto request, String makerHandle) {
-		GroupRegisterResponseDto responseDto = new GroupRegisterResponseDto();
-		for(String handle : request.users) {
-			User user = userRepo.findByHandle(handle);
-			if(user == null) throw new UserException("handle not found :" + handle);
-			// 요부분은 아직 invitation구현중이라 안한건가
-			else responseDto.insertUser(user);
-		}
+	public Group register(GroupRegisterRequestDto request, String makerHandle) {
+		if(groupRepo.findByGroupName(request.getGroupName()) != null) throw new GroupException("Already exist group name:"+request.groupName);
 		User maker = userRepo.findByHandle(makerHandle);
 		Group group = new Group(request.groupName);
 		group = groupRepo.save(group);
@@ -41,7 +34,7 @@ public class GroupService {
 		conn = partyInfoRepo.save(conn);
 		maker.addPartyInfo(conn);
 		group.addPartyInfo(conn);
-		return responseDto;
+		return group;
 	}
 
 

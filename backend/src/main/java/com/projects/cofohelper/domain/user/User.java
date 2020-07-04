@@ -62,4 +62,8 @@ public class User {
 			  .handle(handle)
 			  .build();
   }
+  
+  public String toString() {
+	  return "userId:"+userId+"handle"+handle;
+  }
 }

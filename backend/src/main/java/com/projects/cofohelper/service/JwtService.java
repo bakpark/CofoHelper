@@ -13,9 +13,9 @@ import java.util.Date;
 public class JwtService {
 
   Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-  public String create(String userId){
+  public String create(String handle){
     return Jwts.builder()
-            .claim(Constants.USER_ID, userId)
+            .claim(Constants.USER_HANDLE, handle)
             .setExpiration(new Date(System.currentTimeMillis() + (60*60*24) * 1000))
             .signWith(key)
             .compact();
@@ -44,7 +44,7 @@ public class JwtService {
         .build()
         .parseClaimsJws(token)
         .getBody()
-        .get(Constants.USER_ID);
+        .get(Constants.USER_HANDLE);
       return handle;
     } catch(Exception e){
       return null;

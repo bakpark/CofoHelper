@@ -25,26 +25,28 @@ public class UserController {
   @Autowired
   JwtService jwtService;
   @PostMapping(value = "/users")
-  public ResponseEntity<UserRegisterResponseDto> register(@RequestBody UserRegisterRequestDto request){
-	  User user = userService.register(request);
-	  UserRegisterResponseDto responseDto =
-			  new UserRegisterResponseDto(user.getUserId(),user.getHandle());
-	  return new ResponseEntity<UserRegisterResponseDto>(responseDto, HttpStatus.OK);
+  public ResponseEntity<User> register(@RequestBody UserRegisterRequestDto request){
+//	  User user = userService.register(request);
+//	  UserRegisterResponseDto responseDto =
+//			  new UserRegisterResponseDto(user.getUserId(),user.getHandle());
+//	  return new ResponseEntity<UserRegisterResponseDto>(responseDto, HttpStatus.OK);
+	  return new ResponseEntity<User>(userService.register(request), HttpStatus.OK);
   }
 
   @PostMapping(value = "/users/login")
-  public ResponseEntity<UserLoginResponseDto>login(
+  public ResponseEntity<User>login(
 		  @RequestBody UserLoginRequestDto request, HttpServletResponse response){
+//	  User user = userService.login(request);
+//	  UserLoginResponseDto responseDto =
+//			  new UserLoginResponseDto(user.getUserId(), user.getHandle());
 	  User user = userService.login(request);
-	  UserLoginResponseDto responseDto =
-			  new UserLoginResponseDto(user.getUserId(), user.getHandle());
 	  response.setHeader(Constants.AUTHORIZATION, jwtService.create(user.getHandle()));
-	  return new ResponseEntity<UserLoginResponseDto>(responseDto, HttpStatus.OK);
+	  return new ResponseEntity<User>(user, HttpStatus.OK);
   }
 
   @PostMapping(value = "/users/user_info")
   public ResponseEntity<ResponseDataDto>login(HttpServletRequest request, HttpServletResponse response){
-    String handle = (String)request.getAttribute(Constants.USER_ID);
+    String handle = (String)request.getAttribute(Constants.USER_HANDLE);
     return ResponseEntity.ok(new ResponseDataDto(HttpStatus.OK.value(), handle));
   }
 }

@@ -1,7 +1,12 @@
 package com.projects.cofohelper.domain.partyinfo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long> {
+import com.projects.cofohelper.domain.group.Group;
+import com.projects.cofohelper.domain.user.User;
 
+public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long> {
+	List<PartyInfo> findByGroupAndUser(Group group, User user);
 }

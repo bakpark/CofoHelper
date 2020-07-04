@@ -2,6 +2,7 @@ package com.projects.cofohelper.domain.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import com.projects.cofohelper.domain.invitation.Invitation;
 import com.projects.cofohelper.domain.partyinfo.PartyInfo;
 import com.projects.cofohelper.dto.UserDto;
 
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,6 +56,9 @@ public class User {
   }
   public void addInvitation(Invitation invitation) {
 	  invitations.add(invitation);
+  }
+  public void removeInvitation(Invitation invitation) {
+	  invitations.remove(invitation);
   }
   
   public UserDto toDto() {

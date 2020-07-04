@@ -36,5 +36,10 @@ public class ResponseDataDto<T> {
     this.message = message;
     this.data = data;
   }
+  
+  public ResponseDataDto (int status, String message) {
+	  this.status = status;
+	  this.message = message;
+  }
 
 }

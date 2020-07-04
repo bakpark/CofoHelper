@@ -1,12 +1,14 @@
 package com.projects.cofohelper.common;
 
-import com.projects.cofohelper.service.JwtService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.projects.cofohelper.exception.InvalidTokenException;
+import com.projects.cofohelper.service.JwtService;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
@@ -27,7 +29,7 @@ public class JwtInterceptor implements HandlerInterceptor {
       request.setAttribute(Constants.USER_HANDLE, jwtService.getHandle(token));
       return true;
     }else{
-      throw new Exception("토큰이 유효하지 않습니다");
+      throw new InvalidTokenException("토큰이 유효하지 않습니다");
     }
   }
 }

@@ -33,30 +33,31 @@ public class Group {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	public Long groupId;
+	private Long groupId;
 	
-	public String groupName;
+	private String groupName;
 	
 	public Group(String name) {
 		groupName = name;
-		parties = new ArrayList<PartyInfo>();
 	}
 	@JsonBackReference
 	@OneToMany(mappedBy = "group")
-	@Builder.Default
-	public List<PartyInfo> parties = new ArrayList<PartyInfo>();
+	private List<PartyInfo> parties;
 	
 	@JsonBackReference
 	@OneToMany(mappedBy = "group")
-	@Builder.Default
-	public List<Invitation> invitations = new ArrayList<Invitation>();
+	private List<Invitation> invitations;
 	
 
 	public void addPartyInfo(PartyInfo info) {
+		if(parties == null)
+			parties = new ArrayList<PartyInfo>();
 		parties.add(info);
 	}
 	
 	public void addInvitation(Invitation invitation) {
+		if(invitations == null)
+			invitations = new ArrayList<Invitation>();
 		invitations.add(invitation);
 	}
 	

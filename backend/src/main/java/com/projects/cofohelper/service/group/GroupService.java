@@ -7,12 +7,15 @@ import org.springframework.stereotype.Service;
 
 import com.projects.cofohelper.domain.group.Group;
 import com.projects.cofohelper.domain.group.GroupRepository;
+import com.projects.cofohelper.domain.invitation.Invitation;
 import com.projects.cofohelper.domain.partyinfo.PartyInfo;
 import com.projects.cofohelper.domain.partyinfo.PartyInfoRepository;
 import com.projects.cofohelper.domain.user.User;
 import com.projects.cofohelper.domain.user.UserRepository;
 import com.projects.cofohelper.dto.request.GroupRegisterRequestDto;
 import com.projects.cofohelper.exception.GroupAlreadyExistException;
+import com.projects.cofohelper.exception.GroupNotFoundException;
+import com.projects.cofohelper.exception.UnAuthorizedException;
 
 @Service
 public class GroupService {
@@ -43,6 +46,23 @@ public class GroupService {
 	// for test
 	public List<Group> getAll(){
 		return groupRepo.findAll();
+	}
+
+	public List<Invitation> getInvitations(Long groupId, String requesterHandle) {
+		Group group = groupRepo.getOne(groupId);
+		User requester = userRepo.findByHandle(requesterHandle);
+		if(group == null)
+			throw new GroupNotFoundException("Group not found groupId:"+groupId);
+		boolean inGroup = false;
+		for(PartyInfo info : group.getParties()) {
+			if(requester.equals(info.getUser())) {
+				inGroup = true;
+				break;
+			}
+		}
+		if(!inGroup)
+			throw new UnAuthorizedException("UnAuthorized to group :"+groupId);
+		return group.getInvitations();
 	}
 
 

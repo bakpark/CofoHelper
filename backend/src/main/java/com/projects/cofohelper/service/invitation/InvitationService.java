@@ -38,6 +38,7 @@ public class InvitationService {
 		User inviter = userRepo.findByHandle(inviterHandle);
 		User invited = userRepo.findByHandle(requestDto.getInvitedHandle());
 		Group group = groupRepo.getOne(requestDto.getGroupId());
+		
 		// groupId가 잘못 된 경우
 		if(group == null)
 			throw new InvalidParameterException("groupId is wrong");

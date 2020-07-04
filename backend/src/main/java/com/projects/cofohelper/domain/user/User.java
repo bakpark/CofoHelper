@@ -43,18 +43,20 @@ public class User {
   
   @JsonBackReference
   @OneToMany(mappedBy = "user")
-  @Builder.Default
-  private List<PartyInfo> parties = new ArrayList<PartyInfo>();
+  private List<PartyInfo> parties;
   
   @JsonBackReference
   @OneToMany(mappedBy = "invited")
-  @Builder.Default
   private List<Invitation> invitations = new ArrayList<Invitation>();
   
   public void addPartyInfo(PartyInfo info) {
+	  if(parties == null)
+		  parties = new ArrayList<PartyInfo>();
 	  parties.add(info);
   }
   public void addInvitation(Invitation invitation) {
+	  if(invitations == null)
+		  invitations = new ArrayList<Invitation>();
 	  invitations.add(invitation);
   }
   public void removeInvitation(Invitation invitation) {

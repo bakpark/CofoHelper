@@ -3,7 +3,10 @@ package com.projects.cofohelper.service.user;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.projects.cofohelper.domain.group.GroupRepository;
+import com.projects.cofohelper.domain.partyinfo.PartyInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +26,20 @@ import com.projects.cofohelper.exception.notfound.HandleNotFoundException;
 public class UserService {
   @Autowired
   UserRepository userRepository;
+  @Autowired
+  PartyInfoRepository partyinfoRepository;
+  @Autowired
+  GroupRepository groupRepository;
+
   private PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+  public List<User> getUsersByGroup(Long groupId){
+    Group group = groupRepository.getOne(groupId);
+    List<User> users = partyinfoRepository.findByGroup(group).stream()
+      .map(partyinfo -> partyinfo.getUser())
+      .collect(Collectors.toList());
+    return users;
+  }
 
   public String getHandle(Long userId){
     User user = userRepository.findById(userId).get();
@@ -53,12 +69,12 @@ public class UserService {
 		  return user;
 	  }
   }
-  
+
   public List<Invitation> getInvitations(String handle){
 	  User user = userRepository.findByHandle(handle);
 	  return user.getInvitations();
   }
-  
+
   public List<Group> getGroups(String handle){
 	  User user = userRepository.findByHandle(handle);
 	  ArrayList<Group> groups = new ArrayList<Group>();
@@ -67,7 +83,7 @@ public class UserService {
 	  }
 	  return groups;
   }
-  
+
   // for test
   public List<User> getAll(){
 	  return userRepository.findAll();
@@ -77,6 +93,6 @@ public class UserService {
   private boolean isExistHandle(String handle) {
 	  return userRepository.findByHandle(handle) != null;
   }
-  
+
 
 }

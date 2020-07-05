@@ -28,6 +28,12 @@ public class UserController {
 	@Autowired
 	JwtService jwtService;
 
+	@GetMapping(value = "/api/groups/{groupId}/users")
+  public ResponseEntity<ResponseDataDto> register(@PathVariable Long groupId) {
+    return ResponseEntity.ok()
+      .body(new ResponseDataDto(HttpStatus.OK.value(), userService.getUsersByGroup(groupId)));
+  }
+
 	@PostMapping(value = "/users")
 	public ResponseEntity<ResponseDataDto> register(@RequestBody UserRegisterRequestDto request) {
 		return ResponseEntity.ok()

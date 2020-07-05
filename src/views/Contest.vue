@@ -1,21 +1,19 @@
 <template>
   <div class="Contest">
     <div class="left-view">
-      <div v-for="item in contestInfos" :key="item.contestId">
-        {{ item.kind }} - {{ item.contestId }}<br>
-        <button v-for="index in item.indexes" :key="index" @click="buttonClick(item.contestId, index)">{{ index }} </button>
+      <div class="group-navigator-wrapper" v-for="group in groups" :key="group.groupId">
+        <GroupNavigator :group="group"></GroupNavigator>
       </div>
     </div>
     <div class="center-view">
-      <!-- <Problem :contestId="contestId" :problemIndex="problemIndex"></Problem> -->
-      <Problem :problemId="contestId+'-'+problemIndex"></Problem>
+      <Problem :problemId="problemId"></Problem>
     </div>
     <div class="right-view">
       <div class="roundbox">
         <div class="roundbox-lt">&nbsp;</div>
         <div class="roundbox-rt">&nbsp;</div>
         <div class="caption titled">
-          -> Submits {{ contestId }} - {{ problemIndex }}
+          -> Submits {{ problemSplit[0] }} - {{ problemSplit[1] }}
           <div class="top-links"></div>
         </div>
         <table class="rtable smaller">
@@ -48,21 +46,28 @@
  *****************************************************************/
 import util from '@/common/util.js'
 import Problem from '@/components/Problem'
+import GroupNavigator from '@/components/GroupNavigator'
 export default {
   name: 'Contest',
   components: {
-    Problem: Problem
+    Problem: Problem,
+    GroupNavigator: GroupNavigator
   },
   props: {
   },
   data () {
     return {
-      contestId: '',
-      problemIndex: '',
+      problemContestId: '', // 문제의 contest
+      problemIndex: '', // 문제의 problemIndex
+      problemId: '',
+      contestName: '',
+      problemName: '',
+      problemSplit: [],
       contestInfos: [],
       results: {},
       displayResults: {},
-      callHandle: ''
+      callHandle: '',
+      groups: []
     }
   },
   /*****************************************************************
@@ -72,17 +77,25 @@ export default {
   },
   watch: {
     $route (to, from) {
-      if (from.params.contestId !== to.params.contestId) {
-        this.problemIndex = to.params.index
-        this.contestId = to.params.contestId
-        return
-      }
-      if (from.params.index !== to.params.index) {
-        this.problemIndex = to.params.index
-        this.renewDisplayResults()
-      }
+      this.contestId = to.params.contestId
+      this.problemId = to.params.problemId
+      this.getProblem(this.problemId).then(response => {
+        let problemName = response.data.name
+        let split = problemName.split('-')
+        if (split[0] !== this.problemSplit[0]) {
+          this.problemSplit = split
+          this.problemContestId = split[0]
+          this.problemIndex = split[1]
+          return
+        }
+        if (split[1] !== this.problemSplit[1]) {
+          this.problemSplit = split
+          this.problemIndex = split[1]
+          this.renewDisplayResults()
+        }
+      })
     },
-    contestId (changed) {
+    problemContestId (changed) {
       this.initAll()
       this.getResults(changed)
     },
@@ -95,8 +108,15 @@ export default {
   *****************************************************************/
   created () {
     this.contestId = this.$route.params.contestId
-    this.problemIndex = this.$route.params.index || 'A'
-    this.readContestInfoJson()
+    this.problemId = this.$route.params.problemId
+    this.getProblem(this.problemId).then(response => {
+      let problemName = response.data.name
+      let split = problemName.split('-')
+      this.problemSplit = split
+      this.problemContestId = split[0]
+      this.problemIndex = split[1]
+    })
+    this.getGroups()
   },
   mounted () {
   },
@@ -144,16 +164,6 @@ export default {
       ret.time = util.getTimeString(item.creationTimeSeconds * 1000)
       return ret
     },
-    async readContestInfoJson () {
-      let jsonRef = 'static/json/contests.json'
-      let jsonString = await util.readStaticFile(jsonRef)
-      let jsonObj = await JSON.parse(jsonString)
-      this.contestInfos = await jsonObj.info
-    },
-    buttonClick (contestId, problemIndex) {
-      if (this.contestId === contestId && this.problemIndex === problemIndex) return
-      this.$router.push('/contest/' + contestId + '/' + problemIndex)
-    },
     getSubmissionLink (obj) {
       return 'http://codeforces.com/contest/' + obj.problem.contestId + '/submission/' + obj.id
     },
@@ -184,6 +194,31 @@ export default {
       this.$store.state.members.forEach((handle) => {
         vm.bindDiplayResult(handle)
       })
+    },
+    getGroups () {
+      let uri = 'api/users/' + this.$store.state.handle + '/groups'
+      let headers = { authorization: localStorage.getItem('authorization').toString() }
+      this.$axios.get(uri, {
+        headers: headers
+      }).then(response => {
+        console.log('getGroups response:', response)
+        this.groups = response.data.data
+      })
+    },
+    getProblem (problemId) {
+      let uri = 'api/problems'
+      let params = { problemId: problemId }
+      let headers = { authorization: localStorage.getItem('authorization').toString() }
+      return new Promise((resolve, reject) => {
+        this.$axios.get(uri, {
+          params: params,
+          headers: headers
+        }).then(response => {
+          resolve(response.data)
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
   }
 }
@@ -210,5 +245,9 @@ export default {
   width: 23%;
   margin-right: 3%;
   margin-top: 10em;
+}
+div .group-navigator-wrapper{
+  margin-bottom: 2em;
+  border: dotted 2px black;
 }
 </style>

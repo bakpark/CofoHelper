@@ -28,14 +28,14 @@ export default {
   },
   watch: {
     problemId (changed) {
-      this.readProblemHtml(changed)
+      this.getProblemHtml(changed)
     }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
   *****************************************************************/
   created () {
-    this.readProblemHtml(this.problemId)
+    this.getProblemHtml(this.problemId)
   },
   mounted () {
   },
@@ -50,9 +50,18 @@ export default {
    ********************** User-Defined Methods *********************
    *****************************************************************/
   methods: {
-    async readProblemHtml (problemId) {
-      let htmlRef = 'static/html/problems/' + problemId + '.html'
-      this.problemHtml = await util.readStaticFile(htmlRef)
+    async getProblemHtml (problemId) {
+      let uri = 'api/problem_html'
+      let headers = {
+        Accept: 'text/html',
+        authorization: localStorage.getItem('authorization').toString()
+      }
+      let params = { problemId: problemId }
+      let response = await this.$axios.get(uri, {
+        params: params,
+        headers: headers
+      })
+      this.problemHtml = await response.data
     }
   }
 }

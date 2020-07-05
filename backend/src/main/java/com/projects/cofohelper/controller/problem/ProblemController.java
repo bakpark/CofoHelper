@@ -26,35 +26,38 @@ public class ProblemController {
 	ProblemService problemService;
 
 	@Autowired
-  ContestService contestService;
+	ContestService contestService;
 
 	@PostMapping(value = "/api/problems")
-	public ResponseEntity<ResponseDataDto> register(@RequestBody ProblemRegisterDto requestDto) throws Exception{
+	public ResponseEntity<ResponseDataDto> register(@RequestBody ProblemRegisterDto requestDto) throws Exception {
 		Problem problem = problemService.register(requestDto);
-		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value(), problem));
-	}
-	@GetMapping(value = "/api/problems", produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<String> getProblemHtml(String problemName) {
-		return ResponseEntity.ok()
-				.body(problemService.getHtml(problemName));
+		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value(), problem));
 	}
 
-  @PostMapping(value = "/api/contests/{contestId}/problems")
-  public ResponseEntity<ResponseDataDto> register(@RequestBody ContestProblemRegisterDto registerDto,
-                                                  @PathVariable Long contestId,
-                                                  HttpServletRequest request) throws Exception {
-    if(!problemService.isExist(registerDto.getProblemName()))
-      problemService.register(new ProblemRegisterDto(registerDto.getProblemName()));
-    String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
-    return ResponseEntity.ok()
-      .body(new ResponseDataDto(HttpStatus.OK.value(), contestService.addProblem(contestId, registerDto, requesterHandle)));
-  }
+	@GetMapping(value = "/api/problem_html", produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> getProblemHtml(Long problemId) {
+		return ResponseEntity.ok().body(problemService.getHtml(problemId));
+	}
 
-  @GetMapping(value = "/api/contests/{contestId}/problems")
-  public ResponseEntity<ResponseDataDto> getProblems(@PathVariable Long contestId, HttpServletRequest request){
-    String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
-    return ResponseEntity.ok()
-      .body(new ResponseDataDto(HttpStatus.OK.value(), contestService.getProblems(contestId, requesterHandle)));
-  }
+	@PostMapping(value = "/api/contests/{contestId}/problems")
+	public ResponseEntity<ResponseDataDto> register(@RequestBody ContestProblemRegisterDto registerDto,
+			@PathVariable Long contestId, HttpServletRequest request) throws Exception {
+		if (!problemService.isExist(registerDto.getProblemName()))
+			problemService.register(new ProblemRegisterDto(registerDto.getProblemName()));
+		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
+		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value(),
+				contestService.addProblem(contestId, registerDto, requesterHandle)));
+	}
+
+	@GetMapping(value = "/api/contests/{contestId}/problems")
+	public ResponseEntity<ResponseDataDto> getProblems(@PathVariable Long contestId, HttpServletRequest request) {
+		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
+		return ResponseEntity.ok().body(
+				new ResponseDataDto(HttpStatus.OK.value(), contestService.getProblems(contestId, requesterHandle)));
+	}
+	@GetMapping(value = "/api/problems")
+	public ResponseEntity<ResponseDataDto> getProblem(Long problemId){
+		return ResponseEntity.ok()
+				.body(new ResponseDataDto(HttpStatus.OK.value(), problemService.getProblem(problemId)));
+	}
 }

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.projects.cofohelper.domain.group.GroupRepository;
 import com.projects.cofohelper.domain.partyinfo.PartyInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import com.projects.cofohelper.domain.user.User;
 import com.projects.cofohelper.domain.user.UserRepository;
 import com.projects.cofohelper.dto.request.UserLoginRequestDto;
 import com.projects.cofohelper.dto.request.UserRegisterRequestDto;
+import com.projects.cofohelper.exception.UnAuthorizedException;
 import com.projects.cofohelper.exception.alreadyexist.HandleAlreadyExistException;
 import com.projects.cofohelper.exception.notfound.HandleNotFoundException;
 
@@ -70,8 +72,13 @@ public class UserService {
 	  }
   }
 
-  public List<Invitation> getInvitations(String handle){
+  public List<Invitation> getInvitations(String handle, String requesterHandle){
 	  User user = userRepository.findByHandle(handle);
+	  User requester = userRepository.findByHandle(requesterHandle);
+	  if(user == null)
+		  throw new HandleNotFoundException("User not Found handle:"+handle);
+	  if(!user.equals(requester))
+		  throw new UnAuthorizedException("Unauthorized get invitations for handle:"+handle);
 	  return user.getInvitations();
   }
 

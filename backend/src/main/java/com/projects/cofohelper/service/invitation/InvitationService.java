@@ -23,7 +23,7 @@ import com.projects.cofohelper.exception.notfound.HandleNotFoundException;
 @Service
 public class InvitationService {
 
-	@Autowired 
+	@Autowired
 	UserRepository userRepo;
 	@Autowired
 	GroupRepository groupRepo;
@@ -31,14 +31,14 @@ public class InvitationService {
 	InvitationRepository invitationRepo;
 	@Autowired
 	PartyInfoRepository partyInfoRepo;
-	
+
 	public Invitation register(InvitationRegisterDto requestDto, String inviterHandle) {
-		if(userRepo.findByHandle(requestDto.getInvitedHandle()) == null) 
+		if(userRepo.findByHandle(requestDto.getInvitedHandle()) == null)
 			throw new HandleNotFoundException("Not found handle:"+requestDto.getInvitedHandle());
 		User inviter = userRepo.findByHandle(inviterHandle);
 		User invited = userRepo.findByHandle(requestDto.getInvitedHandle());
 		Group group = groupRepo.getOne(requestDto.getGroupId());
-		
+
 		// groupId가 잘못 된 경우
 		if(group == null)
 			throw new InvalidParameterException("groupId is wrong");
@@ -54,10 +54,10 @@ public class InvitationService {
 		invitationRepo.save(invitation);
 		invited.addInvitation(invitation);
 		group.addInvitation(invitation);
-		
+
 		return invitation;
 	}
-	
+
 
 	public void delete(Long invitationId, String requesterHandle) {
 		Invitation invitation = invitationRepo.getOne(invitationId);
@@ -68,9 +68,9 @@ public class InvitationService {
 			throw new UnAuthorizedException("UnAuthorized to delete for this invitation");
 		deleteInvitation(invitation);
 	}
-	
-	public void accept(InvitationAcceptDto requestDto, String requesterHandle) {
-		Invitation invitation = invitationRepo.getOne(requestDto.getInvitationId());
+
+	public void accept(Long invitationId, String requesterHandle) {
+		Invitation invitation = invitationRepo.getOne(invitationId);
 		if(invitation == null)
 			throw new InvalidParameterException("invationId is wrong");
 		User requester = userRepo.findByHandle(requesterHandle);
@@ -94,7 +94,7 @@ public class InvitationService {
 		invitation.getInvited().removeInvitation(invitation);
 		invitationRepo.delete(invitation);
 	}
-	
+
 
 	private void addConnectionUserAndGroup(User invited, Group group) {
 		PartyInfo partyInfo = PartyInfo.builder()
@@ -105,12 +105,12 @@ public class InvitationService {
 		invited.addPartyInfo(partyInfo);
 		group.addPartyInfo(partyInfo);
 	}
-	
-	
+
+
 	// for test
 	public List<Invitation> getAll(){
 		return invitationRepo.findAll();
 	}
 
-	
+
 }

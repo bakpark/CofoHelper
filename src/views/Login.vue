@@ -1,47 +1,5 @@
-<template>
-  <div class="total">
-    <div class="center_column">
-      <img class="sblog_image" src="https://ifh.cc/g/LnCMoH.jpg" />
-      <div class="login_comment">
-        <span>Log in to Sblog</span>
-      </div>
-      <div class="login_box">
-        <div class="text_row">
-          <span>Username or email address</span>
-        </div>
-        <input class="input_row" v-model="userName" />
-        <div class="text_row">
-          <span>Password</span>
-        </div>
-        <input class="input_row" v-model="password" type="password" />
-        <button class="sign_in_button" v-on:click="login">Log in</button>
-        <router-link to="/join">join us!</router-link>
-      </div>
-      <div class="sign_up_box"></div>
-    </div>
-  </div>
-</template>
-<script>
-export default {
-  data () {
-    return {
-      userName: '',
-      password: ''
-    }
-  },
-  methods: {
-    login: function () {
-      console.log('gg')
-      const { userName, password } = this
-      this.$store.dispatch('LOGIN', { handle: userName, password })
-    }
-  }
-}
-// email, password를 템플릿과 v-model로 연결 한다
-// methods 안에서 send함수를 만든다
-//      그 안에서 login으로 쿼리를 날린다
-</script>
-<style>
+
+<style scoped>
 *:hover {
   outline: none;
 }
@@ -118,3 +76,46 @@ body {
   border-radius: 5px;
 }
 </style>
+<template>
+  <div class="total">
+    <div class="center_column">
+      <img class="sblog_image" src="https://ifh.cc/g/LnCMoH.jpg" />
+      <div class="login_comment">
+        <span>Log in to Sblog</span>
+      </div>
+      <div class="login_box">
+        <div class="text_row">
+          <span>Username or email address</span>
+        </div>
+        <input class="input_row" v-model="userName" />
+        <div class="text_row">
+          <span>Password</span>
+        </div>
+        <input class="input_row" v-model="password" type="password" />
+        <button class="sign_in_button" v-on:click="login">Log in</button>
+        <router-link to="/join">join us!</router-link>
+      </div>
+      <div class="sign_up_box"></div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      userName: '',
+      password: ''
+    }
+  },
+  methods: {
+    login: function () {
+      console.log('gg')
+      const { userName, password } = this
+      this.$store.dispatch('LOGIN', { handle: userName, password })
+    }
+  }
+}
+// email, password를 템플릿과 v-model로 연결 한다
+// methods 안에서 send함수를 만든다
+//      그 안에서 login으로 쿼리를 날린다
+</script>

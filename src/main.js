@@ -20,7 +20,8 @@ new Vue({
   store,
   components: { App },
   template: '<App/>',
-  beforeCreate () {
-    store.dispatch('GET_USER_INFO', {toUrl})
+  async beforeCreate () {
+    await store.dispatch('GET_USER_INFO', {toUrl})
+    await store.dispatch('GET_INVITATIONS')
   }
 })

@@ -32,8 +32,8 @@ public class InvitationController {
 				new ResponseDataDto(HttpStatus.OK.value(), invitationService.register(requestDto, inviterHandle)));
 	}
 
-	@DeleteMapping("/api/invitations")
-	public ResponseEntity<ResponseDataDto> delete(Long invitationId, HttpServletRequest request) {
+	@DeleteMapping("/api/invitations/{invitationId}")
+	public ResponseEntity<ResponseDataDto> delete(@PathVariable Long invitationId, HttpServletRequest request) {
 		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
 		invitationService.delete(invitationId, requesterHandle);
 		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value()));
@@ -44,14 +44,13 @@ public class InvitationController {
 		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), userService.getInvitations(handle, requesterHandle)));
-
 	}
 
-	@PostMapping("/api/invitations/accept")
-	public ResponseEntity<ResponseDataDto> accept(@RequestBody InvitationAcceptDto requestDto,
+	@PostMapping("/api/invitations/{invitationId}/accept")
+	public ResponseEntity<ResponseDataDto> accept(@PathVariable Long invitationId,
 			HttpServletRequest request) {
 		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
-		invitationService.accept(requestDto, requesterHandle);
+		invitationService.accept(invitationId, requesterHandle);
 		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value()));
 	}
 

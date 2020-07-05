@@ -1,45 +1,4 @@
-<template>
-  <div class="total">
-    <div class="center_column">
-      <img class="sblog_image" src="https://ifh.cc/g/LnCMoH.jpg" />
-      <div class="login_comment">
-        <span>Sign in to Sblog</span>
-      </div>
-      <div class="login_box">
-        <div class="text_row">
-          <span>Username or email address</span>
-        </div>
-        <input class="input_row" v-model="userName" />
-        <div class="text_row">
-          <span>Password</span>
-        </div>
-        <input class="input_row" type="password" v-model="password" />
-        <button class="sign_in_button" v-on:click="join">Sign in</button>
-      </div>
-      <div class="sign_up_box"></div>
-    </div>
-  </div>
-</template>
-<script>
-export default {
-  data: function () {
-    return {
-      userName: '',
-      password: ''
-    }
-  },
-  methods: {
-    join: function () {
-      const { userName, password } = this
-      this.$store.dispatch('JOIN', {
-        handle: userName,
-        password
-      })
-    }
-  }
-}
-</script>
-<style>
+<style scoped>
 *:hover {
   outline: none;
 }
@@ -116,3 +75,44 @@ body {
   border-radius: 5px;
 }
 </style>
+<template>
+  <div class="total">
+    <div class="center_column">
+      <img class="sblog_image" src="https://ifh.cc/g/LnCMoH.jpg" />
+      <div class="login_comment">
+        <span>Sign in to Sblog</span>
+      </div>
+      <div class="login_box">
+        <div class="text_row">
+          <span>Username or email address</span>
+        </div>
+        <input class="input_row" v-model="userName" />
+        <div class="text_row">
+          <span>Password</span>
+        </div>
+        <input class="input_row" type="password" v-model="password" />
+        <button class="sign_in_button" v-on:click="join">Sign in</button>
+      </div>
+      <div class="sign_up_box"></div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data: function () {
+    return {
+      userName: '',
+      password: ''
+    }
+  },
+  methods: {
+    join: function () {
+      const { userName, password } = this
+      this.$store.dispatch('JOIN', {
+        handle: userName,
+        password
+      })
+    }
+  }
+}
+</script>

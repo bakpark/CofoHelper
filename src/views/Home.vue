@@ -1,10 +1,33 @@
+<style scoped>
+.total {
+  display: flex;
+}
+.main_view {
+  display: flex;
+  justify-content: flex-start;
+}
+.main_view .elements_container {
+  max-width: 30vw;
+  min-width: 20vw;
+  margin: 20px;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid black;
+}
+.main_view .table_container {
+}
+
+</style>
 <template>
   <div class="total">
     <div class="main_view">
       <div class="elements_container">
         <div class="groups_header">그룹이름</div>
         <div
-          v-for="(group, index) in groups"
+          v-for="(group, index) in $store.state.groups"
           :key="index"
           v-on:click="clickGroup(group.groupId)"
         >
@@ -43,11 +66,10 @@ import constants from "@/common/constants.js";
 export default {
   data() {
     return {
-      groups: [],
       contests: [],
       curGroupId: 0,
       curContestId: 0,
-      contestInfos: []
+      contestInfos: [],
     };
   },
   methods: {
@@ -107,42 +129,15 @@ export default {
     }
   },
   created() {
-    // 내 groups를 호출한다
-    this.$axios
-      .get(`api/users/${this.$store.state.handle}/groups`, {
-        headers: {
-          authorization: localStorage.getItem("authorization").toString()
-        }
-      })
-      .then(res => {
-        this.groups = res.data.data;
-      });
+    // groups
+    this.$store.dispatch(`GET_GROUPS`)
+    
+    // invitations
+    this.$store.dispatch(`GET_INVITATIONS`)
   },
   components: {
     Table
   }
 };
 </script>
-<style>
-.total {
-  display: flex;
-}
-.main_view {
-  display: flex;
-  justify-content: flex-start;
-}
-.main_view .elements_container {
-  max-width: 30vw;
-  min-width: 20vw;
-  margin: 20px;
-  height: 40vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  border: 1px solid black;
-}
-.main_view .table_container {
-}
 
-</style>

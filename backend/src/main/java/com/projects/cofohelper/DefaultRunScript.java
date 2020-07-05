@@ -32,19 +32,19 @@ public class DefaultRunScript {
 	UserService userService;
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Autowired
 	GroupService groupService;
-	
+
 	@Autowired
 	InvitationService invitationService;
-	
+
 	@Autowired
 	ContestService contestService;
-	
+
 	@Autowired
 	ProblemService problemService;
-	
+
 	@Transactional
 	@EventListener(ApplicationReadyEvent.class)
 	public void setDefault() throws Exception{
@@ -53,7 +53,7 @@ public class DefaultRunScript {
 				new GroupRegisterRequestDto("study"), "admin");
 		inviteMembersToGroup(1L, "admin");
 		acceptStudyGroupInvitation(acceptList());
-		
+
 		groupService.register(
 				new GroupRegisterRequestDto("anonymous group1"), "anonymous");
 		groupService.register(
@@ -62,10 +62,10 @@ public class DefaultRunScript {
 		inviteMembersToGroup(3L, "anonymous");
 		setDefaultContestAndProblem();
 	}
-	
-	
+
+
 	// sub methods
-	
+
 	private void setDefaultUsers() {
 		userService.register(new UserRegisterRequestDto("admin", "admin"));
 		userService.register(new UserRegisterRequestDto("anonymous", "1"));
@@ -97,10 +97,10 @@ public class DefaultRunScript {
 	private void acceptStudyGroupInvitation(List<String> acceptList) {
 		for(String handle : acceptList) {
 			User user = userRepo.findByHandle(handle);
-			invitationService.accept(new InvitationAcceptDto(user.getInvitations().get(0).getInvitationId()), handle);
+			invitationService.accept(user.getInvitations().get(0).getInvitationId(), handle);
 		}
 	}
-	
+
 	private void setDefaultContestAndProblem() throws Exception{
 		contestService.register(1L, new ContestRegisterDto("1353 TEST"), "admin");
 		problemService.register(new ProblemRegisterDto("1353-A"));
@@ -109,13 +109,13 @@ public class DefaultRunScript {
 		problemService.register(new ProblemRegisterDto("1353-D"));
 		problemService.register(new ProblemRegisterDto("1353-E"));
 		problemService.register(new ProblemRegisterDto("1353-F"));
-		
+
 		contestService.register(1L, new ContestRegisterDto("1360 TEST"), "admin");
 		problemService.register(new ProblemRegisterDto("1360-A"));
 		problemService.register(new ProblemRegisterDto("1360-B"));
 		problemService.register(new ProblemRegisterDto("1360-C"));
 		problemService.register(new ProblemRegisterDto("1360-D"));
-		
+
 		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-A"), "admin");
 		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-B"), "admin");
 		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-C"), "admin");

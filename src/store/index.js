@@ -7,22 +7,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    members: ['MochaLatte', 'bakpark', 'johny1', 'bonoky', 'sw1124.han', 'psykibaek'],
-    contests: [1343],
-    beforeContests: [1367, 1366, 1353, 1369],
-    submits: {
-      'MochaLatte': [],
-      'bakpark': [],
-      'johny1': [],
-      'bonoky': [],
-      'sw1124.han': [],
-      'psykibaek': []
-    },
-    readyToShow: '',
     isLoggedIn: false,
     handle: '',
     startLoadComplete: false,
-    rightRealOpen: false
+    rightRealOpen: false,
+    readyToShow: '',
+    invitations: [],
+    groups: []
   },
   mutations: {
     CHANGE_TABLE_DATA (state, [tableKey, data]) {
@@ -43,6 +34,12 @@ export default new Vuex.Store({
     },
     TOGGLE_RIGHT_REAL (state) {
       state.rightRealOpen = !state.rightRealOpen
+    },
+    GET_INVITATIONS (state, invitations) {
+      state.invitations = invitations
+    },
+    GET_GROUPS (state, groups) {
+      state.groups = groups
     }
   },
   actions: {
@@ -71,7 +68,7 @@ export default new Vuex.Store({
       }
 
       const authorization = localStorage.getItem('authorization').toString()
-      axios.post(`/users/user_info`, {}, {
+      return axios.post(`/users/user_info`, {}, {
         headers: {
           authorization
         }
@@ -84,6 +81,50 @@ export default new Vuex.Store({
           const handle = res.data.data
           context.commit('LOGIN_SUCCESS', { handle })
           router.push({path: urlObj == undefined ? '/' : urlObj.toUrl == undefined ? '/' : urlObj.toUrl})
+        })
+    },
+    GET_INVITATIONS (context) {
+      const authorization = localStorage.getItem('authorization').toString()
+      axios.get(`api/users/${context.state.handle}/invitations`, {
+        headers: {
+          authorization
+        }
+      })
+        .then(res => {
+          context.commit('GET_INVITATIONS', res.data.data)
+        })
+    },
+    ACCEPT_INVITATION (context, invitationId) {
+      const authorization = localStorage.getItem('authorization').toString()
+      axios.post(`api/invitations/${invitationId}/accept`, {}, {
+        headers: {
+          authorization
+        }
+      })
+        .then(res => {
+          context.dispatch('GET_INVITATIONS')
+        })
+    },
+    NO_INVITATION (context, invitationId) {
+      const authorization = localStorage.getItem('authorization').toString()
+      axios.delete(`api/invitations/${invitationId}`, {
+        headers: {
+          authorization
+        }
+      })
+        .then(res => {
+          context.dispatch('GET_INVITATIONS')
+        })
+    },
+    GET_GROUPS (context) {
+      axios
+        .get(`api/users/${context.state.handle}/groups`, {
+          headers: {
+            authorization: localStorage.getItem('authorization').toString()
+          }
+        })
+        .then(res => {
+          context.commit('GET_GROUPS', res.data.data)
         })
     }
   },

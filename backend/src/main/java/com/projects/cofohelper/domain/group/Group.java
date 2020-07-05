@@ -64,5 +64,12 @@ public class Group {
 			invitations = new ArrayList<Invitation>();
 		invitations.add(invitation);
 	}
+
+	public void addContest(Contest contest) {
+		if(contests == null)
+			contests = new ArrayList<Contest>();
+		contests.add(contest);
+	}
+	
 	
 }

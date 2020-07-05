@@ -19,8 +19,13 @@ public class WebConfig implements WebMvcConfigurer {
 			  "/user/groups",
 			  "/api/**", 
 			  "/groups", 
+			  "/group/invitations",
 			  "/invitations",
-			  "/invitation/accept"
+			  "/invitation/accept",
+			  "/contests",
+			  "/contest/problem",
+			  
+			  
 	  };
   
   public static final String[] excludePaths = {"/users/login", "/users"};

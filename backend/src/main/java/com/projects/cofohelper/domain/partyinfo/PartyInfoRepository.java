@@ -8,5 +8,5 @@ import com.projects.cofohelper.domain.group.Group;
 import com.projects.cofohelper.domain.user.User;
 
 public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long> {
-	List<PartyInfo> findByGroupAndUser(Group group, User user);
+	PartyInfo findByGroupAndUser(Group group, User user);
 }

@@ -1,8 +1,13 @@
 package com.projects.cofohelper.controller.problem;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +24,14 @@ public class ProblemController {
 	ProblemService problemService;
 	
 	@PostMapping(value = "/problems")
-	public ResponseEntity<ResponseDataDto> register(@RequestBody ProblemRegisterDto requestDto){
+	public ResponseEntity<ResponseDataDto> register(@RequestBody ProblemRegisterDto requestDto) throws Exception{
 		Problem problem = problemService.register(requestDto);
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), problem));
+	}
+	@GetMapping(value = "/problems", produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> getProblemHtml(String problemName) {
+		return ResponseEntity.ok()
+				.body(problemService.getHtml(problemName));
 	}
 }

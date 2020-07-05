@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projects.cofohelper.domain.contest.ContestRepository;
 import com.projects.cofohelper.domain.partyinfo.PartyInfoRepository;
+import com.projects.cofohelper.domain.problem.ProblemRepository;
 import com.projects.cofohelper.dto.response.ResponseDataDto;
 import com.projects.cofohelper.service.group.GroupService;
 import com.projects.cofohelper.service.invitation.InvitationService;
@@ -22,25 +24,13 @@ public class TestController {
 	InvitationService invitationService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	ProblemRepository problemRepo;
+	@Autowired
+	ContestRepository contestRepo;
 	
 	@Autowired
 	PartyInfoRepository partyInfoRepo;
-	
-//	@Transactional
-//	@GetMapping(value = "/test")
-//	public ResponseEntity<ResponseDataDto> runScript1(){
-//		groupService.register(new GroupRegisterRequestDto("group1"), "admin");
-//		invitationService.register(new InvitationRegisterDto("bakpark", 1L), "admin");
-//		invitationService.register(new InvitationRegisterDto("bonoky", 1L), "admin");
-//		invitationService.register(new InvitationRegisterDto("johny1", 1L), "admin");
-//
-//		groupService.register(new GroupRegisterRequestDto("group2"), "psykibaek");
-//		invitationService.register(new InvitationRegisterDto("bakpark", 2L), "psykibaek");
-//		invitationService.register(new InvitationRegisterDto("bonoky", 2L), "psykibaek");
-//		invitationService.register(new InvitationRegisterDto("johny1", 2L), "psykibaek");
-//		
-//		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value(), Boolean.TRUE));
-//	}
 	
 	@GetMapping(value = "/test/users")
 	public ResponseEntity<ResponseDataDto> getAllUsers(){
@@ -64,5 +54,17 @@ public class TestController {
 	public ResponseEntity<ResponseDataDto> getAllPartyInfos(){
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), partyInfoRepo.findAll()));
+	}
+	
+	@GetMapping(value = "/test/problems")
+	public ResponseEntity<ResponseDataDto> getAllProblems(){
+		return ResponseEntity.ok()
+				.body(new ResponseDataDto(HttpStatus.OK.value(), problemRepo.findAll()));
+	}
+	
+	@GetMapping(value = "/test/contests")
+	public ResponseEntity<ResponseDataDto> getAllContests(){
+		return ResponseEntity.ok()
+				.body(new ResponseDataDto(HttpStatus.OK.value(), contestRepo.findAll()));
 	}
 }

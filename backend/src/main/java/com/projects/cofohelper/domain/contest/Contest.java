@@ -9,21 +9,32 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.projects.cofohelper.domain.contestprobleminfo.ContestProblemInfo;
 import com.projects.cofohelper.domain.group.Group;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Contest {
 	@Id
 	@GeneratedValue
 	private Long contestId;
 	
+	private String contestName;
+	
 	@ManyToOne(targetEntity = Group.class)
 	private Group group;
 	
+	public Contest(String name, Group group) {
+		this.contestName = name;
+		this.group = group;
+	}
+	
+	@JsonBackReference
 	@OneToMany(mappedBy = "contest")
 	private List<ContestProblemInfo> problemInfos;
 	

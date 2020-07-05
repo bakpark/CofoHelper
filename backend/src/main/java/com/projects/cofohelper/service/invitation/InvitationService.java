@@ -82,12 +82,12 @@ public class InvitationService {
 		deleteInvitation(invitation);
 	}
 	private boolean alreadyExist(Group group, User invited) {
-		List<Invitation> list = invitationRepo.findByGroupAndInvited(group, invited);
-		return list.size()>0;
+		Invitation invitation = invitationRepo.findByGroupAndInvited(group, invited);
+		return invitation != null;
 	}
 	private boolean isParticipantOf(Group group, User user) {
-		List<PartyInfo> list = partyInfoRepo.findByGroupAndUser(group, user);
-		return list.size()>0;
+		PartyInfo partyInfo = partyInfoRepo.findByGroupAndUser(group, user);
+		return partyInfo != null;
 	}
 
 	private void deleteInvitation(Invitation invitation) {

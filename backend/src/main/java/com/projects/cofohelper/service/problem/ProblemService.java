@@ -48,10 +48,10 @@ public class ProblemService {
 		return problem;
 	}
 
-	public String getHtml(String problemName) {
-		Problem problem = problemRepo.findByName(problemName);
+	public String getHtml(Long problemId) {
+		Problem problem = problemRepo.getOne(problemId);
 		if (problem == null)
-			throw new ProblemNotFoundException("Problem not Found: " + problemName);
+			throw new ProblemNotFoundException("Problem not Found problemId: " + problemId);
 		return problem.getHtmlContent().writeHtml();
 	}
 
@@ -111,6 +111,13 @@ public class ProblemService {
 			Element child = element.child(i);
 			convertElementToCustom(child, htmlNode);
 		}
+	}
+
+	public Problem getProblem(Long problemId) {
+		Problem problem = problemRepo.getOne(problemId);
+		if(problem == null)
+			throw new ProblemNotFoundException("Problem not Found problemId: " + problemId);
+		return problem;
 	}
 
 }

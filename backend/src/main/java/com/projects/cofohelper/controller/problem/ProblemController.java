@@ -34,9 +34,9 @@ public class ProblemController {
 		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value(), problem));
 	}
 
-	@GetMapping(value = "/api/problems", produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<String> getProblemHtml(String problemName) {
-		return ResponseEntity.ok().body(problemService.getHtml(problemName));
+	@GetMapping(value = "/api/problem_html", produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> getProblemHtml(Long problemId) {
+		return ResponseEntity.ok().body(problemService.getHtml(problemId));
 	}
 
 	@PostMapping(value = "/api/contests/{contestId}/problems")
@@ -54,5 +54,10 @@ public class ProblemController {
 		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok().body(
 				new ResponseDataDto(HttpStatus.OK.value(), contestService.getProblems(contestId, requesterHandle)));
+	}
+	@GetMapping(value = "/api/problems")
+	public ResponseEntity<ResponseDataDto> getProblem(Long problemId){
+		return ResponseEntity.ok()
+				.body(new ResponseDataDto(HttpStatus.OK.value(), problemService.getProblem(problemId)));
 	}
 }

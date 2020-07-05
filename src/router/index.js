@@ -27,7 +27,7 @@ const preventLoggedIn = (to, from, next) => {
 }
 export default new Router({
   routes: [{
-    path: '/contest/:contestId/:index',
+    path: '/contest/:contestId/:problemId',
     name: 'Contest',
     component: Contest,
     beforeEnter: preventNotLoggedIn

@@ -12,12 +12,17 @@ import org.springframework.stereotype.Component;
 
 import com.projects.cofohelper.domain.user.User;
 import com.projects.cofohelper.domain.user.UserRepository;
+import com.projects.cofohelper.dto.request.ContestProblemRegisterDto;
+import com.projects.cofohelper.dto.request.ContestRegisterDto;
 import com.projects.cofohelper.dto.request.GroupRegisterRequestDto;
 import com.projects.cofohelper.dto.request.InvitationAcceptDto;
 import com.projects.cofohelper.dto.request.InvitationRegisterDto;
+import com.projects.cofohelper.dto.request.ProblemRegisterDto;
 import com.projects.cofohelper.dto.request.UserRegisterRequestDto;
+import com.projects.cofohelper.service.contest.ContestService;
 import com.projects.cofohelper.service.group.GroupService;
 import com.projects.cofohelper.service.invitation.InvitationService;
+import com.projects.cofohelper.service.problem.ProblemService;
 import com.projects.cofohelper.service.user.UserService;
 
 @Component
@@ -34,9 +39,15 @@ public class DefaultRunScript {
 	@Autowired
 	InvitationService invitationService;
 	
+	@Autowired
+	ContestService contestService;
+	
+	@Autowired
+	ProblemService problemService;
+	
 	@Transactional
 	@EventListener(ApplicationReadyEvent.class)
-	public void setDefault() {
+	public void setDefault() throws Exception{
 		setDefaultUsers();
 		groupService.register(
 				new GroupRegisterRequestDto("study"), "admin");
@@ -49,7 +60,7 @@ public class DefaultRunScript {
 				new GroupRegisterRequestDto("anonymous group2"), "anonymous");
 		inviteMembersToGroup(2L, "anonymous");
 		inviteMembersToGroup(3L, "anonymous");
-		
+		setDefaultContestAndProblem();
 	}
 	
 	
@@ -88,6 +99,33 @@ public class DefaultRunScript {
 			User user = userRepo.findByHandle(handle);
 			invitationService.accept(new InvitationAcceptDto(user.getInvitations().get(0).getInvitationId()), handle);
 		}
+	}
+	
+	private void setDefaultContestAndProblem() throws Exception{
+		contestService.register(new ContestRegisterDto("1353 TEST", 1L), "admin");
+		problemService.register(new ProblemRegisterDto("1353-A"));
+		problemService.register(new ProblemRegisterDto("1353-B"));
+		problemService.register(new ProblemRegisterDto("1353-C"));
+		problemService.register(new ProblemRegisterDto("1353-D"));
+		problemService.register(new ProblemRegisterDto("1353-E"));
+		problemService.register(new ProblemRegisterDto("1353-F"));
+		
+		contestService.register(new ContestRegisterDto("1360 TEST", 1L), "admin");
+		problemService.register(new ProblemRegisterDto("1360-A"));
+		problemService.register(new ProblemRegisterDto("1360-B"));
+		problemService.register(new ProblemRegisterDto("1360-C"));
+		problemService.register(new ProblemRegisterDto("1360-D"));
+		
+		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-A"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-B"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-C"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-D"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-E"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-F"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(2L, "1360-A"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(2L, "1360-B"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(2L, "1360-C"), "admin");
+		contestService.addProblem(new ContestProblemRegisterDto(2L, "1360-D"), "admin");
 	}
 
 }

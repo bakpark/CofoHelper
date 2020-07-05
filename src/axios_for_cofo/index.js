@@ -8,6 +8,6 @@ const instance = {
     return queue.httpRequest(url, params)
   }
 }
-Vue.prototype.$axios = instance
+Vue.prototype.$axiosForCofo = instance
 
 export default instance

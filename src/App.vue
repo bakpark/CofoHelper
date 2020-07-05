@@ -184,23 +184,23 @@ export default {
     Table
   },
   created() {
-    const members = this.$store.state.members;
-    const contests = this.$store.state.contests;
-    // contests => contest 하나당 테이블 하나 생성
-    members.forEach(member => {
-      this.$axios
-        .get("/user.status", {
-          params: {
-            handle: member,
-            from: 1,
-            count: 50
-          }
-        })
-        .then(res => {
-          this.submissions = this.submissions.concat(res.data.result);
-          console.log(this.submissions);
-        });
-    });
+    // const members = this.$store.state.members;
+    // const contests = this.$store.state.contests;
+    // // contests => contest 하나당 테이블 하나 생성
+    // members.forEach(member => {
+    //   this.$axiosForCofo
+    //     .get("/user.status", {
+    //       params: {
+    //         handle: member,
+    //         from: 1,
+    //         count: 50
+    //       }
+    //     })
+    //     .then(res => {
+    //       this.submissions = this.submissions.concat(res.data.result);
+    //       console.log(this.submissions);
+    //     });
+    // });
   }
 };
 </script>

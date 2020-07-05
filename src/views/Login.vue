@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     login: function () {
+      console.log('gg')
       const { userName, password } = this
       this.$store.dispatch('LOGIN', { handle: userName, password })
     }

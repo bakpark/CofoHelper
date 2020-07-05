@@ -1,156 +1,71 @@
 <template>
   <div class="total">
-    <div class="left_view">
-      <div class="practices_header">연습이름</div>
-      <div class="practices">
+    <div class="left_view"></div>
+    <div class="main_view">
+      <div class="elements_container">
+        <div class="groups_header">그룹이름</div>
         <div
-          v-for="(contest, index) in $store.state.beforeContests"
+          v-for="(group, index) in groups"
           :key="index"
+          v-on:click="clickGroup(group.groupId)"
         >
-          {{ contest }}
+          {{ group.groupName }}
         </div>
       </div>
-    </div>
-    <div class="main_view">
-      <Table
-        :columns="contestInfo.columns"
-        :rows="contestInfo.rows"
-        :contestId="contestInfo.contestId"
-        :defaultShow="true"
-      ></Table>
+      <div class="elements_container">
+        <div class="groups_header">Contest이름</div>
+        <div
+          v-for="(contest, index) in contests"
+          :key="index"
+          v-on:click="clickContest(contest.contestId)"
+        >
+          {{ contest.contestName }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
 /* eslint-disable */
 import Table from "@/components/Table.vue";
-import axios from "axios";
 import lodash from "lodash";
 import util from "@/components/util.js";
+import constants from "@/common/constants.js";
 
 export default {
   data() {
     return {
-      submissions: [],
-      selectedContest
+      groups: [],
+      contests: [],
+      curGroupId: 0,
+      curContestId: 0
     };
   },
-  computed: {
-    contestsInfo() {
-      const members = this.$store.state.members;
-      const ourContestIds = [
-        ...this.$store.state.contests,
-        ...this.$store.state.beforeContests
-      ];
-      const problemIndexes = ["A", "B", "C", "D", "E", "F"];
-
-      // submissionDic[1369]['A']['bakpark'] = [제출기록1, 제출기록2, ....];
-      const submissionDic = {};
-      ourContestIds.forEach(contestId => {
-        submissionDic[contestId] = {};
-        problemIndexes.forEach(problemIndex => {
-          submissionDic[contestId][problemIndex] = {};
-          members.forEach(member => {
-            submissionDic[contestId][problemIndex][member] = [];
-          });
-        });
-      });
-
-      this.submissions
-        .filter(submission => {
-          let contestId = submission.contestId;
-          let prIndex = submission.problem.index;
-          let member = submission.author.members[0].handle;
-          return (
-            submissionDic[contestId] != undefined &&
-            submissionDic[contestId][prIndex] != undefined &&
-            submissionDic[contestId][prIndex][member] != undefined
-          );
-        })
-        .forEach(submission => {
-          let contestId = submission.contestId;
-          let prIndex = submission.problem.index;
-          let member = submission.author.members[0].handle;
-          submissionDic[contestId][prIndex][member].push(submission);
-        });
-
-      let contestsInfo = [];
-      ourContestIds.forEach(contest => {
-        let tempRows = {};
-        members.forEach(member => {
-          tempRows[member] = {
-            name: member
-          };
-        });
-
-        members.forEach(member => {
-          problemIndexes.forEach(problemIndex => {
-            tempRows[member][problemIndex] = {
-              result: "Empty",
-              notes: "",
-              submission_url: ""
-            };
-
-            let tmpSubmissions = submissionDic[contest][problemIndex][member];
-            // result
-            if (tmpSubmissions.some(subm => subm.verdict == "OK")) {
-              tempRows[member][problemIndex].result = "OK";
-            } else if (tmpSubmissions.length == 0) {
-              tempRows[member][problemIndex].result = "";
-            } else {
-              tempRows[member][problemIndex].result = tmpSubmissions.length - 1;
-            }
-
-            // notes
-            let notes = tmpSubmissions.map(subm => ({
-              result: subm.verdict,
-              time: util.transformUnixTime(subm.creationTimeSeconds * 1)
-            }));
-            tempRows[member][problemIndex].notes = notes;
-
-            //submission_url
-            // 마지막 서브미션의 url을 보여줘야 함.
-            if (tmpSubmissions.length != 0) {
-              let submission_url =
-                "http://codeforces.com/contest/" +
-                tmpSubmissions[0].problem.contestId +
-                "/submission/" +
-                tmpSubmissions[0].id;
-              tempRows[member][problemIndex].submission_url = submission_url;
-            }
-          });
-        });
-
-        let contestInfo = {
-          columns: ["name", "A", "B", "C", "D", "E", "F"],
-          rows: Object.values(tempRows),
-          contestId: contest
-        };
-        contestsInfo.push(contestInfo);
-      });
-      return contestsInfo;
-    }
-  },
-  components: {
-    Table
+  methods: {
+    clickGroup(groupId) {
+      this.$axios
+      .get(`api/groups/${groupId}/contests`, {
+        headers: {
+          authorization: localStorage.getItem("authorization").toString()
+        }
+      })
+      .then(res=> {
+        this.contests = res.data.data;
+      })
+    },
+    clickContest(contestId) {}
   },
   created() {
-    const members = this.$store.state.members;
-    const contests = this.$store.state.beforeContests;
-    // contests => contest 하나당 테이블 하나 생성
-    members.forEach(member => {
-      this.$axios
-        .get("/user.status", {
-          params: {
-            handle: member,
-            from: 1,
-            count: 50
-          }
-        })
-        .then(res => {
-          this.submissions = this.submissions.concat(res.data.result);
-        });
-    });
+    // 내 groups를 호출한다
+    this.$axios
+      .get(`api/users/${this.$store.state.handle}/groups`, {
+        headers: {
+          authorization: localStorage.getItem("authorization").toString()
+        }
+      })
+      .then(res => {
+        this.groups = res.data.data;
+      });
   }
 };
 </script>
@@ -158,6 +73,22 @@ export default {
 .total {
   display: flex;
 }
+.main_view {
+  display: flex;
+  justify-content: flex-start;
+}
+.main_view .elements_container {
+  max-width: 30vw;
+  min-width: 20vw;
+  margin: 20px;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid black;
+}
+
 .left_view {
   width: 6vw;
   display: flex;

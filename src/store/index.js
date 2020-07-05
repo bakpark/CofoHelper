@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import axios from '@/axios_for_apiserver'
 import router from '@/router'
 Vue.use(Vuex)
 
@@ -48,7 +48,7 @@ export default new Vuex.Store({
   actions: {
     JOIN (context, {handle, password}) {
       axios
-        .post('http://localhost:8080/users', { handle, password })
+        .post('/users', { handle, password })
         .then(res => {
           if (res.status == 200) {
             router.push({name: 'Login'})
@@ -57,7 +57,7 @@ export default new Vuex.Store({
     },
     LOGIN (context, {handle, password}) {
       axios
-        .post('http://localhost:8080/users/login', { handle, password })
+        .post('/users/login', { handle, password })
         .then(res => {
           if (res.status == 200) {
             localStorage.setItem('authorization', res.headers.authorization)
@@ -71,7 +71,7 @@ export default new Vuex.Store({
       }
 
       const authorization = localStorage.getItem('authorization').toString()
-      axios.post(`http://localhost:8080/users/user_info`, {}, {
+      axios.post(`/users/user_info`, {}, {
         headers: {
           authorization
         }

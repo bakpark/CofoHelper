@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axios from '../axios_for_cofo'
 
 export default {
   status: function (handle, from = 1, count = 10) {

@@ -3,9 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import axios from './axios'
+import axiosForCofo from './axios_for_cofo'
 import api from './api'
 import store from './store'
+import axios from './axios_for_apiserver'
 
 Vue.config.productionTip = false
 const toUrl = window.location.href.split(window.location.host + '/#')[1]
@@ -13,6 +14,7 @@ const toUrl = window.location.href.split(window.location.host + '/#')[1]
 new Vue({
   el: '#app',
   router,
+  axiosForCofo,
   axios,
   api,
   store,

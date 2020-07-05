@@ -1,46 +1,24 @@
 <html>
   <head>
     <style>
-        .total{
-            display: flex;
-            
-        }
-        .left_view{
-            width: 6vw;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 40vh;
-            background-color: gray;
-        }
-        .left_view .practices_header{
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-        .left_view .practices{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+      .main_view{
+        display:flex;
+        justify-content: flex-start;
+      }
+      .elements_container{
+        max-width: 20vw;
+        height: 40vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+      }
     </style>
   </head>
   <body>
-    <div class="total">
-      <div class="left_view">
-        <div class="practices_header">연습이름</div>
-        <div class="practices">
-            <div v-for="(contest, index) in $store.state.beforeContests" :key="index">{{contest}}</div>
-        </div>
-      </div>
-      <div class="main_view">
-        <table
-          :key="index"
-          :columns="contestInfo.columns"
-          :rows="contestInfo.rows"
-          :contestId="contestInfo.contestId"
-          :defaultShow="true"
-        ></table>
-      </div>
-    </div>
+    .main_view
+      .elements_container
+      .elements_container
+      .contest
   </body>
 </html>

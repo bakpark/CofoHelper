@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axiosForCofo from '../axios_for_cofo'
 
 export default {
   status: function (contestId, handle, from = 1, count = 10) {
@@ -7,7 +7,7 @@ export default {
         console.error('API get FAILED : contest.status')
         reject(new Error('contestId must be required'))
       }
-      axios.get(
+      axiosForCofo.get(
         '/contest.status',
         {
           params: {

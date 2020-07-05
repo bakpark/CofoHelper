@@ -1,14 +1,12 @@
 package com.projects.cofohelper.controller.contest;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projects.cofohelper.common.Constants;
@@ -28,14 +26,14 @@ public class ContestController {
 	ProblemService problemService;
 	
 	@PostMapping(value = "/contests")
-	public ResponseEntity<ResponseDataDto> register(ContestRegisterDto registerDto, HttpServletRequest request){
+	public ResponseEntity<ResponseDataDto> register(@RequestBody ContestRegisterDto registerDto, HttpServletRequest request){
 		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.register(registerDto, requesterHandle)));
 	}
 	
-	@PostMapping(value = "contest/problem")
-	public ResponseEntity<ResponseDataDto> register(ContestProblemRegisterDto registerDto, HttpServletRequest request) throws Exception {
+	@PostMapping(value = "/contest/problem")
+	public ResponseEntity<ResponseDataDto> register(@RequestBody ContestProblemRegisterDto registerDto, HttpServletRequest request) throws Exception {
 		if(!problemService.isExist(registerDto.getProblemName()))
 			problemService.register(new ProblemRegisterDto(registerDto.getProblemName()));
 		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);

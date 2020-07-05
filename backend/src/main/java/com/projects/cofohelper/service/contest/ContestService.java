@@ -36,6 +36,7 @@ public class ContestService {
 	ContestProblemInfoRepository problemInfoRepo;
 
 	public Contest register(ContestRegisterDto registerDto, String requesterHandle) {
+		System.out.println("requester:"+requesterHandle+" groupId:"+registerDto.getGroupId());
 		User requester = userRepo.findByHandle(requesterHandle);
 		Group group = groupRepo.getOne(registerDto.getGroupId());
 		if (group == null)

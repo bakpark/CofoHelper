@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 			  "/invitations",
 			  "/invitation/accept",
 			  "/contests",
-			  "/contest/problem",
+			  "/contest/problems",
 			  
 			  
 	  };

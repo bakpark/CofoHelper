@@ -8,4 +8,5 @@ import com.projects.cofohelper.domain.group.Group;
 
 public interface ContestRepository extends JpaRepository<Contest, Long> {
 	public Contest findByGroupAndContestName(Group group, String contestName);
+	public List<Contest> findByGroup(Group group);
 }

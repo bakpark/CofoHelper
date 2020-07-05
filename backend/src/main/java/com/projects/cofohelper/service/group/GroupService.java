@@ -27,8 +27,14 @@ public class GroupService {
 	@Autowired
 	PartyInfoRepository partyInfoRepo;
 
+	public Group getGroup(Long id){
+	  Group group = groupRepo.getOne(id);
+	  if(group == null)
+	    throw new GroupNotFoundException("Group Not Found groupId:" + id);
+	  return group;
+  }
 	public Group register(GroupRegisterRequestDto request, String makerHandle) {
-		if(groupRepo.findByGroupName(request.getGroupName()) != null) 
+		if(groupRepo.findByGroupName(request.getGroupName()) != null)
 			throw new GroupAlreadyExistException("Already exist group name:"+request.groupName);
 		User maker = userRepo.findByHandle(makerHandle);
 		Group group = new Group(request.groupName);
@@ -42,7 +48,7 @@ public class GroupService {
 		group.addPartyInfo(conn);
 		return group;
 	}
-	
+
 	// for test
 	public List<Group> getAll(){
 		return groupRepo.findAll();

@@ -29,4 +29,11 @@ public class ContestController {
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.register(groupId, registerDto, requesterHandle)));
 	}
+
+	@GetMapping(value="/api/groups/{groupId}/contests")
+  public ResponseEntity<ResponseDataDto> getContests(@PathVariable Long groupId){
+    return ResponseEntity.ok().body(
+      new ResponseDataDto(HttpStatus.OK.value(), contestService.getContests(groupId))
+    );
+  }
 }

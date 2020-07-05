@@ -3,6 +3,7 @@ package com.projects.cofohelper.service.contest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.projects.cofohelper.service.group.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,8 @@ public class ContestService {
 	@Autowired
 	UserRepository userRepo;
 	@Autowired
+  GroupService groupService;
+	@Autowired
 	GroupRepository groupRepo;
 	@Autowired
 	ContestRepository contestRepo;
@@ -39,12 +42,15 @@ public class ContestService {
 	@Autowired
 	ContestProblemInfoRepository problemInfoRepo;
 
+	public List<Contest> getContests(Long groupId){
+	  Group group = groupService.getGroup(groupId);
+    return group.getContests();
+  }
+
 	public Contest register(Long groupId, ContestRegisterDto registerDto, String requesterHandle) {
 		System.out.println("requester:"+requesterHandle+" groupId:"+groupId);
 		User requester = userRepo.findByHandle(requesterHandle);
-		Group group = groupRepo.getOne(groupId);
-		if (group == null)
-			throw new GroupNotFoundException("Group Not Found groupId:" + groupId);
+		Group group = groupService.getGroup(groupId);
 		if (!isPartyIn(requester, group))
 			throw new UnAuthorizedException("Unauthorized to make contest for group:" + group.getGroupId());
 		if (contestRepo.findByGroupAndContestName(group, registerDto.getContestName()) != null)

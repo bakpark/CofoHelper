@@ -5,10 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.projects.cofohelper.common.Constants;
 import com.projects.cofohelper.dto.request.ContestProblemRegisterDto;
@@ -23,29 +20,13 @@ public class ContestController {
 
 	@Autowired
 	ContestService contestService;
-	@Autowired
-	ProblemService problemService;
 
-	@PostMapping(value = "/api/contests")
-	public ResponseEntity<ResponseDataDto> register(@RequestBody ContestRegisterDto registerDto, HttpServletRequest request){
+	@PostMapping(value = "/api/groups/{groupId}/contests")
+	public ResponseEntity<ResponseDataDto> register(@RequestBody ContestRegisterDto registerDto,
+                                                  @PathVariable Long groupId,
+                                                  HttpServletRequest request){
 		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.register(registerDto, requesterHandle)));
-	}
-
-	@PostMapping(value = "/api/contest/problems")
-	public ResponseEntity<ResponseDataDto> register(@RequestBody ContestProblemRegisterDto registerDto, HttpServletRequest request) throws Exception {
-		if(!problemService.isExist(registerDto.getProblemName()))
-			problemService.register(new ProblemRegisterDto(registerDto.getProblemName()));
-		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
-		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.addProblem(registerDto, requesterHandle)));
-	}
-
-	@GetMapping(value = "/api/contest/problems")
-	public ResponseEntity<ResponseDataDto> getProblems(Long contestId, HttpServletRequest request){
-		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
-		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.getProblems(contestId, requesterHandle)));
+				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.register(groupId, registerDto, requesterHandle)));
 	}
 }

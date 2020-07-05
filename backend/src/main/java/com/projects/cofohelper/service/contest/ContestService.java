@@ -39,12 +39,12 @@ public class ContestService {
 	@Autowired
 	ContestProblemInfoRepository problemInfoRepo;
 
-	public Contest register(ContestRegisterDto registerDto, String requesterHandle) {
-		System.out.println("requester:"+requesterHandle+" groupId:"+registerDto.getGroupId());
+	public Contest register(Long groupId, ContestRegisterDto registerDto, String requesterHandle) {
+		System.out.println("requester:"+requesterHandle+" groupId:"+groupId);
 		User requester = userRepo.findByHandle(requesterHandle);
-		Group group = groupRepo.getOne(registerDto.getGroupId());
+		Group group = groupRepo.getOne(groupId);
 		if (group == null)
-			throw new GroupNotFoundException("Group Not Found groupId:" + registerDto.getGroupId());
+			throw new GroupNotFoundException("Group Not Found groupId:" + groupId);
 		if (!isPartyIn(requester, group))
 			throw new UnAuthorizedException("Unauthorized to make contest for group:" + group.getGroupId());
 		if (contestRepo.findByGroupAndContestName(group, registerDto.getContestName()) != null)
@@ -58,11 +58,11 @@ public class ContestService {
 		return contest;
 	}
 
-	public Problem addProblem(ContestProblemRegisterDto registerDto, String requesterHandle) {
+	public Problem addProblem(Long contestId, ContestProblemRegisterDto registerDto, String requesterHandle) {
 		User requester = userRepo.findByHandle(requesterHandle);
-		Contest contest = contestRepo.getOne(registerDto.getContestId());
+		Contest contest = contestRepo.getOne(contestId);
 		if (contest == null)
-			throw new GroupNotFoundException("Contest not found contestId:" + registerDto.getContestId());
+			throw new GroupNotFoundException("Contest not found contestId:" + contestId);
 		Group group = contest.getGroup();
 		if (!isPartyIn(requester, group))
 			throw new UnAuthorizedException("Unauthorized to add problem for contest:" + contest.getContestId());

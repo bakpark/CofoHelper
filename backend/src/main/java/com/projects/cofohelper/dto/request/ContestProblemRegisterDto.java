@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContestProblemRegisterDto {
-	private Long contestId;
 	String problemName;
 }

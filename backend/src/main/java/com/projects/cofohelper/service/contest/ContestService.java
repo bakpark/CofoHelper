@@ -32,7 +32,7 @@ public class ContestService {
 	@Autowired
 	UserRepository userRepo;
 	@Autowired
-  GroupService groupService;
+	GroupService groupService;
 	@Autowired
 	GroupRepository groupRepo;
 	@Autowired
@@ -42,13 +42,13 @@ public class ContestService {
 	@Autowired
 	ContestProblemInfoRepository problemInfoRepo;
 
-	public List<Contest> getContests(Long groupId){
-	  Group group = groupService.getGroup(groupId);
-    return group.getContests();
-  }
+	public List<Contest> getContests(Long groupId) {
+		Group group = groupService.getGroup(groupId);
+		return group.getContests();
+	}
 
 	public Contest register(Long groupId, ContestRegisterDto registerDto, String requesterHandle) {
-		System.out.println("requester:"+requesterHandle+" groupId:"+groupId);
+		System.out.println("requester:" + requesterHandle + " groupId:" + groupId);
 		User requester = userRepo.findByHandle(requesterHandle);
 		Group group = groupService.getGroup(groupId);
 		if (!isPartyIn(requester, group))
@@ -82,17 +82,18 @@ public class ContestService {
 		contest.insertProblemInfos(problemInfo);
 		return problem;
 	}
+
 	public List<Problem> getProblems(Long contestId, String requesterHandle) {
 		User requester = userRepo.findByHandle(requesterHandle);
 		Contest contest = contestRepo.getOne(contestId);
-		if(contest == null)
-			throw new ContestNotFoundException("Contest Not Found contestId:"+contestId);
+		if (contest == null)
+			throw new ContestNotFoundException("Contest Not Found contestId:" + contestId);
 		Group group = contest.getGroup();
-		if(!isPartyIn(requester, group))
-			throw new UnAuthorizedException("Unauthorized to get problems for contest:"+contestId);
+		if (!isPartyIn(requester, group))
+			throw new UnAuthorizedException("Unauthorized to get problems for contest:" + contestId);
 		List<ContestProblemInfo> problemInfos = problemInfoRepo.findAllByContest(contest);
 		List<Problem> problems = new ArrayList<>();
-		for(ContestProblemInfo info : problemInfos) {
+		for (ContestProblemInfo info : problemInfos) {
 			problems.add(info.getProblem());
 		}
 		return problems;
@@ -115,6 +116,5 @@ public class ContestService {
 		}
 		return false;
 	}
-
 
 }

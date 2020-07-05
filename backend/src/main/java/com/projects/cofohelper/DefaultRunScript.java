@@ -102,7 +102,7 @@ public class DefaultRunScript {
 	}
 	
 	private void setDefaultContestAndProblem() throws Exception{
-		contestService.register(new ContestRegisterDto("1353 TEST", 1L), "admin");
+		contestService.register(1L, new ContestRegisterDto("1353 TEST"), "admin");
 		problemService.register(new ProblemRegisterDto("1353-A"));
 		problemService.register(new ProblemRegisterDto("1353-B"));
 		problemService.register(new ProblemRegisterDto("1353-C"));
@@ -110,22 +110,22 @@ public class DefaultRunScript {
 		problemService.register(new ProblemRegisterDto("1353-E"));
 		problemService.register(new ProblemRegisterDto("1353-F"));
 		
-		contestService.register(new ContestRegisterDto("1360 TEST", 1L), "admin");
+		contestService.register(1L, new ContestRegisterDto("1360 TEST"), "admin");
 		problemService.register(new ProblemRegisterDto("1360-A"));
 		problemService.register(new ProblemRegisterDto("1360-B"));
 		problemService.register(new ProblemRegisterDto("1360-C"));
 		problemService.register(new ProblemRegisterDto("1360-D"));
 		
-		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-A"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-B"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-C"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-D"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-E"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(1L, "1353-F"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(2L, "1360-A"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(2L, "1360-B"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(2L, "1360-C"), "admin");
-		contestService.addProblem(new ContestProblemRegisterDto(2L, "1360-D"), "admin");
+		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-A"), "admin");
+		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-B"), "admin");
+		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-C"), "admin");
+		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-D"), "admin");
+		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-E"), "admin");
+		contestService.addProblem(1L, new ContestProblemRegisterDto("1353-F"), "admin");
+		contestService.addProblem(2L, new ContestProblemRegisterDto("1360-A"), "admin");
+		contestService.addProblem(2L, new ContestProblemRegisterDto("1360-B"), "admin");
+		contestService.addProblem(2L, new ContestProblemRegisterDto("1360-C"), "admin");
+		contestService.addProblem(2L, new ContestProblemRegisterDto("1360-D"), "admin");
 	}
 
 }

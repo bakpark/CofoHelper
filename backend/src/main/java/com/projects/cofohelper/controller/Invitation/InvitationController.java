@@ -22,39 +22,37 @@ public class InvitationController {
 	InvitationService invitationService;
 
 	@Autowired
-  UserService userService;
+	UserService userService;
 
 	@PostMapping("/api/invitations")
-	public ResponseEntity<ResponseDataDto> register(@RequestBody InvitationRegisterDto requestDto, HttpServletRequest request){
-		String inviter = (String)request.getAttribute(Constants.USER_HANDLE);
-		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value(), invitationService.register(requestDto, inviter)));
+	public ResponseEntity<ResponseDataDto> register(@RequestBody InvitationRegisterDto requestDto,
+			HttpServletRequest request) {
+		String inviterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
+		return ResponseEntity.ok().body(
+				new ResponseDataDto(HttpStatus.OK.value(), invitationService.register(requestDto, inviterHandle)));
 	}
 
 	@DeleteMapping("/api/invitations")
-	public ResponseEntity<ResponseDataDto> delete(Long invitationId, HttpServletRequest request){
-		String requester = (String)request.getAttribute(Constants.USER_HANDLE);
-		invitationService.delete(invitationId, requester);
-		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value()));
+	public ResponseEntity<ResponseDataDto> delete(Long invitationId, HttpServletRequest request) {
+		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
+		invitationService.delete(invitationId, requesterHandle);
+		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value()));
 	}
 
-	@PostMapping("/api/invitation/accept")
-	public ResponseEntity<ResponseDataDto> accept(@RequestBody InvitationAcceptDto requestDto, HttpServletRequest request){
-		String requester = (String)request.getAttribute(Constants.USER_HANDLE);
-		invitationService.accept(requestDto, requester);
+	@GetMapping(value = "/api/users/{handle}/invitations")
+	public ResponseEntity<ResponseDataDto> getInvitations(@PathVariable String handle, HttpServletRequest request) {
+		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value()));
+				.body(new ResponseDataDto(HttpStatus.OK.value(), userService.getInvitations(handle, requesterHandle)));
+
 	}
 
-  @GetMapping(value = "/api/user/invitations")
-  public ResponseEntity<ResponseDataDto> getInvitations(String handle, HttpServletRequest request) {
-    String loginHandle = (String) request.getAttribute(Constants.USER_HANDLE);
-    if (handle.equals(loginHandle))
-      return ResponseEntity.ok()
-        .body(new ResponseDataDto(HttpStatus.OK.value(), userService.getInvitations(handle)));
-    else
-      throw new UnAuthorizedException("UnAuthorized for :" + handle);
+	@PostMapping("/api/invitations/accept")
+	public ResponseEntity<ResponseDataDto> accept(@RequestBody InvitationAcceptDto requestDto,
+			HttpServletRequest request) {
+		String requesterHandle = (String) request.getAttribute(Constants.USER_HANDLE);
+		invitationService.accept(requestDto, requesterHandle);
+		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value()));
+	}
 
-  }
 }

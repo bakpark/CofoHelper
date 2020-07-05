@@ -42,8 +42,8 @@ public class GroupController {
 
   }
 
-	@GetMapping(value = "/api/group/invitations")
-	ResponseEntity<ResponseDataDto> getInvitations(Long groupId, HttpServletRequest request){
+	@GetMapping(value = "/api/group/{groupId}/invitations")
+	ResponseEntity<ResponseDataDto> getInvitations(@PathVariable Long groupId, HttpServletRequest request){
 		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), groupService.getInvitations(groupId, requesterHandle)));

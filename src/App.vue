@@ -28,7 +28,7 @@
         <button v-on:click="() => $router.push('/realtime')">
           실시간제출현황⏳
         </button>
-        <span style="margin-left:10vw;">{{$store.state.handle}}님 안녕하세요!</span>
+        <strong style="margin-left:10vw;">{{$store.state.handle}}</strong>
       </div>
       <br />
       <br />

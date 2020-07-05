@@ -3,10 +3,8 @@
   <div class="problem_table" style="z-index:90; display:flex; flex-direction:column; align-items:center;">
     <h1 style="margin:auto;">
       {{contestId}}
-      <i class="fas fa-caret-up" v-show="showRealTime" v-on:click="toggleShowRealTime()"></i>
-      <i class="fas fa-caret-down" v-show="!showRealTime" v-on:click="toggleShowRealTime()"></i>
     </h1>
-    <table v-if="showRealTime">
+    <table >
       <tr>
         <th v-for="(column, index) in columns" :key="index">{{ column }}</th>
       </tr>
@@ -35,11 +33,9 @@
 export default {
   data() {
     return {
-      showRealTime: this.defaultShow
     }
   },
   props: {
-    defaultShow: Boolean,
     contestId: Number,
     columns: Array, // ['name', 'A', 'B', ,,, 'F']
     rows: Array // [{name: 'bakpark', A: Accepted, ...}, {...}, {...}]
@@ -53,10 +49,6 @@ export default {
       else if (row[column].result == '') return "empty";
       else if (column == "name") return "user-name";
       else return "not-correct";
-    },
-    toggleShowRealTime(){
-      console.log("clicked");
-      this.showRealTime = !this.showRealTime;
     }
   }
 };

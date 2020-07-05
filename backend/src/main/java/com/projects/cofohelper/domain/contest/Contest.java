@@ -32,11 +32,12 @@ public class Contest {
 	public Contest(String name, Group group) {
 		this.contestName = name;
 		this.group = group;
+		problemInfos = new ArrayList<>();
 	}
 	
 	@JsonBackReference
 	@OneToMany(mappedBy = "contest")
-	private List<ContestProblemInfo> problemInfos;
+	private List<ContestProblemInfo> problemInfos = new ArrayList<>();
 	
 	public void insertProblemInfos(ContestProblemInfo problemInfo) {
 		if(problemInfos == null)

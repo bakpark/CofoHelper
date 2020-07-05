@@ -1,5 +1,8 @@
 package com.projects.cofohelper.service.contest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,7 @@ import com.projects.cofohelper.dto.request.ContestRegisterDto;
 import com.projects.cofohelper.exception.UnAuthorizedException;
 import com.projects.cofohelper.exception.alreadyexist.ContestAlreadyExistException;
 import com.projects.cofohelper.exception.alreadyexist.ProblemAlreadyExistException;
+import com.projects.cofohelper.exception.notfound.ContestNotFoundException;
 import com.projects.cofohelper.exception.notfound.GroupNotFoundException;
 
 @Service
@@ -72,6 +76,21 @@ public class ContestService {
 		contest.insertProblemInfos(problemInfo);
 		return problem;
 	}
+	public List<Problem> getProblems(Long contestId, String requesterHandle) {
+		User requester = userRepo.findByHandle(requesterHandle);
+		Contest contest = contestRepo.getOne(contestId);
+		if(contest == null)
+			throw new ContestNotFoundException("Contest Not Found contestId:"+contestId);
+		Group group = contest.getGroup();
+		if(!isPartyIn(requester, group))
+			throw new UnAuthorizedException("Unauthorized to get problems for contest:"+contestId);
+		List<ContestProblemInfo> problemInfos = problemInfoRepo.findAllByContest(contest);
+		List<Problem> problems = new ArrayList<>();
+		for(ContestProblemInfo info : problemInfos) {
+			problems.add(info.getProblem());
+		}
+		return problems;
+	}
 
 	private boolean isPartyIn(User requester, Group group) {
 		for (PartyInfo partyInfo : group.getParties()) {
@@ -90,5 +109,6 @@ public class ContestService {
 		}
 		return false;
 	}
+
 
 }

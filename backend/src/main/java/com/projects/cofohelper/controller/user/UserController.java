@@ -55,7 +55,7 @@ public class UserController {
 			throw new UnAuthorizedException("UnAuthorized for :" + handle);
 
 	}
-	
+
 	@GetMapping(value = "/user/groups")
 	public ResponseEntity<ResponseDataDto> getGroups(String handle, HttpServletRequest request) {
 		String loginHandle = (String) request.getAttribute(Constants.USER_HANDLE);
@@ -65,12 +65,12 @@ public class UserController {
 		else
 			throw new UnAuthorizedException("UnAuthorized for :" + handle);
 
-	}	
+	}
 
 	@PostMapping(value = "/users/user_info")
 	public ResponseEntity<ResponseDataDto> login(HttpServletRequest request, HttpServletResponse response) {
 		String handle = (String) request.getAttribute(Constants.USER_HANDLE);
-		return ResponseEntity.ok(new ResponseDataDto(HttpStatus.OK.value(), handle));
+		return ResponseEntity.ok(new ResponseDataDto(HttpStatus.OK.value(), "", handle));
 	}
 
 }

@@ -26,4 +26,9 @@ public class ContestProblemInfo {
 	
 	@ManyToOne(targetEntity = Problem.class)
 	private Contest contest;
+	
+	public ContestProblemInfo(Contest contest, Problem problem) {
+		this.contest = contest;
+		this.problem = problem;
+	}
 }

@@ -32,13 +32,19 @@ public class HtmlNode {
 
 	private String tag;
 	
-	@Column(length = ((1<<16)-1))
+	@Column(length = ((1<<13)-1))
 	private String innerText;
+	
+	private int depth;
 	
 	public HtmlNode(String tag, HtmlNode parent) {
 		this.tag = tag;
 		this.parent = parent;
 		this.innerText = "";
+		if(parent == null)
+			this.depth = 0;
+		else
+			this.depth = parent.depth+1;
 		attributes = new ArrayList<>();
 		childs = new ArrayList<>();
 	}
@@ -63,5 +69,21 @@ public class HtmlNode {
 	public void insertChild(HtmlNode child) {
 		if(childs == null) childs = new ArrayList<HtmlNode>();
 		childs.add(child);
+	}
+	public String writeHtml() {
+		String tab = "";
+		for(int i=0;i<this.depth;i++) tab += " ";
+		String content = tab;
+		content += ("<"+getTag());
+		for(HtmlAttribute attr : getAttributes()) {
+			content += (" "+attr.getName()+"="+attr.getValue());
+		}
+		content += (">");
+		content += getInnerText() + '\n';
+		for(HtmlNode child : childs) {
+			content += child.writeHtml();
+		}
+		content += tab + "</" + getTag() + ">"+"\n";
+		return content;
 	}
 }

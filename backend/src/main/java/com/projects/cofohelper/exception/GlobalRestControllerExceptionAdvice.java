@@ -1,5 +1,9 @@
 package com.projects.cofohelper.exception;
 
+import java.io.IOException;
+import java.lang.annotation.Repeatable;
+import java.net.URISyntaxException;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.http.HttpStatus;
@@ -43,4 +47,15 @@ public class GlobalRestControllerExceptionAdvice {
 				.body(new ResponseDataDto(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
 	}
 	
+	@ExceptionHandler(URISyntaxException.class)
+	public ResponseEntity<ResponseDataDto> invalidProblemUri(Exception e){
+		return ResponseEntity.badRequest()
+				.body(new ResponseDataDto(HttpStatus.BAD_REQUEST.value(), "invalid problem uri"+e.getMessage()));
+	}
+
+	@ExceptionHandler(IOException.class)
+	public ResponseEntity<ResponseDataDto> failIO(Exception e){
+		return ResponseEntity.badRequest()
+				.body(new ResponseDataDto(HttpStatus.BAD_REQUEST.value(), "fail io"+e.getMessage()));
+	}
 }

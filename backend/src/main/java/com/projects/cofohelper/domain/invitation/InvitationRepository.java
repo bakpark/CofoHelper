@@ -8,5 +8,5 @@ import com.projects.cofohelper.domain.group.Group;
 import com.projects.cofohelper.domain.user.User;
 
 public interface InvitationRepository extends JpaRepository<Invitation, Long>{
-	public List<Invitation> findByGroupAndInvited(Group group, User invited);
+	public Invitation findByGroupAndInvited(Group group, User invited);
 }

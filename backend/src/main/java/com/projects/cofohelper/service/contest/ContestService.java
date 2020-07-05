@@ -1,0 +1,93 @@
+package com.projects.cofohelper.service.contest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.projects.cofohelper.domain.contest.Contest;
+import com.projects.cofohelper.domain.contest.ContestRepository;
+import com.projects.cofohelper.domain.contestprobleminfo.ContestProblemInfo;
+import com.projects.cofohelper.domain.contestprobleminfo.ContestProblemInfoRepository;
+import com.projects.cofohelper.domain.group.Group;
+import com.projects.cofohelper.domain.group.GroupRepository;
+import com.projects.cofohelper.domain.partyinfo.PartyInfo;
+import com.projects.cofohelper.domain.problem.Problem;
+import com.projects.cofohelper.domain.problem.ProblemRepository;
+import com.projects.cofohelper.domain.user.User;
+import com.projects.cofohelper.domain.user.UserRepository;
+import com.projects.cofohelper.dto.request.ContestProblemRegisterDto;
+import com.projects.cofohelper.dto.request.ContestRegisterDto;
+import com.projects.cofohelper.exception.UnAuthorizedException;
+import com.projects.cofohelper.exception.alreadyexist.ContestAlreadyExistException;
+import com.projects.cofohelper.exception.alreadyexist.ProblemAlreadyExistException;
+import com.projects.cofohelper.exception.notfound.GroupNotFoundException;
+
+@Service
+public class ContestService {
+
+	@Autowired
+	UserRepository userRepo;
+	@Autowired
+	GroupRepository groupRepo;
+	@Autowired
+	ContestRepository contestRepo;
+	@Autowired
+	ProblemRepository problemRepo;
+	@Autowired
+	ContestProblemInfoRepository problemInfoRepo;
+
+	public Contest register(ContestRegisterDto registerDto, String requesterHandle) {
+		User requester = userRepo.findByHandle(requesterHandle);
+		Group group = groupRepo.getOne(registerDto.getGroupId());
+		if (group == null)
+			throw new GroupNotFoundException("Group Not Found groupId:" + registerDto.getGroupId());
+		if (!isPartyIn(requester, group))
+			throw new UnAuthorizedException("Unauthorized to make contest for group:" + group.getGroupId());
+		if (contestRepo.findByGroupAndContestName(group, registerDto.getContestName()) != null)
+			throw new ContestAlreadyExistException(
+					"ContestName already exist in group name:" + registerDto.getContestName());
+
+		Contest contest = new Contest(registerDto.getContestName(), group);
+		contestRepo.save(contest);
+		group.addContest(contest);
+
+		return contest;
+	}
+
+	public Problem addProblem(ContestProblemRegisterDto registerDto, String requesterHandle) {
+		User requester = userRepo.findByHandle(requesterHandle);
+		Contest contest = contestRepo.getOne(registerDto.getContestId());
+		if (contest == null)
+			throw new GroupNotFoundException("Contest not found contestId:" + registerDto.getContestId());
+		Group group = contest.getGroup();
+		if (!isPartyIn(requester, group))
+			throw new UnAuthorizedException("Unauthorized to add problem for contest:" + contest.getContestId());
+		if (isContestIn(registerDto.getProblemName(), contest))
+			throw new ProblemAlreadyExistException(
+					"Problem already exist in contest problemName:" + registerDto.getProblemName());
+
+		Problem problem = problemRepo.findByName(registerDto.getProblemName());
+		ContestProblemInfo problemInfo = new ContestProblemInfo(contest, problem);
+		problemInfoRepo.save(problemInfo);
+		contest.insertProblemInfos(problemInfo);
+		return problem;
+	}
+
+	private boolean isPartyIn(User requester, Group group) {
+		for (PartyInfo partyInfo : group.getParties()) {
+			if (partyInfo.getUser().equals(requester)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isContestIn(String problemName, Contest contest) {
+		for (ContestProblemInfo problemInfo : contest.getProblemInfos()) {
+			if (problemInfo.getProblem().getName().equals(problemName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+}

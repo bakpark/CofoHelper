@@ -22,7 +22,7 @@ public class GroupController {
 	@Autowired
 	UserService userService;
 
-	@PostMapping(value = "/api/users/{handle}/groups")
+	@PostMapping(value = "/api/groups")
 	ResponseEntity<ResponseDataDto> register(@RequestBody GroupRegisterRequestDto requestDto,
                                            @PathVariable String handle,
                                            HttpServletRequest request){

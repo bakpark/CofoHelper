@@ -71,19 +71,17 @@ public class HtmlNode {
 		childs.add(child);
 	}
 	public String writeHtml() {
-		String tab = "";
-		for(int i=0;i<this.depth;i++) tab += " ";
-		String content = tab;
+		String content = "";
 		content += ("<"+getTag());
 		for(HtmlAttribute attr : getAttributes()) {
-			content += (" "+attr.getName()+"="+attr.getValue());
+			content += (" "+attr.getName()+"=\""+attr.getValue())+"\"";
 		}
 		content += (">");
-		content += getInnerText() + '\n';
+		content += getInnerText();
 		for(HtmlNode child : childs) {
 			content += child.writeHtml();
 		}
-		content += tab + "</" + getTag() + ">"+"\n";
+		content += "</" + getTag() + ">";
 		return content;
 	}
 }

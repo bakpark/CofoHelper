@@ -18,7 +18,7 @@
         <p>🍺🍺</p>
       </div>
       <div class="menus">
-        <button v-on:click="() => $router.push({ path: '/contest/1369/B' })">
+        <button v-on:click="() => $router.push({ path: '/contest/1/1' })">
           풀이방⚡
         </button>
         <button v-on:click="() => $router.push({ path: '/' })">현황🏆</button>

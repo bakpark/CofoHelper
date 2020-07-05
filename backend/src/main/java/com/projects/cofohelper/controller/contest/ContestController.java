@@ -25,15 +25,15 @@ public class ContestController {
 	ContestService contestService;
 	@Autowired
 	ProblemService problemService;
-	
-	@PostMapping(value = "/contests")
+
+	@PostMapping(value = "/api/contests")
 	public ResponseEntity<ResponseDataDto> register(@RequestBody ContestRegisterDto registerDto, HttpServletRequest request){
 		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.register(registerDto, requesterHandle)));
 	}
-	
-	@PostMapping(value = "/contest/problems")
+
+	@PostMapping(value = "/api/contest/problems")
 	public ResponseEntity<ResponseDataDto> register(@RequestBody ContestProblemRegisterDto registerDto, HttpServletRequest request) throws Exception {
 		if(!problemService.isExist(registerDto.getProblemName()))
 			problemService.register(new ProblemRegisterDto(registerDto.getProblemName()));
@@ -41,8 +41,8 @@ public class ContestController {
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.addProblem(registerDto, requesterHandle)));
 	}
-	
-	@GetMapping(value = "/contest/problems")
+
+	@GetMapping(value = "/api/contest/problems")
 	public ResponseEntity<ResponseDataDto> getProblems(Long contestId, HttpServletRequest request){
 		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()

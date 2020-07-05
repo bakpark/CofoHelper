@@ -22,14 +22,14 @@ public class ProblemController {
 
 	@Autowired
 	ProblemService problemService;
-	
-	@PostMapping(value = "/problems")
+
+	@PostMapping(value = "/api/problems")
 	public ResponseEntity<ResponseDataDto> register(@RequestBody ProblemRegisterDto requestDto) throws Exception{
 		Problem problem = problemService.register(requestDto);
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), problem));
 	}
-	@GetMapping(value = "/problems", produces = MediaType.TEXT_HTML_VALUE)
+	@GetMapping(value = "/api/problems", produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<String> getProblemHtml(String problemName) {
 		return ResponseEntity.ok()
 				.body(problemService.getHtml(problemName));

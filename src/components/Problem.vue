@@ -14,7 +14,6 @@ export default {
   components: {
   },
   props: {
-    problemId: String
   },
   data () {
     return {
@@ -27,15 +26,17 @@ export default {
   computed: {
   },
   watch: {
-    problemId (changed) {
-      this.getProblemHtml(changed)
+    $route (to, from) {
+      if (to.params.problemId !== from.params.problemId) {
+        this.getProblemHtml(to.params.problemId)
+      }
     }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
   *****************************************************************/
   created () {
-    this.getProblemHtml(this.problemId)
+    this.getProblemHtml(this.$route.params.problemId)
   },
   mounted () {
   },

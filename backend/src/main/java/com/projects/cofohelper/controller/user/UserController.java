@@ -29,23 +29,22 @@ public class UserController {
 	JwtService jwtService;
 
 	@GetMapping(value = "/api/groups/{groupId}/users")
-  public ResponseEntity<ResponseDataDto> register(@PathVariable Long groupId) {
-    return ResponseEntity.ok()
-      .body(new ResponseDataDto(HttpStatus.OK.value(), userService.getUsersByGroup(groupId)));
-  }
+	public ResponseEntity<ResponseDataDto> getUsersByGroup(@PathVariable Long groupId) {
+		return ResponseEntity.ok()
+				.body(new ResponseDataDto(HttpStatus.OK.value(), userService.getUsersByGroup(groupId)));
+	}
 
 	@PostMapping(value = "/users")
 	public ResponseEntity<ResponseDataDto> register(@RequestBody UserRegisterRequestDto request) {
-		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value(), userService.register(request)));
+		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value(), userService.register(request)));
 	}
 
 	@PostMapping(value = "/users/login")
-	public ResponseEntity<ResponseDataDto> login(@RequestBody UserLoginRequestDto request, HttpServletResponse response) {
+	public ResponseEntity<ResponseDataDto> login(@RequestBody UserLoginRequestDto request,
+			HttpServletResponse response) {
 		User user = userService.login(request);
 		response.setHeader(Constants.AUTHORIZATION, jwtService.create(user.getHandle()));
-		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value(), user));
+		return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value(), user));
 	}
 
 	@PostMapping(value = "/users/user_info")

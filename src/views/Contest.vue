@@ -6,35 +6,11 @@
       </div>
     </div>
     <div class="center-view">
-      <Problem :problemId="problemId"></Problem>
+      <Problem></Problem>
     </div>
     <div class="right-view">
-      <div class="roundbox">
-        <div class="roundbox-lt">&nbsp;</div>
-        <div class="roundbox-rt">&nbsp;</div>
-        <div class="caption titled">
-          -> Submits {{ problemSplit[0] }} - {{ problemSplit[1] }}
-          <div class="top-links"></div>
-        </div>
-        <table class="rtable smaller">
-          <tbody>
-            <tr>
-              <th>Handle</th>
-              <th>Submission</th>
-              <th>Time</th>
-              <th>Language</th>
-              <th>Verdict</th>
-            </tr>
-            <tr v-for="result in displayResults" :key="result.handle">
-              <td>{{ result.handle }}</td>
-              <td v-if="!result.submission"> empty </td>
-              <td v-else><a link :href="result.submissionLink">#{{ result.submission }}</a></td>
-              <td>{{ result.time }}</td>
-              <td>{{ result.language }}</td>
-              <td :class="getVerdictStyle(result.verdict)">{{ result.verdict }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div v-for="group in groupsInContest" :key="group.groupId">
+        <Standings :group="group"></Standings>
       </div>
     </div>
   </div>
@@ -44,79 +20,63 @@
 /*****************************************************************
  ************************** import *******************************
  *****************************************************************/
-import util from '@/common/util.js'
 import Problem from '@/components/Problem'
 import GroupNavigator from '@/components/GroupNavigator'
+import Standings from '@/components/Standings'
 export default {
   name: 'Contest',
   components: {
     Problem: Problem,
-    GroupNavigator: GroupNavigator
+    GroupNavigator: GroupNavigator,
+    Standings: Standings
   },
   props: {
   },
   data () {
     return {
-      problemContestId: '', // 문제의 contest
-      problemIndex: '', // 문제의 problemIndex
-      problemId: '',
-      contestName: '',
-      problemName: '',
-      problemSplit: [],
-      contestInfos: [],
-      results: {},
-      displayResults: {},
-      callHandle: '',
-      groups: []
+      groupsInContest: []
     }
   },
   /*****************************************************************
   ********************** computed, watch ***********************
   *****************************************************************/
   computed: {
+    groups () {
+      return this.$store.state.groups
+    }
   },
   watch: {
+    groups (changed) {
+      this.groupsInContest = []
+      for (let idx in changed) {
+        let group = changed[idx]
+        this.isGroupInContest(group).then(res => {
+          if (res === true) {
+            this.groupsInContest.push(group)
+          }
+        })
+      }
+    },
     $route (to, from) {
-      this.contestId = to.params.contestId
-      this.problemId = to.params.problemId
-      this.getProblem(this.problemId).then(response => {
-        let problemName = response.data.name
-        let split = problemName.split('-')
-        if (split[0] !== this.problemSplit[0]) {
-          this.problemSplit = split
-          this.problemContestId = split[0]
-          this.problemIndex = split[1]
-          return
+      if (to.params.contestId === from.params.contestId) {
+      } else {
+        this.groupsInContest = []
+        for (let idx in this.groups) {
+          let group = this.groups[idx]
+          this.isGroupInContest(group).then(res => {
+            if (res === true) {
+              this.groupsInContest.push(group)
+            }
+          })
         }
-        if (split[1] !== this.problemSplit[1]) {
-          this.problemSplit = split
-          this.problemIndex = split[1]
-          this.renewDisplayResults()
-        }
-      })
-    },
-    problemContestId (changed) {
-      this.initAll()
-      this.getResults(changed)
-    },
-    callHandle (changed) {
-      this.bindDiplayResult(changed)
+      }
     }
   },
   /*****************************************************************
   ************************** Life-Cycle ***************************
   *****************************************************************/
   created () {
-    this.contestId = this.$route.params.contestId
-    this.problemId = this.$route.params.problemId
-    this.getProblem(this.problemId).then(response => {
-      let problemName = response.data.name
-      let split = problemName.split('-')
-      this.problemSplit = split
-      this.problemContestId = split[0]
-      this.problemIndex = split[1]
-    })
-    this.getGroups()
+    this.$store.dispatch('GET_GROUPS')
   },
   mounted () {
   },
@@ -128,94 +88,26 @@ export default {
    ********************** User-Defined Methods *********************
    *****************************************************************/
   methods: {
-    initDisplay () {
-      this.displayResults = {}
-    },
-    initAll () {
-      this.results = {}
-      this.initDisplay()
-    },
-    getResults (contestId) {
-      let vm = this
-      this.$store.state.members.forEach(handle => {
-        vm.getResult(handle, contestId)
-      })
-    },
-    getResult (handle, contestId) {
-      let vm = this
-      vm.$api.contest.status(contestId, handle, 1, 50).then(results => {
-        results.forEach(result => {
-          if (!vm.results[handle]) {
-            vm.results[handle] = []
-          }
-          vm.results[handle].push(vm.extractInfo(result))
-        })
-        vm.callHandle = handle
-      })
-    },
-    extractInfo (item) {
-      let ret = {}
-      ret.handle = item.author.members[0].handle
-      ret.problemIndex = item.problem.index
-      ret.submission = item.id
-      ret.language = item.programmingLanguage
-      ret.verdict = item.verdict
-      ret.submissionLink = this.getSubmissionLink(item)
-      ret.time = util.getTimeString(item.creationTimeSeconds * 1000)
-      return ret
-    },
-    getSubmissionLink (obj) {
-      return 'http://codeforces.com/contest/' + obj.problem.contestId + '/submission/' + obj.id
-    },
-    getVerdictStyle: util.getVerdictStyle,
-    getDisplayResult (handle) {
-      let handleObj = {
-        handle: handle
-      }
-      let vm = this
-      vm.results[handle] && vm.results[handle].forEach((result) => {
-        if (result.problemIndex !== vm.problemIndex) return
-        if (handleObj.verdict && handleObj.verdict === 'OK') return
-        if (result.verdict === 'OK' || !handleObj.submission) {
-          handleObj = result
-        }
-      })
-      return handleObj
-    },
-    bindDiplayResult (handle) {
-      let vm = this
-      let handleObj = this.getDisplayResult(handle)
-      this.displayResults = { ...vm.displayResults }
-      this.displayResults[handle] = handleObj
-    },
-    renewDisplayResults () {
-      let vm = this
-      this.initDisplay()
-      this.$store.state.members.forEach((handle) => {
-        vm.bindDiplayResult(handle)
-      })
-    },
-    getGroups () {
-      let uri = 'api/users/' + this.$store.state.handle + '/groups'
-      let headers = { authorization: localStorage.getItem('authorization').toString() }
-      this.$axios.get(uri, {
-        headers: headers
-      }).then(response => {
-        console.log('getGroups response:', response)
-        this.groups = response.data.data
-      })
-    },
-    getProblem (problemId) {
-      let uri = 'api/problems'
-      let params = { problemId: problemId }
-      let headers = { authorization: localStorage.getItem('authorization').toString() }
+    isGroupInContest (group) {
       return new Promise((resolve, reject) => {
-        this.$axios.get(uri, {
-          params: params,
-          headers: headers
-        }).then(response => {
-          resolve(response.data)
+        this.$axios.get(`api/groups/${group.groupId}/contests`, {
+          headers: {
+            authorization: localStorage.getItem('authorization').toString()
+          }
+        }).then(res => {
+          let contests = res.data.data
+          for (let idx in contests) {
+            let contest = contests[idx]
+            console.log('isGroupInContest? contest:', contest, ' group:', group)
+            if (contest.contestId.toString() === this.$route.params.contestId) {
+              console.log('return ', true)
+              resolve(true)
+            }
+          }
+          console.log('return ', false)
+          resolve(false)
         }).catch(err => {
+          console.error(err)
           reject(err)
         })
       })

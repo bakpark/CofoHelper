@@ -3,13 +3,7 @@ package com.projects.cofohelper.domain.group;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.projects.cofohelper.domain.contest.Contest;
@@ -35,22 +29,22 @@ public class Group {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long groupId;
-	
+
 	private String groupName;
-	
+
 	public Group(String name) {
 		groupName = name;
 	}
 	@JsonBackReference
-	@OneToMany(mappedBy = "group")
+	@OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
 	private List<PartyInfo> parties;
-	
+
 	@JsonBackReference
-	@OneToMany(mappedBy = "group")
+	@OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
 	private List<Invitation> invitations;
-	
+
 	@JsonBackReference
-	@OneToMany(mappedBy = "group")
+	@OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
 	private List<Contest> contests;
 
 	public void addPartyInfo(PartyInfo info) {
@@ -58,7 +52,7 @@ public class Group {
 			parties = new ArrayList<PartyInfo>();
 		parties.add(info);
 	}
-	
+
 	public void addInvitation(Invitation invitation) {
 		if(invitations == null)
 			invitations = new ArrayList<Invitation>();
@@ -70,6 +64,6 @@ public class Group {
 			contests = new ArrayList<Contest>();
 		contests.add(contest);
 	}
-	
-	
+
+
 }

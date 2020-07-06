@@ -35,4 +35,11 @@ public class ContestController {
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.getContests(groupId)));
   }
+
+  @DeleteMapping(value="/api/contests/{contestId}")
+  public ResponseEntity<ResponseDataDto> deleteContest(@PathVariable Long contestId){
+	  return ResponseEntity.ok()
+      .body(new ResponseDataDto(HttpStatus.OK.value(), contestService.deleteContest(contestId)));
+  }
+
 }

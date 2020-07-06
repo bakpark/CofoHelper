@@ -44,7 +44,7 @@ export default new Vuex.Store({
   },
   actions: {
     JOIN (context, {handle, password}) {
-      axios
+      return axios
         .post('/users', { handle, password })
         .then(res => {
           if (res.status == 200) {
@@ -53,7 +53,7 @@ export default new Vuex.Store({
         })
     },
     LOGIN (context, {handle, password}) {
-      axios
+      return axios
         .post('/users/login', { handle, password })
         .then(res => {
           if (res.status == 200) {
@@ -85,18 +85,19 @@ export default new Vuex.Store({
     },
     GET_INVITATIONS (context) {
       const authorization = localStorage.getItem('authorization').toString()
-      axios.get(`api/users/${context.state.handle}/invitations`, {
+      return axios.get(`api/users/${context.state.handle}/invitations`, {
         headers: {
           authorization
         }
       })
         .then(res => {
           context.commit('GET_INVITATIONS', res.data.data)
+          context.dispatch('GET_GROUPS')
         })
     },
     ACCEPT_INVITATION (context, invitationId) {
       const authorization = localStorage.getItem('authorization').toString()
-      axios.post(`api/invitations/${invitationId}/accept`, {}, {
+      return axios.post(`api/invitations/${invitationId}/accept`, {}, {
         headers: {
           authorization
         }
@@ -107,7 +108,7 @@ export default new Vuex.Store({
     },
     NO_INVITATION (context, invitationId) {
       const authorization = localStorage.getItem('authorization').toString()
-      axios.delete(`api/invitations/${invitationId}`, {
+      return axios.delete(`api/invitations/${invitationId}`, {
         headers: {
           authorization
         }
@@ -117,7 +118,7 @@ export default new Vuex.Store({
         })
     },
     GET_GROUPS (context) {
-      axios
+      return axios
         .get(`api/users/${context.state.handle}/groups`, {
           headers: {
             authorization: localStorage.getItem('authorization').toString()

@@ -2,6 +2,7 @@ package com.projects.cofohelper.service.contest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.projects.cofohelper.service.group.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,16 @@ public class ContestService {
 	ProblemRepository problemRepo;
 	@Autowired
 	ContestProblemInfoRepository problemInfoRepo;
+
+	public Contest getContest(Long contestId){
+    Optional<Contest> contest = contestRepo.findById(contestId);
+    return contest.orElseThrow(() -> new ContestNotFoundException("콘테스트가 없습니다"));
+  }
+  public Long deleteContest(Long contestId) {
+    Contest contest = getContest(contestId);
+    contestRepo.delete(contest);
+    return contestId;
+  }
 
 	public List<Contest> getContests(Long groupId) {
 		Group group = groupService.getGroup(groupId);

@@ -24,27 +24,36 @@
 <template>
   <div class="total">
     <div class="main_view">
-      <div class="elements_container">
-        <div class="groups_header">그룹이름</div>
+      <div class="elements_container gropus">
+        <strong class="groups_header" style="font-size: 20px;">그룹이름</strong>
         <div
-          v-for="(group, index) in $store.state.groups"
-          :key="index"
+          v-for="(group) in $store.state.groups"
+          :key="'group' + group.groupId"
           v-on:click="clickGroup(group.groupId)"
+          style="cursor: pointer;"
         >
-          {{ group.groupName }}
+          <div v-if="group.groupId == curGroupId" style="background-color: red;">{{ group.groupName }}</div>
+          <div v-else>{{ group.groupName }}</div>
         </div>
+        <strong style="font-size: 20px;">현재 그룹 멤버</strong>
+        <div v-for="(member, index) in members" :key="index">{{member.handle}}</div>
       </div>
-      <div class="elements_container">
+      <div class="elements_container contests">
         <div class="groups_header">Contest이름</div>
-        <div
-          v-for="(contest, index) in contests"
-          :key="index"
-          v-on:click="clickContest(contest.contestId)"
-        >
-          {{ contest.contestName }}
+        <div v-for="(contest) in contests" :key="'contest'+contest.contestId" >
+          <span v-on:click="clickContest(contest.contestId)" style="cursor: pointer;">
+            <span v-if="contest.contestId == curContestId" style="background-color:red;">{{ contest.contestName }}</span>
+            <span v-else>{{ contest.contestName }}</span>
+          </span>
+          <button v-on:click="deleteContest(contest.contestId)">X</button>
+        </div>
+        <div v-if="$store.state.groups.length > 0">
+          <span>콘테스트 추가</span>
+          <input type="text" v-model="newContestName">
+          <button v-on:click="addContest">추가하기</button>
         </div>
       </div>
-      <div class="table_container">
+      <div class="table_container contest_info">
         <Table
             v-for="(contestInfo, index) in contestInfos"
             :key="index"
@@ -52,6 +61,11 @@
             :rows="contestInfo.rows"
             :contestId="Number(contestInfo.contestId)"
           ></Table>
+          <div v-if="$store.state.groups.length > 0">
+          <span>문제 추가</span>
+          <input type="text" v-model="newProblemName">
+          <button v-on:click="addContest">추가하기</button>
+        </div>
       </div>
     </div>
   </div>
@@ -66,14 +80,26 @@ import constants from "@/common/constants.js";
 export default {
   data() {
     return {
-      contests: [],
+      // group state
       curGroupId: 0,
+      members: [],
+
+      // contest state
       curContestId: 0,
+      contests: [],
+      newContestName: '',
+
+      // problem state
+      newProblemName: '',
       contestInfos: [],
     };
   },
+  watch: {
+  },
   methods: {
     clickGroup(groupId) {
+      this.curGroupId = groupId;
+      // contests
       this.$axios
         .get(`api/groups/${groupId}/contests`, {
           headers: {
@@ -83,11 +109,21 @@ export default {
         .then(res => {
           this.contests = res.data.data;
         });
-      this.curGroupId = groupId;
+
+      // members
+      this.$axios
+        .get(`api/groups/${groupId}/users`, {
+          headers: {
+            authorization: localStorage.getItem("authorization").toString()
+          }
+        })
+        .then(res => {
+          this.members = res.data.data;
+        });
+    
     },
     async clickContest (contestId){
       this.curContestId = contestId;
-
       let res = await this.$axios.get(
         `api/contests/${this.curContestId}/problems`,
         {
@@ -126,14 +162,48 @@ export default {
         contestInfos.push(contestInfo)
       }
       this.contestInfos = contestInfos
+    
+    },
+    addContest() {
+      this.$axios.post(`api/groups/${this.curGroupId}/contests`,
+      { contestName: this.newContestName },
+      {
+        headers:{
+          authorization: localStorage.getItem('authorization').toString()
+        }
+      })
+        .then(res => {
+          this.clickGroup(this.curGroupId)
+        })
+    },
+    deleteContest(contestId) {
+      this.$axios.delete(`api/contests/${contestId}`,
+      {
+        headers:{
+          authorization: localStorage.getItem('authorization').toString()
+        }
+      })
+        .then(res => {
+          this.clickGroup(this.curGroupId)
+        })
+    },
+    addProblem() {
+
     }
   },
   created() {
     // groups
     this.$store.dispatch(`GET_GROUPS`)
+      .then(res => {
+        if(this.$store.state.groups.length > 0){
+          this.clickGroup(this.$store.state.groups[0].groupId)
+        }
+      })
     
     // invitations
     this.$store.dispatch(`GET_INVITATIONS`)
+
+    // 
   },
   components: {
     Table

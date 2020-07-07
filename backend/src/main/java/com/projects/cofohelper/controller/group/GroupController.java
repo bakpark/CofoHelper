@@ -24,7 +24,6 @@ public class GroupController {
 
 	@PostMapping(value = "/api/groups")
 	ResponseEntity<ResponseDataDto> register(@RequestBody GroupRegisterRequestDto requestDto,
-                                           @PathVariable String handle,
                                            HttpServletRequest request){
 		String makerHandle = (String)request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()

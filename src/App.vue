@@ -91,7 +91,7 @@
         <button v-on:click="() => $router.push({ path: '/contest/1/1' })">
           풀이방⚡
         </button>
-        <button v-on:click="() => $router.push({ path: '/' })">현황🏆</button>
+        <button v-on:click="() => $router.push({ path: '/' })">그룹🏆</button>
         <button v-on:click="() => $router.push({ path: '/' })">
           연습만들기✍
         </button>

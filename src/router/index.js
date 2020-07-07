@@ -2,11 +2,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Contest from '@/views/Contest'
-import Home from '@/views/Home'
+// import Home from '@/views/Home'
 import RealTimeSolve from '@/views/RealTimeSolve.vue'
 import Login from '@/views/Login.vue'
 import Join from '@/views/Join.vue'
 import store from '@/store'
+import Groups from '@/views/Groups.vue'
+import Group from '@/views/Group.vue'
+import Problems from '@/views/Problems.vue'
 // import Problem from '@/components/Problem'
 
 Vue.use(Router)
@@ -34,15 +37,24 @@ export default new Router({
   }, {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: Groups,
+    beforeEnter: preventNotLoggedIn
+  }, {
+    path: '/groups/:groupId',
+    name: 'Group',
+    component: Group,
+    beforeEnter: preventNotLoggedIn
+  }, {
+    path: '/groups/:groupId/contests/:contestId',
+    name: 'Problems',
+    component: Problems,
     beforeEnter: preventNotLoggedIn
   }, {
     path: '/realtime',
     name: 'RealTimeSolve',
     component: RealTimeSolve,
     beforeEnter: preventNotLoggedIn
-  },
-  {
+  }, {
     path: '/login',
     name: 'Login',
     component: Login,

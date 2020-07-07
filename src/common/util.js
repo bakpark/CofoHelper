@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import util from '@/components/util.js'
+import { transformUnixTime } from '@/components/util.js'
 import axiosForCofo from '@/axios_for_cofo'
 
 export default {
@@ -92,7 +92,7 @@ export default {
         // notes
         let notes = tmpSubmissions.map(subm => ({
           result: subm.verdict,
-          time: util.transformUnixTime(subm.creationTimeSeconds * 1)
+          time: transformUnixTime(subm.creationTimeSeconds * 1)
         }))
         tempRows[member][problemIndex].notes = notes
 

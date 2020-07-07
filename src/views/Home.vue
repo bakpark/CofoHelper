@@ -19,7 +19,6 @@
 }
 .main_view .table_container {
 }
-
 </style>
 <template>
   <div class="total">
@@ -61,7 +60,7 @@
             :rows="contestInfo.rows"
             :contestId="Number(contestInfo.contestId)"
           ></Table>
-          <div v-if="$store.state.groups.length > 0">
+        <div v-if="$store.state.groups.length > 0">
           <span>문제 추가</span>
           <input type="text" v-model="newProblemName">
           <button v-on:click="addContest">추가하기</button>
@@ -85,6 +84,7 @@ export default {
       members: [],
 
       // contest state
+      onContestWindow: false,
       curContestId: 0,
       contests: [],
       newContestName: '',
@@ -99,7 +99,8 @@ export default {
   methods: {
     clickGroup(groupId) {
       this.curGroupId = groupId;
-      // contests
+      // contests 로드
+      // length > 0 이면 첫번째 컨테스트 선택
       this.$axios
         .get(`api/groups/${groupId}/contests`, {
           headers: {
@@ -108,8 +109,12 @@ export default {
         })
         .then(res => {
           this.contests = res.data.data;
+          if(this.contests.length > 0){
+            this.clickContest(this.contests[0].contestId);
+          }
         });
 
+      
       // members
       this.$axios
         .get(`api/groups/${groupId}/users`, {
@@ -124,6 +129,7 @@ export default {
     },
     async clickContest (contestId){
       this.curContestId = contestId;
+      // problems
       let res = await this.$axios.get(
         `api/contests/${this.curContestId}/problems`,
         {
@@ -134,6 +140,7 @@ export default {
       );
       const problems = res.data.data.map(data => data.name);
 
+      // group users
       let res2 = await this.$axios.get(`api/groups/${this.curGroupId}/users`, {
         headers: {
           authorization: localStorage.getItem("authorization").toString()
@@ -143,15 +150,13 @@ export default {
 
       const contestsObj = {};
       problems.forEach((name) => {
-        let strs = name.split('-')
-        const contestId = strs[0]
-        const problemindex = strs[1]
+        const contestId = name.split('-')[0]
+        const problemindex = name.split('-')[1]
         if(contestsObj[contestId] == undefined)
           contestsObj[contestId] = []
         contestsObj[contestId].push(strs[1])
       })
 
-      
       let contestInfos = [];
       for(const contestId of Object.keys(contestsObj)){
         const problemIndexes = contestsObj[contestId]
@@ -162,7 +167,6 @@ export default {
         contestInfos.push(contestInfo)
       }
       this.contestInfos = contestInfos
-    
     },
     addContest() {
       this.$axios.post(`api/groups/${this.curGroupId}/contests`,
@@ -184,8 +188,17 @@ export default {
         }
       })
         .then(res => {
-          this.clickGroup(this.curGroupId)
+          if(contestId == this.curContestId)
+            this.clickGroup(this.curGroupId)
         })
+    },
+
+    setCurContestId(contestId){
+      this.onContestWindow = true;
+      this.curContestId = contestId;
+    },
+    offContestWindow(){
+      this.onContestWindow = false;
     },
     addProblem() {
 

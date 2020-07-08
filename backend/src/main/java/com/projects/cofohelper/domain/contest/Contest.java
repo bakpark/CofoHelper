@@ -1,5 +1,6 @@
 package com.projects.cofohelper.domain.contest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import com.projects.cofohelper.domain.group.Group;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @NoArgsConstructor
@@ -30,6 +32,10 @@ public class Contest {
 		this.group = group;
 		problemInfos = new ArrayList<>();
 	}
+
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  LocalDateTime endTime;
 
 	@JsonBackReference
 	@OneToMany(mappedBy = "contest", cascade= CascadeType.REMOVE)

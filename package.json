@@ -14,9 +14,12 @@
     "axios": "^0.19.2",
     "cheerio": "^1.0.0-rc.3",
     "lodash": "^4.17.15",
+    "luxon": "^1.24.1",
     "vue": "^2.5.2",
+    "vue-datetime": "^1.0.0-beta.13",
     "vue-router": "^3.0.1",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "weekstart": "^1.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -35,6 +35,9 @@ table td {
     <div>
       <h1>Contest 만들기</h1>
       <span>Contest 이름:</span><input type="text" v-model="newContestName">
+      <div>
+        끝나는시간:<datetime type="datetime" v-model="newContestEndtime" use12-hour></datetime>
+      </div>
       <button v-on:click="makeNewContest">만들기</button>
     </div>
   </div>
@@ -46,7 +49,8 @@ export default {
     return {
       groupId: this.$route.params.groupId,
       contests: [],
-      newContestName: ''
+      newContestName: '',
+      newContestEndtime: ''
     }
   },
   async created () {
@@ -55,7 +59,10 @@ export default {
   },
   methods: {
     makeNewContest: async function () {
-      await post(`api/groups/${this.groupId}/contests`, { contestName: this.newContestName })
+      await post(`api/groups/${this.groupId}/contests`, {
+        contestName: this.newContestName,
+        endTime: this.newContestEndtime
+      })
       let res = await get(`api/groups/${this.groupId}/contests`)
       this.contests = res.data.data
     }

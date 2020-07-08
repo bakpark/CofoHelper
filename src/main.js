@@ -7,6 +7,10 @@ import axiosForCofo from './axios_for_cofo'
 import api from './api'
 import store from './store'
 import axios from './axios_for_apiserver'
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
+
+Vue.component('datetime', Datetime)
 
 Vue.config.productionTip = false
 const toUrl = window.location.href.split(window.location.host + '/#')[1]

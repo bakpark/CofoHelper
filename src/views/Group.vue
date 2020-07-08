@@ -29,14 +29,14 @@ table td {
       <th>종료</th>
       <tr v-for="(contest) in contests" :key="contest.contestId">
         <td><router-link :to="`/groups/${groupId}/contests/${contest.contestId}`">{{contest.contestName}}</router-link> </td>
-        <td>2020.2020</td>
+        <td>{{contest.endTime}}</td>
       </tr>
     </table>
     <div>
       <h1>Contest 만들기</h1>
       <span>Contest 이름:</span><input type="text" v-model="newContestName">
       <div>
-        끝나는시간:<datetime type="datetime" v-model="newContestEndtime" use12-hour></datetime>
+        끝나는시간:<datetime type="datetime" v-model="newContestEndtime" use12-hour>{{$moment().format("yyyy-MM-dd'T'HH:mm:ss")}}</datetime>
       </div>
       <button v-on:click="makeNewContest">만들기</button>
     </div>
@@ -50,7 +50,7 @@ export default {
       groupId: this.$route.params.groupId,
       contests: [],
       newContestName: '',
-      newContestEndtime: ''
+      newContestEndtime: this.$moment().format("yyyy-MM-dd'T'HH:mm:ss")
     }
   },
   async created () {
@@ -61,7 +61,7 @@ export default {
     makeNewContest: async function () {
       await post(`api/groups/${this.groupId}/contests`, {
         contestName: this.newContestName,
-        endTime: this.newContestEndtime
+        endTime: this.newContestEndtime.split('.')[0]
       })
       let res = await get(`api/groups/${this.groupId}/contests`)
       this.contests = res.data.data

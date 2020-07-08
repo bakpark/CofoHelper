@@ -10,13 +10,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.projects.cofohelper.domain.contestprobleminfo.ContestProblemInfo;
 import com.projects.cofohelper.domain.group.Group;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@Builder
+@Setter
+@AllArgsConstructor
 public class Contest {
 	@Id
 	@GeneratedValue
@@ -32,8 +34,12 @@ public class Contest {
 		this.group = group;
 		problemInfos = new ArrayList<>();
 	}
+	public boolean isContestNotEnd(){
+	  if(endTime == null)
+	    return false;
+	  return LocalDateTime.now().isBefore(this.endTime);
+  }
 
-	@Column(nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   LocalDateTime endTime;
 

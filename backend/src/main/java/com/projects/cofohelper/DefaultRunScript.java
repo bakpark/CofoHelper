@@ -1,5 +1,7 @@
 package com.projects.cofohelper;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +104,7 @@ public class DefaultRunScript {
 	}
 
 	private void setDefaultContestAndProblem() throws Exception{
-		contestService.register(1L, new ContestRegisterDto("1353 TEST"), "admin");
+		contestService.register(1L, new ContestRegisterDto("1353 TEST", LocalDateTime.now().plusDays(3)), "admin");
 		problemService.register(new ProblemRegisterDto("1353-A"));
 		problemService.register(new ProblemRegisterDto("1353-B"));
 		problemService.register(new ProblemRegisterDto("1353-C"));
@@ -110,7 +112,7 @@ public class DefaultRunScript {
 		problemService.register(new ProblemRegisterDto("1353-E"));
 		problemService.register(new ProblemRegisterDto("1353-F"));
 
-		contestService.register(1L, new ContestRegisterDto("1360 TEST"), "admin");
+		contestService.register(1L, new ContestRegisterDto("1360 TEST", LocalDateTime.now().plusDays(3)), "admin");
 		problemService.register(new ProblemRegisterDto("1360-A"));
 		problemService.register(new ProblemRegisterDto("1360-B"));
 		problemService.register(new ProblemRegisterDto("1360-C"));

@@ -1,8 +1,10 @@
 package com.projects.cofohelper.service.contest;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.projects.cofohelper.service.group.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,14 @@ public class ContestService {
 	@Autowired
 	ContestProblemInfoRepository problemInfoRepo;
 
+	public List<Contest> getContestsOngoing(Long groupId){
+	  Group group = groupRepo.getOne(groupId);
+	  List<Contest> contests = group.getContests().stream()
+      .filter(contest -> contest.isContestNotEnd())
+      .collect(Collectors.toList());
+    return contests;
+  }
+
 	public Contest getContest(Long contestId){
     Optional<Contest> contest = contestRepo.findById(contestId);
     return contest.orElseThrow(() -> new ContestNotFoundException("콘테스트가 없습니다"));
@@ -68,7 +78,11 @@ public class ContestService {
 			throw new ContestAlreadyExistException(
 					"ContestName already exist in group name:" + registerDto.getContestName());
 
-		Contest contest = new Contest(registerDto.getContestName(), group);
+		Contest contest = new Contest().builder()
+      .contestName(registerDto.getContestName())
+      .group(group)
+      .endTime(registerDto.getEndTime())
+      .build();
 		contestRepo.save(contest);
 		group.addContest(contest);
 
@@ -120,6 +134,8 @@ public class ContestService {
 	}
 
 	private boolean isContestIn(String problemName, Contest contest) {
+	  if(contest.getProblemInfos() == null)
+	    contest.setProblemInfos(new ArrayList<>());
 		for (ContestProblemInfo problemInfo : contest.getProblemInfos()) {
 			if (problemInfo.getProblem().getName().equals(problemName)) {
 				return true;

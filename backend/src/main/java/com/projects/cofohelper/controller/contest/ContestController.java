@@ -36,6 +36,12 @@ public class ContestController {
 				.body(new ResponseDataDto(HttpStatus.OK.value(), contestService.getContests(groupId)));
   }
 
+  @GetMapping(value="/ap/groups/{groupId}/contests_ongoing")
+  public ResponseEntity<ResponseDataDto> getContestsOngoing(@PathVariable Long groupId){
+    return ResponseEntity.ok()
+      .body(new ResponseDataDto(HttpStatus.OK.value(), contestService.getContestsOngoing(groupId)));
+  }
+
   @DeleteMapping(value="/api/contests/{contestId}")
   public ResponseEntity<ResponseDataDto> deleteContest(@PathVariable Long contestId){
 	  return ResponseEntity.ok()

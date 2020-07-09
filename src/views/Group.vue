@@ -36,7 +36,7 @@ table td {
       <h1>Contest 만들기</h1>
       <span>Contest 이름:</span><input type="text" v-model="newContestName">
       <div>
-        끝나는시간:<datetime type="datetime" v-model="newContestEndtime" use12-hour>{{$moment().format("yyyy-MM-dd'T'HH:mm:ss")}}</datetime>
+        끝나는시간:<datetime type="datetime" v-model="newContestEndtime" use12-hour>{{$moment().format("MM월-dd일 HH시 mm분")}}</datetime>
       </div>
       <button v-on:click="makeNewContest">만들기</button>
     </div>

@@ -1,12 +1,23 @@
 
 <style scoped>
+body{
+  width: 100vw;
+  height: 100vh;
+}
 #app {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .main_view{
   display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 .right_real_toggle {
   position: fixed;
@@ -79,7 +90,7 @@
           class="logo"
           v-on:click="
             () => {
-              $router.push({ path: '/' });
+              $router.push({ path: '/groups/list' });
             }
           "
         >
@@ -91,7 +102,7 @@
         <button v-on:click="() => $router.push({ path: '/contest/1/1' })">
           풀이방⚡
         </button>
-        <button v-on:click="() => $router.push({ path: '/' })">그룹🏆</button>
+        <button v-on:click="() => $router.push({ path: '/groups/list' })">그룹🏆</button>
         <button v-on:click="() => $router.push({ path: '/' })">
           연습만들기✍
         </button>

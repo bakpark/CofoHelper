@@ -1,48 +1,53 @@
 <style scoped>
-.total_container {
+.groups_container {
+  margin-top: 5vh;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 60%;
+  height: 100%;
 }
-table {
-  border-collapse: collapse;
-  text-align: left;
-  line-height: 1.5;
-  margin: 20px 10px;
+.nav {
+  margin-top: 5vh;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
 }
-table th {
-  width: 150px;
-  padding: 10px;
-  font-weight: bold;
-  vertical-align: top;
-  border: 1px solid #ccc;
+.nav span{
+  font-size: 1em;
+  font-weight: 600;
+  padding: 10px 15px;
 }
-table td {
-  width: 350px;
-  padding: 10px;
-  vertical-align: top;
-  border: 1px solid #ccc;
+.nav .unclicked {
+  background-color: white;
+  color: black;
+}
+.nav .unclicked:hover {
+  background-color: rgb(197, 197, 197);
+  color: blue;
+}
+.nav .clicked {
+  background-color: blue;
+  color: white;
 }
 </style>
 <template>
-  <div class="total_container">
-    <table>
-      <th>그룹 이름</th>
-      <tr v-for="group in groups" :key="group.groupId">
-        <td>
-          <router-link :to="`/groups/${group.groupId}`">{{
-            group.groupName
-          }}</router-link>
-        </td>
-      </tr>
-    </table>
-    <div>
-      <h1>그룹 만들기</h1>
-      <span>그룹이름:</span><input type="text" v-model="newGroupName">
-      <button v-on:click="makeNewGroup">만들기</button>
+  <div class="groups_container">
+    <div class="nav">
+      <span
+        v-on:click="goto('GroupList')"
+        v-bind:class="getButtonClass('GroupList')"
+        >그룹</span>
+      <span
+        v-on:click="goto('GroupCreate')"
+        v-bind:class="getButtonClass('GroupCreate')"
+        >그룹 만들기</span>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 <script>
-import { get, post } from '@/components/util.js'
+/* eslint-disable eqeqeq */
 export default {
   data () {
     return {
@@ -51,15 +56,17 @@ export default {
     }
   },
   methods: {
-    makeNewGroup: async function () {
-      await post('api/groups', { groupName: this.newGroupName })
-      let res = await get(`api/users/${this.$store.state.handle}/groups`)
-      this.groups = res.data.data
+    goto (name) {
+      this.$router.push({
+        name
+      })
+    },
+    getButtonClass (name) {
+      if (name == this.$route.name) {
+        return 'clicked'
+      }
+      return 'unclicked'
     }
-  },
-  async created () {
-    let res = await get(`api/users/${this.$store.state.handle}/groups`)
-    this.groups = res.data.data
   }
 }
 </script>

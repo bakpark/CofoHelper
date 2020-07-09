@@ -31,6 +31,7 @@ public class Group {
 	private Long groupId;
 
 	private String groupName;
+	private String groupDescription;
 
 	public Group(String name) {
 		groupName = name;

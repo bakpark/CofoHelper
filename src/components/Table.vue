@@ -1,59 +1,5 @@
 /* eslint-disable vue/no-parsing-error */
-<template>
-  <div class="problem_table" style="z-index:90; display:flex; flex-direction:column; align-items:center;">
-    <h1 style="margin:auto;">
-      {{contestId}}
-    </h1>
-    <table >
-      <tr>
-        <th v-for="(column, index) in columns" :key="index">{{ column }}</th>
-      </tr>
-      <tr v-for="(row, index) in rows" :key="index">
-        <td
-          v-for="(column, index) in columns"
-          :key="index"
-          v-bind:class="getTableClass(column, row)"
-        >
-          <div>
-            <span v-if="column == 'name'">{{ row[column] }}</span>
-            <span v-else v-on:click="click(row[column].submission_url)">{{ row[column].result }}</span>
-            <div class="arrow_box">
-                <div v-for="(item, index) in row[column].notes" :key="index">
-                  {{item.result}} {{item.time}}
-                </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
-</template>
-<script>
-/* eslint-disable */
-export default {
-  data() {
-    return {
-    }
-  },
-  props: {
-    contestId: Number,
-    columns: Array, // ['name', 'A', 'B', ,,, 'F']
-    rows: Array // [{name: 'bakpark', A: Accepted, ...}, {...}, {...}]
-  },
-  methods: {
-    click: function(url) {
-      window.open(url, "_blank");
-    },
-    getTableClass: function(column, row) {
-      if (row[column].result == "OK") return "correct";
-      else if (row[column].result == '') return "empty";
-      else if (column == "name") return "user-name";
-      else return "not-correct";
-    }
-  }
-};
-</script>
-<style>
+<style scoped>
 h1 i{
   cursor: pointer;
 }
@@ -121,10 +67,65 @@ h1 i{
     align-items: center;
 }
 .problem_table .arrow_box div{
-    white-space:nowrap; 
+    white-space:nowrap;
 }
 .problem_table span:hover + div.arrow_box {
   display: block;
   z-index: 40;
 }
 </style>
+<template>
+  <div class="problem_table" style="z-index:90; display:flex; flex-direction:column; align-items:center;">
+    <h1 style="margin:auto;">
+      {{contestId}}
+    </h1>
+    <table >
+      <tr>
+        <th v-for="(column, index) in columns" :key="index">{{ column }}</th>
+      </tr>
+      <tr v-for="(row, index) in rows" :key="index">
+        <td
+          v-for="(column, index) in columns"
+          :key="index"
+          v-bind:class="getTableClass(column, row)"
+        >
+          <div>
+            <span v-if="column == 'name'">{{ row[column] }}</span>
+            <span v-else v-on:click="click(row[column].submission_url)">{{ row[column].result }}</span>
+            <div class="arrow_box">
+                <div v-for="(item, index) in row[column].notes" :key="index">
+                  {{item.result}} {{item.time}}
+                </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</template>
+<script>
+/* eslint-disable */
+export default {
+  data() {
+    return {
+    }
+  },
+  props: {
+    contestId: Number,
+    columns: Array, // ['name', 'A', 'B', ,,, 'F']
+    rows: Array // [{name: 'bakpark', A: Accepted, ...}, {...}, {...}]
+  },
+  methods: {
+    click: function(url) {
+      window.open(url, "_blank");
+    },
+    getTableClass: function(column, row) {
+      if (row[column].result == "OK") return "correct";
+      else if (row[column].result == '') return "empty";
+      else if (column == "name") return "user-name";
+      else return "not-correct";
+    }
+  }
+};
+</script>
+

@@ -1,48 +1,59 @@
 <template>
-  <div class="body-wrapper">
-    <div class="table-wrapper">
-      <Table
-        v-for="handle in $store.state.members"
-        :key="handle"
-        :tableKey="handle"
-      ></Table>
+  <div class="realtime-solve">
+    <div class="body-wrapper">
+      <div class="button-wrapper">
+        <button class="group-button" v-for="group in $store.state.groups" :key="group.groupName" @click="selectGroup(group)"> {{ group.groupName }}</button>
+      </div>
     </div>
+    <GroupSubmits :group="selectedGroup"></GroupSubmits>
   </div>
 </template>
 <script>
-import Table from '@/components/SubmitTable.vue'
+import GroupSubmits from '@/components/GroupSubmits.vue'
 export default {
-  name: 'Test',
+  name: 'RealTimeSolve',
   components: {
-    Table: Table
+    GroupSubmits: GroupSubmits
   },
   props: {
   },
   data () {
     return {
+      selectedGroup: {}
     }
   },
   created () {
-    let vm = this
-    this.$store.state.members.forEach(handle => {
-      vm.$api.user.status(handle, 1, 25).then(result => {
-        vm.$store.commit('CHANGE_TABLE_DATA', [handle, result])
-      })
+    this.$store.dispatch(`GET_GROUPS`).then(() => {
+      if (this.$store.state.groups.length > 0) {
+        this.selectedGroup = this.$store.state.groups[0]
+      }
     })
+  },
+  methods: {
+    selectGroup (group) {
+      this.selectedGroup = group
+    }
   }
 }
 </script>
 <style>
+.realtime-solve {
+  width: 100%;
+}
 .body-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 10%;
 }
-.table-wrapper {
+.button-wrapper {
   width: 90%;
+  margin-top: 2em;
   display: flex;
-  flex-direction: row;
+}
+.group-button {
+  margin: 0.3em;
+  height: 3em;
+  width: 8em;
 }
 </style>

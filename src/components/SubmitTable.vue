@@ -1,17 +1,15 @@
 <template>
-  <div class="SubmitTable">
+  <div class="submit-table">
     <table>
       <tbody>
-        <tr><th class="table-header" colspan="4">{{ tableKey }}</th></tr>
+        <tr><th class="table-header" colspan="4">{{ handle }}</th></tr>
         <tr>
-          <!-- <th>Handle</th> -->
           <th>Problem</th>
           <th>SubmitId</th>
           <th>Verdict</th>
         </tr>
-        <tr v-for="(item, idx) in dataList" :key="idx">
-          <!-- <td>{{ item.handle }}</td> -->
-          <td><router-link :to="getProblemLink(item.problem)">{{ item.problem }}</router-link></td>
+        <tr v-for="(item, idx) in submits" :key="idx">
+          <td>{{ item.problem }}</td>
           <td><a link :href="item.submissionLink">#{{ item.id }}</a></td>
           <td :class="item.verdict">{{ item.verdict }}</td>
         </tr>
@@ -29,31 +27,17 @@ export default {
   components: {
   },
   props: {
-    tableKey: String
+    handle: String
   },
   data () {
     return {
+      submits: []
     }
   },
   /*****************************************************************
    ********************** computed, watch ***********************
    *****************************************************************/
   computed: {
-    dataList () {
-      let vm = this
-      let retList = []
-      this.$store.state.submits[this.tableKey].forEach(obj => {
-        let item = {
-          'handle': vm.getHandle(obj),
-          'id': vm.getSubmissionId(obj),
-          'problem': vm.getProblem(obj),
-          'verdict': vm.getVerdict(obj),
-          'submissionLink': vm.getSubmissionLink(obj)
-        }
-        retList.push(item)
-      })
-      return retList
-    }
   },
   watch: {
   },
@@ -61,6 +45,18 @@ export default {
    ************************** Life-Cycle ***************************
    *****************************************************************/
   created () {
+    this.$api.user.status(this.handle, 1, 15).then((submits) => {
+      submits.forEach(obj => {
+        let item = {
+          'handle': this.getHandle(obj),
+          'id': this.getSubmissionId(obj),
+          'problem': this.getProblem(obj),
+          'verdict': this.getVerdict(obj),
+          'submissionLink': this.getSubmissionLink(obj)
+        }
+        this.submits.push(item)
+      })
+    })
   },
   mounted () {
   },
@@ -87,26 +83,22 @@ export default {
     },
     getSubmissionLink (obj) {
       return 'http://codeforces.com/contest/' + obj.problem.contestId + '/submission/' + obj.id
-    },
-    getProblemLink (str) {
-      let strArr = str.split('-')
-      return '/contest/' + strArr[0] + '/' + strArr[1]
     }
   }
 }
 </script>
 
 <style scoped>
-.SubmitTable{
+.submit-table{
   /* border: black solid 2px; */
-  width: 15vw;
+  width: 30vw;
   padding: 0.5vw;
 }
 table .table-header{
   text-align: center;
   border-bottom: black solid 2px;
   font-weight: 700;
-  font-size: 1em;
+  font-size: 2em;
 }
 table{
   width: 100%;
@@ -114,13 +106,13 @@ table{
   margin-right: 1em;
 }
 th{
-  font-size: 0.5em;
+  font-size: 1.3em;
   text-align: center;
   border-bottom: black solid 1px;
 }
 td{
-  font-size: 3px;
-  padding: 0.5px;
+  font-size: 1em;
+  padding: 0.3em;
   border-bottom: black solid 1px;
   text-align: center;
 }

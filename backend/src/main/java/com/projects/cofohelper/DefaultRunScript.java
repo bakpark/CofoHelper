@@ -27,6 +27,9 @@ import com.projects.cofohelper.service.invitation.InvitationService;
 import com.projects.cofohelper.service.problem.ProblemService;
 import com.projects.cofohelper.service.user.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class DefaultRunScript {
 
@@ -63,6 +66,12 @@ public class DefaultRunScript {
 		inviteMembersToGroup(2L, "anonymous");
 		inviteMembersToGroup(3L, "anonymous");
 		setDefaultContestAndProblem();
+		
+		// accept invitation
+		User bakpark = userRepo.findByHandle("bakpark");
+		log.info(bakpark.toString());
+		log.info(bakpark.getInvitations().toString());
+		invitationService.accept(bakpark.getInvitations().get(0).getInvitationId(), "bakpark");
 	}
 
 

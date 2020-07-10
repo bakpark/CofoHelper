@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import Vue from 'vue'
 import Router from 'vue-router'
-import Contest from '@/views/Contest'
+import SolvingView from '@/views/SolvingView'
 // import Home from '@/views/Home'
 import RealTimeSolve from '@/views/RealTimeSolve.vue'
 import Login from '@/views/Login.vue'
@@ -37,8 +37,8 @@ const preventLoggedIn = (to, from, next) => {
 export default new Router({
   routes: [{
     path: '/contest/:contestId/:problemId',
-    name: 'Contest',
-    component: Contest,
+    name: 'SolvingView',
+    component: SolvingView,
     beforeEnter: preventNotLoggedIn
   }, {
     path: '/',

@@ -4,7 +4,7 @@
       <div class="roundbox-lt">&nbsp;</div>
       <div class="roundbox-rt">&nbsp;</div>
       <div class="caption titled">
-        -> Submits {{ group.groupName }} - {{ problemName }}
+        -> {{ group.groupName }}  {{ problemName }}
         <div class="top-links"></div>
       </div>
       <table class="rtable smaller">
@@ -62,8 +62,10 @@ export default {
       this.bindDiplayResult(changed)
     },
     problemContestId (changed) {
-      this.initAll()
-      this.getResults(changed)
+      this.getMembers().then(() => {
+        this.initAll()
+        this.getResults(changed)
+      })
     },
     $route (to, from) {
       if (to === from) {

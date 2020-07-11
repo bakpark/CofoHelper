@@ -27,6 +27,14 @@
         </tbody>
       </table>
     </div>
+    <div class="round-box">
+      <div class="roundbox-lt">&nbsp;</div>
+      <div class="roundbox-rt">&nbsp;</div>
+      <div class="caption titled">
+        Go to Submit! <br><a link :href="getSubmitLink()">>> Contest {{ problemContestId }}</a>
+        <div class="top-links"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -191,7 +199,10 @@ export default {
         this.bindDiplayResult(obj.handle)
       })
     },
-    getVerdictStyle: util.getVerdictStyle
+    getVerdictStyle: util.getVerdictStyle,
+    getSubmitLink () {
+      return 'https://codeforces.com/contest/' + this.problemContestId + '/submit'
+    }
   }
 }
 </script>

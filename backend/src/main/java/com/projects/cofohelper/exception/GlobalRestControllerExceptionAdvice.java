@@ -52,6 +52,11 @@ public class GlobalRestControllerExceptionAdvice {
 		return ResponseEntity.badRequest()
 				.body(new ResponseDataDto(HttpStatus.BAD_REQUEST.value(), "invalid problem uri"+e.getMessage()));
 	}
+	@ExceptionHandler(InvalidParameterException.class)
+	public ResponseEntity<ResponseDataDto> invalidProblemName(Exception e){
+		return ResponseEntity.badRequest()
+				.body(new ResponseDataDto(HttpStatus.BAD_REQUEST.value(), "invalid problem name"+e.getMessage()));
+	}
 
 	@ExceptionHandler(IOException.class)
 	public ResponseEntity<ResponseDataDto> failIO(Exception e){

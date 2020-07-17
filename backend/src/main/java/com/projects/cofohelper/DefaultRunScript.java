@@ -53,25 +53,25 @@ public class DefaultRunScript {
 	@Transactional
 	@EventListener(ApplicationReadyEvent.class)
 	public void setDefault() throws Exception{
-		setDefaultUsers();
-		groupService.register(
-				new GroupRegisterRequestDto("study"), "admin");
-		inviteMembersToGroup(1L, "admin");
-		acceptStudyGroupInvitation(acceptList());
-
-		groupService.register(
-				new GroupRegisterRequestDto("anonymous group1"), "anonymous");
-		groupService.register(
-				new GroupRegisterRequestDto("anonymous group2"), "anonymous");
-		inviteMembersToGroup(2L, "anonymous");
-		inviteMembersToGroup(3L, "anonymous");
-		setDefaultContestAndProblem();
-		
-		// accept invitation
-		User bakpark = userRepo.findByHandle("bakpark");
-		log.info(bakpark.toString());
-		log.info(bakpark.getInvitations().toString());
-		invitationService.accept(bakpark.getInvitations().get(0).getInvitationId(), "bakpark");
+//		setDefaultUsers();
+//		groupService.register(
+//				new GroupRegisterRequestDto("study"), "admin");
+//		inviteMembersToGroup(1L, "admin");
+//		acceptStudyGroupInvitation(acceptList());
+//
+//		groupService.register(
+//				new GroupRegisterRequestDto("anonymous group1"), "anonymous");
+//		groupService.register(
+//				new GroupRegisterRequestDto("anonymous group2"), "anonymous");
+//		inviteMembersToGroup(2L, "anonymous");
+//		inviteMembersToGroup(3L, "anonymous");
+//		setDefaultContestAndProblem();
+//		
+//		// accept invitation
+//		User bakpark = userRepo.findByHandle("bakpark");
+//		log.info(bakpark.toString());
+//		log.info(bakpark.getInvitations().toString());
+//		invitationService.accept(bakpark.getInvitations().get(0).getInvitationId(), "bakpark");
 	}
 
 

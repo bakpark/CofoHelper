@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Axois from 'axios'
 
-const axiosForApiServer = Axois.create({ baseURL: 'http://localhost:8080/' })
+console.log(process.env)
+const axiosForApiServer = Axois.create({ baseURL: process.env.API_BASE_URL })
 Vue.prototype.$axios = axiosForApiServer
 export default axiosForApiServer

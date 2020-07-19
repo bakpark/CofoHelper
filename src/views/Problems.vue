@@ -21,6 +21,7 @@ table td {
 </style>
 <template>
     <div>
+      <h1>{{contestName}}</h1>
       <table>
         <th>
           <td>문제이름</td>
@@ -44,17 +45,24 @@ export default {
       groupId: this.$route.params.groupId,
       contestId: this.$route.params.contestId,
       newProblemName: '',
-      problems: []
+      problems: [],
+      contestName: ''
     }
   },
   async created () {
-    let res = get(`api/contests/${this.contestId}/problems`)
+    let res = await get(`api/contests/${this.contestId}/problems`)
     this.problems = res.data.data
+    res = await get(`api/contests/${this.$route.params.contestId}`)
+    this.contestName = res.data.data.contestName
   },
   methods: {
     makeNewProblem: async function () {
       await post(`api/contests/${this.contestId}/problems`, { problemName: this.newProblemName })
       let res = await get(`api/contests/${this.contestId}/problems`)
+      if (res.status !== 200) {
+        alert('존재하지 않는 문제 입니다.')
+        return null
+      }
       this.problems = res.data.data
     }
   }

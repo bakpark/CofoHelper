@@ -35,6 +35,9 @@ public class UserService {
 
   private PasswordEncoder encoder = new BCryptPasswordEncoder();
 
+  public boolean checkIfUserExist(String userHandle){
+    return userRepository.findByHandle(userHandle) != null;
+  }
   public List<User> getUsersByGroup(Long groupId){
     Group group = groupRepository.getOne(groupId);
     List<User> users = partyinfoRepository.findByGroup(group).stream()

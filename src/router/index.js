@@ -13,7 +13,6 @@ import GroupCreate from '@/views/GroupCreate.vue'
 import Problems from '@/views/Problems.vue'
 // import Problem from '@/components/Problem'
 import Contests from '@/views/Contests.vue'
-import ContestInfo from '@/views/ContestInfo.vue'
 import GroupMembers from '@/views/GroupMembers.vue'
 import ContestCreate from '@/views/ContestCreate.vue'
 import ContestList from '@/views/ContestList.vue'
@@ -81,8 +80,8 @@ export default new Router({
         component: GroupMembers
       }, {
         path: ':contestId',
-        name: 'ContestInfo',
-        component: ContestInfo
+        name: 'Problems',
+        component: Problems
       }
     ]
   }, {

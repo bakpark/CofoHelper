@@ -90,7 +90,7 @@ body{
           class="logo"
           v-on:click="
             () => {
-              $router.push({ path: '/groups/list' });
+              $router.push({ path: '/contest/1/1' });
             }
           "
         >

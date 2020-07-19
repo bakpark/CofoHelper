@@ -2,6 +2,7 @@ package com.projects.cofohelper.controller.user;
 
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,6 +34,11 @@ public class UserController {
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), userService.getUsersByGroup(groupId)));
 	}
+
+	@GetMapping(value = "/api/users/{userHandle}")
+  public ResponseEntity<ResponseDataDto> checkExistUser(@PathVariable String userHandle){
+	  return ResponseEntity.ok().body(new ResponseDataDto(HttpStatus.OK.value(), userService.checkIfUserExist(userHandle)));
+  }
 
 	@PostMapping(value = "/users")
 	public ResponseEntity<ResponseDataDto> register(@RequestBody UserRegisterRequestDto request) {

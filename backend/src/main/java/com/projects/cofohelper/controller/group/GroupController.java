@@ -38,7 +38,6 @@ public class GroupController {
         .body(new ResponseDataDto(HttpStatus.OK.value(), userService.getGroups(handle)));
     else
       throw new UnAuthorizedException("UnAuthorized for :" + handle);
-
   }
 
   @GetMapping(value = "/api/groups/{groupId}")

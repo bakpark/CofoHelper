@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import SolvingView from '@/views/SolvingView'
-// import Home from '@/views/Home'
+import Home from '@/views/Home'
 import RealTimeSolve from '@/views/RealTimeSolve.vue'
 import Login from '@/views/Login.vue'
 import Join from '@/views/Join.vue'
@@ -13,7 +13,6 @@ import GroupCreate from '@/views/GroupCreate.vue'
 import Problems from '@/views/Problems.vue'
 // import Problem from '@/components/Problem'
 import Contests from '@/views/Contests.vue'
-import ContestInfo from '@/views/ContestInfo.vue'
 import GroupMembers from '@/views/GroupMembers.vue'
 import ContestCreate from '@/views/ContestCreate.vue'
 import ContestList from '@/views/ContestList.vue'
@@ -43,7 +42,7 @@ export default new Router({
   }, {
     path: '/',
     name: 'Home',
-    component: Groups,
+    component: Home,
     beforeEnter: preventNotLoggedIn
   }, {
     path: '/groups/',
@@ -81,8 +80,8 @@ export default new Router({
         component: GroupMembers
       }, {
         path: ':contestId',
-        name: 'ContestInfo',
-        component: ContestInfo
+        name: 'Problems',
+        component: Problems
       }
     ]
   }, {

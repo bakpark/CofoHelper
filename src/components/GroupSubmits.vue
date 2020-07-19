@@ -44,7 +44,9 @@ export default {
    ************************** Life-Cycle ***************************
    *****************************************************************/
   created () {
-    this.getMembers(this.group.groupId)
+    if (this.group.groupId) {
+      this.getMembers(this.group.groupId)
+    }
   },
   mounted () {
   },

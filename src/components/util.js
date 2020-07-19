@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import Axios from '@/axios_for_apiserver'
 const readStaticFile = function (path) {
   console.log('read static file :', path)
   return new Promise((resolve, reject) => {
@@ -54,14 +54,16 @@ const transformUnixTime = function (unixTime) {
   return `${Math.floor(betweenTimeDay / 365)}년전`
 }
 const get = function (url) {
-  return Axios.get('http://localhost:8080/' + url, {
+  // return Axios.get('http://localhost:8080/' + url, {
+  return Axios.get(url, {
     headers: {
       authorization: localStorage.getItem('authorization').toString()
     }
   })
 }
 const post = function (url, body) {
-  return Axios.post('http://localhost:8080/' + url, body, {
+  // return Axios.post('http://localhost:8080/' + url, body, {
+  return Axios.post(url, body, {
     headers: {
       authorization: localStorage.getItem('authorization').toString()
     }

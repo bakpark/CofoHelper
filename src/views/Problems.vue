@@ -57,12 +57,16 @@ export default {
   },
   methods: {
     makeNewProblem: async function () {
-      await post(`api/contests/${this.contestId}/problems`, { problemName: this.newProblemName })
-      let res = await get(`api/contests/${this.contestId}/problems`)
-      if (res.status !== 200) {
-        alert('존재하지 않는 문제 입니다.')
+      try {
+        await post(`api/contests/${this.contestId}/problems`, { problemName: this.newProblemName })
+      } catch (e) {
+        alert(`존재하지 않는 문제 입니다.
+<콘테스트번호-알파벳> 형식으로 작성해주세요. 
+EX) 1367-A `)
         return null
       }
+
+      let res = await get(`api/contests/${this.contestId}/problems`)
       this.problems = res.data.data
     }
   }

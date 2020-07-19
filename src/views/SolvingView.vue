@@ -1,5 +1,5 @@
 <template>
-  <div class="Contest">
+  <div class="SolvingView">
     <div class="left-view">
       <div class="group-navigator-wrapper" v-for="group in groups" :key="group.groupId">
         <GroupNavigator :group="group"></GroupNavigator>
@@ -24,7 +24,7 @@ import Problem from '@/components/Problem'
 import GroupNavigator from '@/components/GroupNavigator'
 import Standings from '@/components/Standings'
 export default {
-  name: 'Contest',
+  name: 'SolvingView',
   components: {
     Problem: Problem,
     GroupNavigator: GroupNavigator,
@@ -98,13 +98,10 @@ export default {
           let contests = res.data.data
           for (let idx in contests) {
             let contest = contests[idx]
-            console.log('isGroupInContest? contest:', contest, ' group:', group)
             if (contest.contestId.toString() === this.$route.params.contestId) {
-              console.log('return ', true)
               resolve(true)
             }
           }
-          console.log('return ', false)
           resolve(false)
         }).catch(err => {
           console.error(err)
@@ -118,7 +115,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.Contest{
+.SolvingView{
   display: flex;
   flex-direction: row;
 }

@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import SolvingView from '@/views/SolvingView'
-// import Home from '@/views/Home'
+import Home from '@/views/Home'
 import RealTimeSolve from '@/views/RealTimeSolve.vue'
 import Login from '@/views/Login.vue'
 import Join from '@/views/Join.vue'
@@ -42,7 +42,7 @@ export default new Router({
   }, {
     path: '/',
     name: 'Home',
-    component: Groups,
+    component: Home,
     beforeEnter: preventNotLoggedIn
   }, {
     path: '/groups/',

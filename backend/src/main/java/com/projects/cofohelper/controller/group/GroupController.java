@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.projects.cofohelper.common.Constants;
+import com.projects.cofohelper.dto.request.AddMemberToGroupRequestDto;
 import com.projects.cofohelper.dto.request.GroupRegisterRequestDto;
 import com.projects.cofohelper.dto.response.ResponseDataDto;
 import com.projects.cofohelper.service.group.GroupService;
@@ -52,5 +53,17 @@ public class GroupController {
 		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
 		return ResponseEntity.ok()
 				.body(new ResponseDataDto(HttpStatus.OK.value(), groupService.getInvitations(groupId, requesterHandle)));
+	}
+	
+	@PostMapping(value = "/api/groups/{groupId}/addMember")
+	ResponseEntity<ResponseDataDto> addMeberToGroup(
+			@PathVariable Long groupId, 
+			@RequestBody AddMemberToGroupRequestDto requestDto,
+			HttpServletRequest request
+			){
+		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
+		return ResponseEntity.ok()
+				.body(new ResponseDataDto(HttpStatus.OK.value(), 
+						groupService.addMember(groupId, requesterHandle, requestDto.getHandle())));
 	}
 }

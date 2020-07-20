@@ -1,6 +1,5 @@
-
 <style scoped>
-body{
+body {
   width: 100vw;
   height: 100vh;
 }
@@ -11,8 +10,8 @@ body{
   flex-direction: column;
   align-items: center;
 }
-.main_view{
-  display:flex;
+.main_view {
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -30,48 +29,115 @@ body{
   align-items: center;
 }
 
-.nav_container {
-  background-color: white;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  border-bottom: 1px solid rgb(211, 211, 211);
+@media (min-width: 320px) and (max-width: 480px) {
+  .nav_container {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-bottom: 1px solid rgb(211, 211, 211);
+    padding-bottom: 8px;
+  }
+  .nav_container .logo_container .logo {
+    margin-left: 5vw;
+    font-size: 2em;
+    font-weight: 800;
+    color: rgb(166, 187, 255);
+    height: 100%;
+  }
+  .nav_container p {
+    font-size: 2em;
+    font-weight: 800;
+    padding: 5px;
+  }
+  .nav_container .menus {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+  .nav_container .menus .not_personal_menus{
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    margin-left: 3vw;
+    margin-top: 3px;
+    margin-bottom: 2px;
+  }
+  .nav_container .menus button {
+    border: 0px;
+    padding: 5px;
+    margin-right: 5px;
+    font-size: 0.8em;
+    font-weight: 800;
+    border-radius: 4px;
+    background-color: rgb(199, 223, 253);
+    color: rgb(43, 59, 151);
+  }
+}
+@media (min-width: 1000px) {
+  .nav_container {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    border-bottom: 1px solid rgb(211, 211, 211);
+    padding-bottom: 14px;
+  }
+  .nav_container .logo_container .logo {
+    margin-left: 5vw;
+    font-size: 2em;
+    font-weight: 800;
+    color: rgb(166, 187, 255);
+    height: 100%;
+  }
+  .nav_container p {
+    font-size: 2em;
+    font-weight: 800;
+    padding: 5px;
+  }
+  .nav_container .personal_menus strong{
+    margin-left:10vw;
+  }
+  .nav_container .logo_container{
+    width: 30%;
+  }
+  .nav_container .menus {
+    width: 70%;
+    display: flex;
+  }
+  .nav_container .menus .not_personal_menus{
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    margin-left: 3vw;
+    margin-top: 3px;
+    margin-bottom: 2px;
+  }
+  .nav_container .menus .personal_menus{
+    width: 50%;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .nav_container .menus button {
+    border: 0px;
+    padding: 5px;
+    margin-right: 10px;
+    font-size: 1.3em;
+    font-weight: 800;
+    border-radius: 10px;
+    background-color: rgb(199, 223, 253);
+    color: rgb(43, 59, 151);
+  }
 }
 .logo_container {
   display: flex;
   align-items: center;
   cursor: pointer;
-}
-.nav_container .logo_container .logo {
-  margin-left: 5vw;
-  font-size: 3em;
-  font-weight: 800;
-  color: rgb(166, 187, 255);
-  height: 100%;
-}
-.nav_container p {
-  font-size: 3em;
-  font-weight: 800;
-  padding: 15px;
-}
-.menus {
-  display:flex;
-  justify-content: flex-start;
-  align-content: center;
-  margin-left: 3vw;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.nav_container .menus button {
-  border: 0px;
-  padding: 5px;
-  margin-right: 10px;
-  font-size: 1.3em;
-  font-weight: 800;
-  border-radius: 10px;
-  background-color: rgb(199, 223, 253);
-  color: rgb(43, 59, 151);
 }
 .nav_container .menus button:hover {
   opacity: 0.7;
@@ -90,7 +156,7 @@ body{
           class="logo"
           v-on:click="
             () => {
-              $router.push({ path: '/contest/1/1' });
+              $router.push({ path: '/' });
             }
           "
         >
@@ -99,21 +165,22 @@ body{
         <p>🍺🍺</p>
       </div>
       <div class="menus">
-        <button v-on:click="() => $router.push({ path: '/contest/1/1' })">
-          풀이방⚡
-        </button>
-        <button v-on:click="() => $router.push({ path: '/groups/list' })">그룹🏆</button>
-        <button v-on:click="() => $router.push({ path: '/' })">
-          연습만들기✍
-        </button>
-        <button v-on:click="() => $router.push('/realtime')">
-          실시간제출현황⏳
-        </button>
-        <strong style="margin-left:10vw;">{{$store.state.handle}}</strong>
-        <AlarmBox></AlarmBox>
+        <div class="not_personal_menus">
+          <button v-on:click="() => $router.push({ path: '/contest/1/1' })">
+            풀이방⚡
+          </button>
+          <button v-on:click="() => $router.push({ path: '/groups/list' })">
+            그룹🏆
+          </button>
+          <button v-on:click="() => $router.push('/realtime')">
+            실시간제출현황⏳
+          </button>
+        </div>
+        <div class="personal_menus">
+          <strong>{{ $store.state.handle }}</strong>
+          <AlarmBox></AlarmBox>
+        </div>
       </div>
-      <br />
-      <br />
     </div>
     <div class="main_view">
       <router-view />
@@ -141,7 +208,8 @@ export default {
     };
   },
   components: {
-    Table, AlarmBox
-  },
+    Table,
+    AlarmBox
+  }
 };
 </script>

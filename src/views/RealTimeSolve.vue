@@ -1,3 +1,24 @@
+<style scoped>
+.realtime-solve {
+  width: 100%;
+}
+.body-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.button-wrapper {
+  width: 90%;
+  margin-top: 2em;
+  display: flex;
+}
+.group-button {
+  margin: 0.3em;
+  height: 3em;
+  width: 8em;
+}
+</style>
 <template>
   <div class="realtime-solve">
     <div class="body-wrapper">
@@ -36,24 +57,3 @@ export default {
   }
 }
 </script>
-<style>
-.realtime-solve {
-  width: 100%;
-}
-.body-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-.button-wrapper {
-  width: 90%;
-  margin-top: 2em;
-  display: flex;
-}
-.group-button {
-  margin: 0.3em;
-  height: 3em;
-  width: 8em;
-}
-</style>

@@ -1,10 +1,40 @@
+<style scoped>
+.group-submits {
+  height: 10em;
+}
+.table-wrapper {
+  width: 90%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+@media (min-width: 320px) and (max-width: 480px) {
+  .table-wrapper ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .table-wrapper ul li {
+    line-height: 2em;
+    float: left;
+  }
+}
+@media (min-width: 1100px) {
+  .table-wrapper ul {
+    width: 100%;
+  }
+  .table-wrapper ul li {
+    width: 33.3333%;
+    line-height: 2em;
+    float: left;
+  }
+}
+</style>
 <template>
   <div class="group-submits">
-    <div class="table-wrapper" >
+    <div class="table-wrapper">
       <ul>
-        <li
-          v-for="obj in members"
-          :key="obj.handle">
+        <li v-for="obj in members" :key="obj.handle">
           <SubmitTable :handle="obj.handle"></SubmitTable>
         </li>
       </ul>
@@ -33,8 +63,7 @@ export default {
   /*****************************************************************
    ********************** computed, watch ***********************
    *****************************************************************/
-  computed: {
-  },
+  computed: {},
   watch: {
     group (changed) {
       this.getMembers(changed.groupId)
@@ -48,46 +77,28 @@ export default {
       this.getMembers(this.group.groupId)
     }
   },
-  mounted () {
-  },
-  beforeDestroy () {
-  },
-  destroyed () {
-  },
+  mounted () {},
+  beforeDestroy () {},
+  destroyed () {},
   /*****************************************************************
    ********************** User-Defined Methods *********************
    *****************************************************************/
   methods: {
     getMembers (groupId) {
       this.members = []
-      this.$axios.get(`api/groups/${groupId}/users`, {
-        headers: { authorization: localStorage.getItem('authorization').toString() }
-      }).then(res => {
-        this.members = res.data.data
-      }).catch(err => {
-        console.error(err)
-      })
+      this.$axios
+        .get(`api/groups/${groupId}/users`, {
+          headers: {
+            authorization: localStorage.getItem('authorization').toString()
+          }
+        })
+        .then(res => {
+          this.members = res.data.data
+        })
+        .catch(err => {
+          console.error(err)
+        })
     }
   }
 }
 </script>
-
-<style scoped>
-.group-submits{
-  height: 10em;
-}
-.table-wrapper {
-  width: 90%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-}
-.table-wrapper ul {
-  width: 100%;
-}
-.table-wrapper ul li {
-  width: 33.3333%;
-  line-height: 2em;
-  float: left;
-}
-</style>

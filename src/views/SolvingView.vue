@@ -1,3 +1,63 @@
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+@media (min-width: 320px) and (max-width: 480px){
+.SolvingView{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.left-view{
+  order: 2;
+  width: 100%;
+  margin-left: 3%;
+  margin-top: 2em;
+}
+div .group-navigator-wrapper{
+  margin-bottom: 2em;
+  border: dotted 2px black;
+}
+.center-view{
+  order:3;
+  margin-left: 1%;
+  margin-right: 1%;
+  width: 100%;
+  margin-top: 3em;
+}
+.right-view{
+  order:1;
+  width: 100%;
+  margin-top: 2em;
+}
+}
+@media (min-width: 1100px) {
+.SolvingView{
+  display: flex;
+  flex-direction: row;
+}
+div .group-navigator-wrapper{
+  margin-bottom: 2em;
+  border: dotted 2px black;
+}
+.left-view{
+  width: 15%;
+  margin-left: 3%;
+  margin-top: 10em;
+}
+.center-view{
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 50%;
+  margin-top: 3em;
+}
+.right-view{
+  width: 23%;
+  margin-right: 3%;
+  margin-top: 3em;
+}
+}
+
+</style>
 <template>
   <div class="SolvingView">
     <div class="left-view">
@@ -112,31 +172,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.SolvingView{
-  display: flex;
-  flex-direction: row;
-}
-.left-view{
-  width: 15%;
-  margin-left: 3%;
-  margin-top: 10em;
-}
-.center-view{
-  margin-left: 5%;
-  margin-right: 5%;
-  width: 50%;
-  margin-top: 3em;
-}
-.right-view{
-  width: 23%;
-  margin-right: 3%;
-  margin-top: 10em;
-}
-div .group-navigator-wrapper{
-  margin-bottom: 2em;
-  border: dotted 2px black;
-}
-</style>

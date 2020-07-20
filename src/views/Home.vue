@@ -8,7 +8,7 @@
 export default {
   created: function () {
     this.$router.push({
-      path: '/contest/1/1'
+      path: '/realtime'
     })
   }
 }

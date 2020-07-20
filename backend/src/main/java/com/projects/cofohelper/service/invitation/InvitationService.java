@@ -2,6 +2,8 @@ package com.projects.cofohelper.service.invitation;
 
 import java.util.List;
 
+import com.projects.cofohelper.exception.alreadyexist.GroupAlreadyExistException;
+import com.projects.cofohelper.exception.alreadyexist.HandleAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +78,9 @@ public class InvitationService {
 		User requester = userRepo.findByHandle(requesterHandle);
 		User invited = invitation.getInvited();
 		Group group = invitation.getGroup();
+		if(partyInfoRepo.findByGroupAndUser(group, invited) != null){
+		  throw new HandleAlreadyExistException("해당그룹에 이미 소속되어 있는 사용자 입니다");
+    }
 		if(!invited.equals(requester))
 			throw new UnAuthorizedException("UnAuthorized to accept for this invitation");
 		addConnectionUserAndGroup(invited, group);

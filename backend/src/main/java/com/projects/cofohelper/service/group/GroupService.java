@@ -72,37 +72,5 @@ public class GroupService {
 			throw new UnAuthorizedException("UnAuthorized to group :"+groupId);
 		return group.getInvitations();
 	}
-	
-	public PartyInfo addMember(Long groupId, String requesterHandle, String handle) {
-		Group group = groupRepo.getOne(groupId);
-		User requester = userRepo.findByHandle(requesterHandle);
-		User user = userRepo.findByHandle(handle);
-		if(group == null)
-			throw new GroupNotFoundException("Group not found groupId:"+groupId);
-		if(user == null)
-			throw new HandleNotFoundException("Not Found handle: " + handle);
-		boolean requesterInGroup = false;
-		boolean userInGroup = false;
-		for(PartyInfo info : group.getParties()) {
-			if(requester.equals(info.getUser())) {
-				requesterInGroup = true;
-			}
-			if(user.equals(info.getUser())) {
-				userInGroup = true;
-			}
-		}
-		if(!requesterInGroup)
-			throw new UnAuthorizedException("UnAuthorized to group :"+groupId);
-		if(userInGroup)
-			throw new HandleAlreadyExistException("Handle already exist in group, handle:" + handle);
-		PartyInfo partyInfo = PartyInfo.builder()
-								.group(group)
-								.user(user)
-								.build();
-		partyInfoRepo.save(partyInfo);
-		group.addPartyInfo(partyInfo);
-		user.addPartyInfo(partyInfo);
-		return partyInfo;
-	}
 
 }

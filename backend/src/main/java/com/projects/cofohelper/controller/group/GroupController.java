@@ -2,16 +2,19 @@ package com.projects.cofohelper.controller.group;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.projects.cofohelper.exception.UnAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.projects.cofohelper.common.Constants;
-import com.projects.cofohelper.dto.request.AddMemberToGroupRequestDto;
 import com.projects.cofohelper.dto.request.GroupRegisterRequestDto;
 import com.projects.cofohelper.dto.response.ResponseDataDto;
+import com.projects.cofohelper.exception.UnAuthorizedException;
 import com.projects.cofohelper.service.group.GroupService;
 import com.projects.cofohelper.service.user.UserService;
 
@@ -55,15 +58,4 @@ public class GroupController {
 				.body(new ResponseDataDto(HttpStatus.OK.value(), groupService.getInvitations(groupId, requesterHandle)));
 	}
 	
-	@PostMapping(value = "/api/groups/{groupId}/addMember")
-	ResponseEntity<ResponseDataDto> addMeberToGroup(
-			@PathVariable Long groupId, 
-			@RequestBody AddMemberToGroupRequestDto requestDto,
-			HttpServletRequest request
-			){
-		String requesterHandle = (String)request.getAttribute(Constants.USER_HANDLE);
-		return ResponseEntity.ok()
-				.body(new ResponseDataDto(HttpStatus.OK.value(), 
-						groupService.addMember(groupId, requesterHandle, requestDto.getHandle())));
-	}
 }

@@ -52,7 +52,12 @@ body {
     font-weight: 800;
     padding: 5px;
   }
-  .menus {
+  .nav_container .menus {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+  .nav_container .menus .not_personal_menus{
     display: flex;
     justify-content: flex-start;
     align-content: center;
@@ -96,13 +101,27 @@ body {
   .nav_container .personal_menus strong{
     margin-left:10vw;
   }
-  .menus {
+  .nav_container .logo_container{
+    width: 30%;
+  }
+  .nav_container .menus {
+    width: 70%;
+    display: flex;
+  }
+  .nav_container .menus .not_personal_menus{
+    width: 50%;
     display: flex;
     justify-content: flex-start;
     align-content: center;
     margin-left: 3vw;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 3px;
+    margin-bottom: 2px;
+  }
+  .nav_container .menus .personal_menus{
+    width: 50%;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
   }
   .nav_container .menus button {
     border: 0px;
@@ -146,19 +165,21 @@ body {
         <p>🍺🍺</p>
       </div>
       <div class="menus">
-        <button v-on:click="() => $router.push({ path: '/contest/1/1' })">
-          풀이방⚡
-        </button>
-        <button v-on:click="() => $router.push({ path: '/groups/list' })">
-          그룹🏆
-        </button>
-        <button v-on:click="() => $router.push('/realtime')">
-          실시간제출현황⏳
-        </button>
+        <div class="not_personal_menus">
+          <button v-on:click="() => $router.push({ path: '/contest/1/1' })">
+            풀이방⚡
+          </button>
+          <button v-on:click="() => $router.push({ path: '/groups/list' })">
+            그룹🏆
+          </button>
+          <button v-on:click="() => $router.push('/realtime')">
+            실시간제출현황⏳
+          </button>
+        </div>
         <div class="personal_menus">
-        <strong>{{ $store.state.handle }}</strong>
-        <AlarmBox></AlarmBox>
-      </div>
+          <strong>{{ $store.state.handle }}</strong>
+          <AlarmBox></AlarmBox>
+        </div>
       </div>
     </div>
     <div class="main_view">

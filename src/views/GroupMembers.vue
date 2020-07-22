@@ -58,7 +58,7 @@ export default {
       }
       this.addFlag = false
       this.newGroupMember = ''
-      alert(member, '을 초대했습니다.')
+      alert(member + '을 초대했습니다.')
     }
   }
 }

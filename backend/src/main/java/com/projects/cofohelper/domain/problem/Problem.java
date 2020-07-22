@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.projects.cofohelper.domain.html.HtmlNode;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,14 +25,16 @@ public class Problem {
 
 	// example : 1367-A
 	private String name;
-	
-	@JsonBackReference
-	@OneToOne(targetEntity = HtmlNode.class)
-	private HtmlNode htmlContent;
+
+	@Column(length = ((1<<11)-1))
+	private String htmlStr;
 	
 	public Problem(String name) {
 		this.name = name;
 	}
 	
 	
+//	@JsonBackReference
+//	@OneToOne(targetEntity = HtmlNode.class)
+//	private HtmlNode htmlContent;
 }

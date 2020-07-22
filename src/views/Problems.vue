@@ -32,7 +32,7 @@ table td {
       </table>
       <div>
         <h1>Problem 만들기</h1>
-        <span>Problem 이름:</span><input type="text" v-model="newProblemName">
+        <span>Problem 이름:</span><input type="text" v-model="newProblemName" @keyup.enter="makeNewProblem">
         <button v-on:click="makeNewProblem">만들기</button>
       </div>
     </div>

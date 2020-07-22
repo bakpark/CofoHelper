@@ -91,7 +91,7 @@ body {
         <div class="text_row">
           <span>Password</span>
         </div>
-        <input class="input_row" v-model="password" type="password" />
+        <input class="input_row" v-model="password" type="password" @keyup.enter="login" />
         <button class="sign_in_button" v-on:click="login">Log in</button>
         <router-link to="/join">join us!</router-link>
       </div>

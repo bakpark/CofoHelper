@@ -26,7 +26,7 @@ public class Problem {
 	// example : 1367-A
 	private String name;
 
-	@Column(length = ((1<<11)-1))
+	@Column(length = ((1<<13)-1))
 	private String htmlStr;
 	
 	public Problem(String name) {

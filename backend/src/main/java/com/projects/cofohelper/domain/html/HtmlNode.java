@@ -1,4 +1,4 @@
-package com.projects.cofohelper.domain.problem;
+package com.projects.cofohelper.domain.html;
 
 import java.util.ArrayList;
 import java.util.List;

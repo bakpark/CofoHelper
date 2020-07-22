@@ -21,6 +21,14 @@ export default {
       clicked: false
     }
   },
+  created () {
+    this.$store.dispatch('GET_INVITATIONS')
+  },
+  watch: {
+    $route () {
+      this.$store.dispatch('GET_INVITATIONS')
+    }
+  },
   methods: {
     click () {
       this.clicked = !this.clicked
@@ -37,6 +45,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0.3em;
 }
 .blue {
   color: blue;

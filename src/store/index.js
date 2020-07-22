@@ -46,7 +46,7 @@ export default new Vuex.Store({
         .then(res => {
           if (res.status == 200) {
             router.push({name: 'Login'})
-            alert('WELCOME! ' + handle +' login please')
+            alert('WELCOME! ' + handle + ' login please')
           }
         })
         .catch(err => {

@@ -83,11 +83,11 @@ export default new Router({
         component: Problems
       }
     ]
-  }, {
-    path: '/groups/:groupId/contests/:contestId',
-    name: 'Problems',
-    component: Problems,
-    beforeEnter: preventNotLoggedIn
+  // }, {
+  //   path: '/groups/:groupId/contests/:contestId',
+  //   name: 'Problems',
+  //   component: Problems,
+  //   beforeEnter: preventNotLoggedIn
   }, {
     path: '/realtime',
     name: 'RealTimeSolve',

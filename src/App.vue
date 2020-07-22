@@ -143,6 +143,10 @@ body {
   opacity: 0.7;
   outline: none;
 }
+.icon_box {
+  display: flex;
+  flex-direction: row;
+}
 </style>
 
 <template>
@@ -178,7 +182,10 @@ body {
         </div>
         <div class="personal_menus">
           <strong>{{ $store.state.handle }}</strong>
-          <AlarmBox></AlarmBox>
+          <div class="icon_box">
+            <UserSettings></UserSettings>
+            <AlarmBox></AlarmBox>
+          </div>
         </div>
       </div>
     </div>
@@ -195,6 +202,7 @@ import axios from "axios";
 import lodash from "lodash";
 import util from "@/components/util.js";
 import AlarmBox from "@/containers/alarm_box";
+import UserSettings from "@/containers/user_settings"
 export default {
   name: "App",
   methods: {
@@ -209,7 +217,8 @@ export default {
   },
   components: {
     Table,
-    AlarmBox
+    AlarmBox,
+    UserSettings
   }
 };
 </script>

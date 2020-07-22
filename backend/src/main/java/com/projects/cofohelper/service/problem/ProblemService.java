@@ -18,7 +18,6 @@ import com.projects.cofohelper.exception.alreadyexist.ProblemAlreadyExistExcepti
 import com.projects.cofohelper.exception.notfound.ProblemNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 
 @Slf4j
 @Service
@@ -64,7 +63,6 @@ public class ProblemService {
 		} catch (IndexOutOfBoundsException e) {
 			throw new InvalidParameterException("no such problem in codeforce:" + problem.getName());
 		}
-		log.info("html script length: ", element.html().length());
 		
 		problem.setHtmlStr(element.html());
 

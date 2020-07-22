@@ -46,7 +46,11 @@ export default new Vuex.Store({
         .then(res => {
           if (res.status == 200) {
             router.push({name: 'Login'})
+            alert('WELCOME! ' + handle +' login please')
           }
+        })
+        .catch(err => {
+          alert(err)
         })
     },
     LOGIN (context, {handle, password}) {
@@ -57,6 +61,9 @@ export default new Vuex.Store({
             localStorage.setItem('authorization', res.headers.authorization)
             context.dispatch('GET_USER_INFO')
           }
+        })
+        .catch(err => {
+          alert(err)
         })
     },
     GET_USER_INFO (context, urlObj) {

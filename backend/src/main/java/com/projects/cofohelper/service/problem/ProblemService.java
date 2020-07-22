@@ -1,22 +1,13 @@
 package com.projects.cofohelper.service.problem;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
-
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.projects.cofohelper.domain.html.HtmlAttribute;
+import com.projects.cofohelper.DefaultRunScript;
 import com.projects.cofohelper.domain.html.HtmlAttributeRepository;
-import com.projects.cofohelper.domain.html.HtmlNode;
 import com.projects.cofohelper.domain.html.HtmlNodeRepository;
 import com.projects.cofohelper.domain.problem.JsoupCrawler;
 import com.projects.cofohelper.domain.problem.Problem;
@@ -26,6 +17,10 @@ import com.projects.cofohelper.exception.InvalidParameterException;
 import com.projects.cofohelper.exception.alreadyexist.ProblemAlreadyExistException;
 import com.projects.cofohelper.exception.notfound.ProblemNotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
+
+@Slf4j
 @Service
 public class ProblemService {
 
@@ -69,6 +64,8 @@ public class ProblemService {
 		} catch (IndexOutOfBoundsException e) {
 			throw new InvalidParameterException("no such problem in codeforce:" + problem.getName());
 		}
+		log.info("html script length: ", element.html().length());
+		
 		problem.setHtmlStr(element.html());
 
 

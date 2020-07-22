@@ -15,7 +15,6 @@
 }
 div .group-navigator-wrapper{
   margin-bottom: 2em;
-  border: dotted 2px black;
 }
 .center-view{
   order:3;
@@ -37,7 +36,6 @@ div .group-navigator-wrapper{
 }
 div .group-navigator-wrapper{
   margin-bottom: 2em;
-  border: dotted 2px black;
 }
 .left-view{
   width: 15%;

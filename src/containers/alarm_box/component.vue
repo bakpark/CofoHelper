@@ -36,6 +36,8 @@ export default {
     flex-direction: column;
     align-items: center;
     z-index: 10;
+    top: 0.3em;
+    right: 0;
 }
 .container .row{
 

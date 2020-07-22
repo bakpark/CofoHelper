@@ -1,9 +1,29 @@
 <template>
   <div class="Group-Navigator">
-    <span>{{ group.groupName }}</span>
-    <div v-for="item in contestInfos" :key="item.contestName">{{ item.contestName }}<br/>
-      <button v-for="problem in item.problems" :key="problem.name" @click="buttonClick(item.contestId, problem.problemId)">{{ problem.name }}</button>
+    <div class="head">
+      <div class="group_name_wrapper">
+        <span class="navigator_group_name">{{ group.groupName }}</span>
+        <i class="fa fa-check-circle" aria-hidden="true" @click="clickGroup" v-if="!isClickedGroup"></i>
+        <i class="fa fa-check-circle gray" aria-hidden="true" @click="clickGroup" v-else></i>
+      </div>
+      <div class="right_empty"></div>
     </div>
+    <div class="contest_wrapper" v-if="!isClickedGroup" >
+      <div v-for="item in contestInfos" :key="item.contestName">
+        <div class="contest_name_wrapper">
+          <div class="contest_name_center">
+            <span class="contest_name">{{ item.contestName }}</span>
+            <i class="fa fa-check-circle" aria-hidden="true" @click="clickContest(item.contestId)" v-if="!isClickedContest(item.contestId)"></i>
+            <i class="fa fa-check-circle gray" aria-hidden="true" @click="clickContest(item.contestId)" v-else></i>
+            <br/>
+          </div>
+        </div>
+        <div class="contest_btn_wrapper" v-if="!isClickedContest(item.contestId)">
+          <button class="hoverable_btn" v-for="problem in item.problems" :key="problem.name" @click="buttonClick(item.contestId, problem.problemId)">{{ problem.name }}</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -21,7 +41,9 @@ export default {
   data () {
     return {
       contests: [],
-      contestInfos: []
+      contestInfos: [],
+      isClickedGroup: false,
+      clickedContestList: []
     }
   },
   /*****************************************************************
@@ -83,6 +105,20 @@ export default {
           reject(err)
         })
       })
+    },
+    clickGroup () {
+      this.isClickedGroup = !this.isClickedGroup
+    },
+    clickContest (contestId) {
+      let list = this.clickedContestList.filter(id => id !== contestId)
+      if (list.length === this.clickedContestList.length) {
+        this.clickedContestList.push(contestId)
+      } else {
+        this.clickedContestList = list
+      }
+    },
+    isClickedContest (contestId) {
+      return this.clickedContestList.includes(contestId)
     }
   }
 }
@@ -90,4 +126,58 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+button.hoverable_btn {
+  color: black;
+  background-color: white;
+  height: 2em;
+  width: 5em;
+  font-size: 1em;
+  border: 2px solid black;
+  border-radius: 10px;
+  margin: 3px;
+}
+button.hoverable_btn:hover {
+  background-color:rgb(111, 113, 116);
+  color: white;
+}
+span.navigator_group_name {
+  font-weight: 700;
+  font-size: 2em;
+  text-decoration: underline;
+}
+.head{
+  display: flex;
+  flex-direction: row;
+}
+.group_name_wrapper{
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.right_empty{
+  width: 10%;
+}
+span.contest_name{
+  font-weight: 600;
+  color: dimgray;
+  font-size: large;
+
+}
+.contest_name_wrapper{
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.contest_name_center{
+  padding: 0.1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.gray {
+  color: dimgray;
+}
+
 </style>

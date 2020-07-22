@@ -33,6 +33,7 @@ div .group-navigator-wrapper{
 .SolvingView{
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 div .group-navigator-wrapper{
   margin-bottom: 2em;
